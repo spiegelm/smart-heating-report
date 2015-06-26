@@ -3,13 +3,17 @@
 \chapter{Infrastructure}
 \label{sec:infrastructure}
 
-The infrastructure implements the server-client design pattern and is divided into two parts: The \emph{Server} part and the \emph{Local} part. First, the server is an independent component providing a public API to its clients. Second, the local part is a client consuming the provided API to populate the server with data gathered from the deployed residential infrastructure.
+The infrastructure implements a server-client design pattern and is divided into two parts:
+The \emph{Server} part and the \emph{Local} part.
+First, the server is an independent unit providing a public API to its clients.
+Second, the local part is a client consuming the provided API to retrieve configuration from the server and populate it with data gathered from the deployed residential infrastructure.
 Both parts will be explained in the following sections.
 
 \section{Server Infrastructure}
 \label{sec:server_infrastructure}
 
-The server is the main storage and communication center of this project. It persists data collected by the local deployment as also organizational information and heating schedules provided by the user via the Mobile App.
+The server is the main storage and communication center of this project.
+It persists data collected by the local deployment as also organizational information and heating schedules provided by the user via the Mobile App.
 
 \subsection{Design Goals}
 
@@ -22,13 +26,18 @@ The server is the main storage and communication center of this project. It pers
 
 \subsection{Platform and Frameworks}
 
-The server is implemented with Python, a general-purpose, multi-paradigm programming language\footnote{\url{https://www.python.org/}}. Python was chosen as it is suitable for developing a solid web server as also for usage on restricted hardware like the Raspberry Pi used for the local deployment. The Django Web Framework\footnote{\url{https://www.djangoproject.com/}} and Django REST Framework\footnote{\url{http://www.django-rest-framework.org/}} are used to implement the web application providing a RESTful API.
+The server is implemented with Python, a general-purpose, multi-paradigm programming language\footnote{\url{https://www.python.org/}}.
+Python was chosen as it is suitable for developing a solid web server as also for usage on restricted hardware like the Raspberry Pi used for the local deployment.
+Django\footnote{\url{https://www.djangoproject.com/}} is a popular web application framework based on a model-view-controller (MVC) pattern facilitating the development of complex, database-driven web applications.
+The Django REST Framework\footnote{\url{http://www.django-rest-framework.org/}} extends Django to support the design of RESTful Web APIs.
 
 \subsection{RESTful API}
 
 The server provides a RESTful API designed to persist temperature and heating schedule data of several thermostats.
 
-Each resource is identified by a uniform resource identifier (URI). There are two major types of URIs, resource collections and resource representations. A resource representation is a view of its resource's state and is usually encoded in XML or JSON. Resource collections can contain multiple representations of the same type of a resource.
+Each resource is identified by a uniform resource identifier (URI). There are two major types of URIs, resource collections and resource representations.
+A resource representation is a view of its resource's state and is usually encoded in XML or JSON.
+Resource collections can contain multiple representations of the same type of a resource.
 
 \paragraph{Design Decisions}
 
