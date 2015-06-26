@@ -13,14 +13,14 @@ The system consists of two major parts: The Infrastructure side gathering and co
 \label{fig:systemoverview}
 \end{figure}
 
-The infrastructure part consists of a local residential part and a server part. Within the residence a small computer system is installed which serves as a proxy to the distributed low-power thermostats.
+First, the Infrastructure part consists of a local residential part and a server part. Within the residence a small computer system is installed which serves as a communication gateway to the distributed low-power thermostats.
 Whereas the server is the central entity to collect and store the accumulated sensor data and organizational data. Both parts are explained in the following chapters \ref{sec:infrastructure}~\nameref{sec:infrastructure} and \ref{sec:mobile_app}~\nameref{sec:mobile_app}.
 
-\\
+Second, the Mobile App part \dots\todo[inline]{SAMUEL: Mobile App text}
 
 \section{Architecture}
 
-The Smart Heating system is implemented using a server-client pattern. The Smart Heating Server provides an API which is consumed 
+The Smart Heating system is implemented using a server-client pattern. The Smart Heating Server provides an API which is consumed by the local communication gateway and the Mobile App.
 
 
 \section{Models}
