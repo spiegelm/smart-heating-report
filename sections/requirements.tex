@@ -1,0 +1,35 @@
+%!TEX root = ../thesis.tex
+
+\chapter{Requirements Elicitation}
+\label{sec:requirements}
+
+\section{Functional Requirements}
+
+Functional requirements are stated using use cases in the style of Martin Fowler: \url{http://en.wikipedia.org/wiki/Use_case#Martin_Fowler}\\
+\url{http://ontolog.cim3.net/cgi-bin/wiki.pl?UseCasesMartinFowlerSimpleTextExample}
+
+\subsection{Register a Residence}
+\begin{enumerate}
+    \itemsep0em
+    \item User opens the app and opens the registration screen
+    \item User scans RFID tag
+    \item System checks if RFID is not yet registered
+    \item System registers residence with scanned RFID
+    \item System shows empty home screen with no rooms
+\end{enumerate}
+
+\paragraph{Alternative} RFID already registered
+\begin{itemize}
+    \itemsep0em
+    \item At step 3, system fails to verify that RFID is not yet registered
+    \item{If RFID is associated to a residence
+        \begin{itemize}
+        \item System shows the home screen of the registered residence
+        \end{itemize}
+        }
+    \item{If RFID is associated to a thermostat
+        \begin{itemize}
+        \item System shows ???
+        \end{itemize}
+    }
+\end{itemize}

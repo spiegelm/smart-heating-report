@@ -1,0 +1,64 @@
+\parskip 10pt
+
+\chapter*{Declaration of Originality}
+
+I hereby declare that this written work I have submitted is original work which
+I alone have authored and which is written in my own words.
+\\
+With the signature I declare that I have been informed regarding normal academic citation rules
+and that I have read and understood the information on ``Citation etiquette'':
+\begin{center}
+\url{http://www.ethz.ch/students/exams/plagiarism_s_en.pdf}
+\end{center}
+The citation conventions usual to the discipline in question here have been
+respected.
+\\
+This written work may be tested electronically for plagiarism.
+
+\vspace{3cm}
+
+\ifthenelse{\boolean{labProject}}
+{
+\noindent
+{
+\begin{minipage}[t]{6cm}
+	Zurich, \thesisSubmission
+\end{minipage}\hfill
+\begin{minipage}[t]{6cm}
+	%\phantom{M}\\
+	\vskip 12pt
+	\rule{6cm}{0.5pt} \\
+	\parbox{6cm}{\hfill \thesisAuthorI \hfill\vbox{}}
+\end{minipage}\hfill
+}
+
+\vspace{3cm}
+
+\noindent
+{
+\begin{minipage}[t]{6cm}
+	~
+\end{minipage}\hfill
+\begin{minipage}[t]{6cm}
+	%\phantom{M}\\
+	\vskip 12pt
+	\rule{6cm}{0.5pt} \\
+	\parbox{6cm}{\hfill \thesisAuthorII \hfill\vbox{}}
+\end{minipage}\hfill
+}
+}
+{
+\noindent
+{
+\begin{minipage}[t]{6cm}
+	Zurich, \thesisSubmission
+\end{minipage}\hfill
+\begin{minipage}[t]{6cm}
+	%\phantom{M}\\
+	\vskip 12pt
+	\rule{6cm}{0.5pt} \\
+	\parbox{6cm}{\hfill \thesisAuthor \hfill\vbox{}}
+\end{minipage}\hfill
+}
+}
+

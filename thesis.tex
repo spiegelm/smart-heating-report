@@ -1,0 +1,92 @@
+\documentclass[a4paper, toc=index, 12pt, DIV14, twoside, BCOR2cm, headsepline, numbers=noenddot, bibliography=totoc]{scrbook}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[american,ngerman]{babel}	% Choose languages here. This affects the section naming as well, like "Abstract" in EN and "Zusammenfassung" in DE.
+
+
+
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+%\newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
+%\newcommandx{\change}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
+%\newcommandx{\info}[2][1=]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,#1]{#2}}
+%\newcommandx{\improvement}[2][1=]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}
+
+
+\usepackage{ifthen}
+\newboolean{bachelorThesis}
+\newboolean{labProject}
+\newboolean{masterThesis}
+ 
+%% Enter thesis type here ("Master Thesis", "Lab Project", "Bachelor Thesis") and set boolean variables accordingly.
+\setboolean{bachelorThesis}{false}
+\setboolean{masterThesis}{false}
+\setboolean{labProject}{true}
+ 
+\newcommand{\thesisTitle}{Smart Heating System\\ in Residential Areas}
+
+% BSC thesis 
+\ifthenelse{\boolean{bachelorThesis}}
+{
+\newcommand{\thesisType}{Bachelor Thesis}
+\newcommand{\thesisAuthor}{Student Name} 
+\newcommand{\thesisETHID}{XX-XXX-XXX}
+\newcommand{\thesisEmail}{student@student.ethz.ch}
+}{}
+
+% MS thesis
+\ifthenelse{\boolean{masterThesis}}
+{
+\newcommand{\thesisType}{Master Thesis}
+\newcommand{\thesisAuthor}{Student Name}
+\newcommand{\thesisETHID}{XX-XXX-XXX}
+\newcommand{\thesisEmail}{student@student.ethz.ch}
+}{}
+
+% Lab project
+\ifthenelse{\boolean{labProject}}
+{
+\newcommand{\thesisType}{Lab Project}
+\newcommand{\thesisAuthorI}{Samuel Schmid}
+\newcommand{\thesisAuthorII}{Michael Spiegel}
+\newcommand{\thesisAuthor}{\thesisAuthorI \\and \thesisAuthorII}
+\newcommand{\thesisETHID}{XX-XXX-XXX (\thesisAuthorI)\\[1mm] & 10-915-312 (\thesisAuthorII)}
+\newcommand{\thesisEmail}{schmisam@student.ethz.ch\\[1mm] & spiegelm@student.ethz.ch}
+}{}
+
+\newcommand{\thesisSemester}{Spring 2015}
+\newcommand{\thesisSubmission}{January 5, 2012}
+
+\include{format}
+
+\begin{document}
+
+\frontmatter
+
+\include{title}
+% \include{disclaimer}
+
+\include{sections/abstract}
+%\include{sections/acknowledgements}
+
+\tableofcontents
+
+\mainmatter
+
+\input{sections/introduction}
+\input{sections/relatedwork}
+\input{sections/requirements}
+\input{sections/system_overview}
+\input{sections/infrastructure}
+\input{sections/mobile_app}
+\input{sections/evaluation}
+\input{sections/futurework}
+\input{sections/conclusion}
+
+\bibliographystyle{abbrv}
+\bibliography{references}
+\appendix
+\include{sections/appendix}
+\parskip 0pt
+
+\end{document}
