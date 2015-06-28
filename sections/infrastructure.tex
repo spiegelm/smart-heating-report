@@ -3,13 +3,17 @@
 \chapter{Infrastructure}
 \label{sec:infrastructure}
 
-The infrastructure implements the server-client design pattern and is divided into two parts: The \emph{Server} part and the \emph{Local} part. First, the server is an independent component providing a public API to its clients. Second, the local part is a client consuming the provided API to populate the server with data gathered from the deployed residential infrastructure.
+The infrastructure implements a server-client design pattern and is divided into two parts:
+The \emph{Server} part and the \emph{Local} part.
+First, the server is an independent unit providing a public API to its clients.
+Second, the local part is a client consuming the provided API to retrieve configuration from the server and populate it with data gathered from the deployed residential infrastructure.
 Both parts will be explained in the following sections.
 
 \section{Server Infrastructure}
 \label{sec:server_infrastructure}
 
-The server is the main storage and communication center of this project. It persists data collected by the local deployment as also organisational information and heating schedules provided by the user via the mobile app.
+The server is the main storage and communication center of this project.
+It persists data collected by the local deployment as also organizational information and heating schedules provided by the user via the Mobile App.
 
 \subsection{Design Goals}
 
@@ -22,21 +26,50 @@ The server is the main storage and communication center of this project. It pers
 
 \subsection{Platform and Frameworks}
 
-The server is implemented with Python, a general-purpose, multi-paradigm programming language\footnote{\url{https://www.python.org/}}. Python was chosen as it is suitable for developing a solid web server as also for usage on restricted hardware like the Raspberry Pi used for the local deployment. The Django Web Framework\footnote{\url{https://www.djangoproject.com/}} and Django REST Framework\footnote{\url{http://www.django-rest-framework.org/}} are used to implement the web application providing a RESTful API.
+The server is implemented with Python, a general-purpose, multi-paradigm programming language\footnote{\url{https://www.python.org/}}.
+Python was chosen as it is suitable for developing a solid web server as also for usage on restricted hardware like the Raspberry Pi used for the local deployment.
+Django is a popular, open-source web application framework\footnote{\url{https://www.djangoproject.com/}} based on a model-view-controller (MVC) pattern facilitating the development of complex, database-driven web applications.
+The Django REST Framework\footnote{\url{http://www.django-rest-framework.org/}} extends Django to support the design of RESTful Web APIs.
 
 \subsection{RESTful API}
 
-The server provides a RESTful API designed to persist temperature and heating schedule data of several thermostats.
+The server provides a RESTful\footnote{Note: REST is a programming paradigm where as RESTful is used to describe a web application implementing such an paradigm.} API to access a persistent storage providing the basic CRUD operations: Create, Read, Update and Delete.
+REST is a programming paradigm used in distributed systems especially for machine-to-machine communication.
+RESTful web services use HTTP as their preferred communication protocol.
 
-Each resource is identified by a uniform resource identifier (URI). There are two major types of URIs, resource collections and resource representations. A resource representation is a view of its resource's state and is usually encoded in XML or JSON. Resource collections can contain multiple representations of the same type of a resource.
+REST is about resources.
+Each resource is identified by a uniform resource identifier (URI) and is accessible via the request methods defined in HTTP.
+There are two major types of URIs, resource collections and resource representations.
+First, a resource representation is a view of its resource's state and is encoded in a transferable format.
+This project uses the simple JSON format to represent resources.
+Second, resource collections contain representations of the same type of a resource.
 
 \paragraph{Design Decisions}
 
 \begin{itemize}
     \itemsep0em
-    \item Resource collections are referenced per URL. Resources are referenced by including their representation.
+    \item Within resource representations, collections are referenced per URL. Resources are referenced by including their representation.
     \item URL fields are identified by the name \emph{url} or the suffix \emph{\_url}. Each resource representation contains its own URL in the field \emph{url}.
+    \item The resource identifier is the first field in each resource representation.
 \end{itemize}
+
+See Listing~\ref{lst:room-json-example} for an example of a resource representation.
+
+\begin{snippet}[language=JavaScript,label={lst:room-json-example},caption={Example representation of a Room resource. The \emph{url} field determines the URL of the represented resource. Within the \emph{residence} field the representation of the associated Residence resource is nested. The included Residence representation has its own \emph{url} field. Collections of the Residence's Rooms and Users are not nested but referenced via URL to limit the response size.}]
+	{
+		"id": 2,
+		"url": "http://server/residence/04891BB9232584/room/2/",
+		"name": "Dining Room",
+		"residence": {
+			"rfid": "04891BB9232584",
+			"url": "http://server/residence/04891BB9232584/",
+			"rooms_url": "http://server/residence/04891BB9232584/room/",
+			"users_url": "http://server/residence/04891BB9232584/user/"
+		},
+		"thermostats_url": "http://server/residence/04891BB9232584/room/2/thermostat/"
+	}
+\end{snippet}
+
 
 \paragraph{Browsable API}
 
@@ -48,7 +81,7 @@ Discoverability
 
 \subsection{Program Architecture and Implementation}
 
-The server implementation is built on the Django Framework following a variation\footnote{\url{https://docs.djangoproject.com/en/1.8/faq/general/#django-appears-to-be-a-mvc-framework-but-you-call-the-controller-the-view-and-the-view-the-template-how-come-you-don-t-use-the-standard-names}} of the Model-View-Controller (MVC) architectural pattern\footnote{\url{https://en.wikipedia.org/wiki/Model-view-controller}}. We assume the user to be familiar with the common MVC pattern.\todo{Explain Djangos architecture?}
+The server implementation is built on the Django Framework following a variation\footnote{\url{https://docs.djangoproject.com/en/1.8/faq/general/\#django-appears-to-be-a-mvc-framework-but-you-call-the-controller-the-view-and-the-view-the-template-how-come-you-don-t-use-the-standard-names}} of the Model-View-Controller (MVC) architectural pattern\footnote{\url{https://en.wikipedia.org/wiki/Model-view-controller}}. We assume the user to be familiar with the common MVC pattern.\todo{Explain Djangos architecture?}
 
 \subsubsection{Models}
 
@@ -93,9 +126,11 @@ Automated software testing is an important part of this project. Django and also
 
 Furthermore the usage of an Continuous Integration service like Travis CI\footnote{\url{https://travis-ci.org/}} ensures the periodic execution of all tests and logging of the test results.
 
-\subsubsection{Practically Oriented Documentation}
+\subsubsection{Tests as Documentation}
 
-\todo{Screenshot of github.com/spiegelm/smart-heating-server}
+Tests as Documentation complement traditional documentation.
+
+\todo[inline]{Listing of test output}
 
 \section{Local Deployment}
 \label{sec:local_infrastructure}
