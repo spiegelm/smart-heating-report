@@ -34,14 +34,14 @@ The Django REST Framework\footnote{\url{http://www.django-rest-framework.org/}} 
 \subsection{RESTful API}
 
 The server provides a RESTful\footnote{Note: REST is a programming paradigm where as RESTful is used to describe a web application implementing such an paradigm.} API to access a persistent storage providing the basic CRUD operations: Create, Read, Update and Delete.
-REST is a programming paradigm used in distributed systems especially for machine-to-machine communication.
+Representational State Transfer (REST) is a programming paradigm used in distributed systems especially for machine-to-machine communication.
 RESTful web services use HTTP as their preferred communication protocol.
 
 REST is about resources.
 Each resource is identified by a uniform resource identifier (URI) and is accessible via the request methods defined in HTTP.
 There are two major types of URIs, resource collections and resource representations.
 First, a resource representation is a view of its resource's state and is encoded in a transferable format.
-This project uses the simple JSON format to represent resources.
+This project uses the simple JavaScript Object Notation (JSON) format to represent resources.
 Second, resource collections contain representations of the same type of a resource.
 
 \paragraph{Design Decisions}
@@ -73,15 +73,25 @@ See Listing~\ref{lst:room-json-example} for an example of a resource representat
 
 \paragraph{Browsable API}
 
-The Django REST Framework 
+The Django REST Framework offers the ability to dynamically generate a browsable interface accessible per web browser.
+It includes a formatted output of the JSON response, offers forms to add new resources and edit or delete existing resources and displays URLs as clickable hyperlinks.
+This interface is an additional HTML output format enabling developers to easily interact with the API without the need of external tools.
+The Browsable Web API is designed for readability where as the API renders its data as compressed JSON to reduce transmission bandwidth.
+See Figure~\ref{fig:server_infrastructure_browsable_api} for an example.
 
-Discoverability
-
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{images/server_browable_api_user_instance.png}
+	\end{center}
+	\caption{Screenshot of the Browsable Web API showing an instance of an user resource. The interface allows the developer to easily edit or delete the user as well as to navigate the residence or its associated room or user collection.}
+	\label{fig:server_infrastructure_browsable_api}
+\end{figure}
 
 
 \subsection{Program Architecture and Implementation}
 
-The server implementation is built on the Django Framework following a variation\footnote{\url{https://docs.djangoproject.com/en/1.8/faq/general/\#django-appears-to-be-a-mvc-framework-but-you-call-the-controller-the-view-and-the-view-the-template-how-come-you-don-t-use-the-standard-names}} of the Model-View-Controller (MVC) architectural pattern\footnote{\url{https://en.wikipedia.org/wiki/Model-view-controller}}. We assume the user to be familiar with the common MVC pattern.\todo{Explain Djangos architecture?}
+The server implementation is built on the Django Framework following a variation\footnote{For the interested reader: \url{https://docs.djangoproject.com/en/1.8/faq/general/\#django-appears-to-be-a-mvc-framework-but-you-call-the-controller-the-view-and-the-view-the-template-how-come-you-don-t-use-the-standard-names}} of the Model-View-Controller (MVC) architectural pattern\footnote{\url{https://en.wikipedia.org/wiki/Model-view-controller}}.
+We assume the user to be familiar with the common MVC pattern.\todo{Explain Djangos architecture?} 
 
 \subsubsection{Models}
 
@@ -109,8 +119,6 @@ is identified by the smart phone's serial number\footnote{The International Mobi
 Room, Thermostat, Temperature, Heating Table Entry, Meta Entry
 
 % temperatures and other data from the local deployment as also the heating schedule from the mobile app.
-
-
 
 \subsubsection{Serializers}
 
