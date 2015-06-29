@@ -48,6 +48,7 @@ Second, resource collections contain representations of the same type of a resou
 
 \begin{itemize}
     \itemsep0em
+    \item The underlying model hierarchy is represented via nested URLs.
     \item Within resource representations, collections are referenced per URL. Resources are referenced by including their representation.
     \item URL fields are identified by the name \emph{url} or the suffix \emph{\_url}. Each resource representation contains its own URL in the field \emph{url}.
     \item The resource identifier is the first field in each resource representation.
@@ -90,12 +91,20 @@ See Figure~\ref{fig:server_infrastructure_browsable_api} for an example.
 
 \subsection{Program Architecture and Implementation}
 
-The server implementation is built on the Django Framework following a variation\footnote{For the interested reader: \url{https://docs.djangoproject.com/en/1.8/faq/general/\#django-appears-to-be-a-mvc-framework-but-you-call-the-controller-the-view-and-the-view-the-template-how-come-you-don-t-use-the-standard-names}} of the Model-View-Controller (MVC) architectural pattern\footnote{\url{https://en.wikipedia.org/wiki/Model-view-controller}}.
-We assume the user to be familiar with the common MVC pattern.\todo{Explain Djangos architecture?} 
+The server implementation is built on the Django Framework following a variation
+%\footnote{For the interested reader: \url{https://docs.djangoproject.com/en/1.8/faq/general/\#django-appears-to-be-a-mvc-framework-but-you-call-the-controller-the-view-and-the-view-the-template-how-come-you-don-t-use-the-standard-names}}
+of the Model-View-Controller (MVC) architectural pattern\footnote{\url{https://en.wikipedia.org/wiki/Model-view-controller}}.
+We assume the user to be familiar with the common MVC pattern.
+\todo{Explain Djangos architecture?}
 
 \subsubsection{Models}
+\label{sec:server_infrastructure_models}
 
-Models provide an abstraction layer for structuring and manipulating data handled by the web application\todo[fancyline]{Rewrite this sentence, less copying.}.
+Models structure the underlying data and provide operations for manipulating it.
+In Django models contain the business logic and are also responsible for validating user input and providing appropriate error messages.
+The \emph{smart\_heating.models} namespace contains all project models.
+Each model extends the abstract \emph{Model} class providing a general method used to get an objects representation for debugging purposes as well as the abstract \emph{get\_recursive\_pks} method.
+The later method is used to generate hierarchical URLs and will be further described in Section~\ref{sec:server_infrastructure_serializers}
 % A high level description of all used models is given in Section~\ref{sec:system_overview_models}. 
 
 \begin{figure}[h]
@@ -114,17 +123,37 @@ is identified by the radio frequency identification (RFID) tag number on the dep
 
 \paragraph{User}
 
-is identified by the smart phone's serial number\footnote{The International Mobile Equipment Identity (IMEI), a 15-digit serial number associated to each cell phone, is used to identify each user} and can be registered to at most one residence. 
+is identified by the smart phone's serial number\footnote{The International Mobile Equipment Identity (IMEI) is a 15-digit serial number associated to each GSM cell phone.} and can be registered to at most one residence.
 
 Room, Thermostat, Temperature, Heating Table Entry, Meta Entry
 
 % temperatures and other data from the local deployment as also the heating schedule from the mobile app.
 
 \subsubsection{Serializers}
+\label{sec:server_infrastructure_serializers}
+
+Serializers are responsible for translating models into a transmittable format and reverse.
+This project uses JSON as the transmittable format.
+Each model has an associated serializer which determines which model fields should be included into the resource representation.
+Additional fields can be added to the representation or individual field representations can be overwritten to offer customized output.
+
+A commonly used customization is the replacement of the default \emph{HyperlinkedIdentityField} with \emph{HierarchicalHyperlinkedIdentityField}.
+This custom serializer field generates URLs according to the hierarchical schema applied in this project.
+For example the URL for a room would be \nolinkurl{http://server.com/residence/041FB2B9232580/room/5/}.
+To assemble this URL not only the identifier of the room but also the identifier of its parent are required.
+The adapted field extends the default field and provides all identifiers of the hierarchy required to generate the URL by using the hierarchical base class \emph{smart\_heating.models.Model}.
 
 \subsubsection{Views}
+\label{sec:server_infrastructure_views}
+
+A view is a class which processes requests and returns a response.
+Django offers generic view classes and mixins providing common functionality and to facilitate code reuse.
+The Django REST Framework further abstracts views by supplying \emph{ViewSets}.
+
+Custom pagination for expectedly large collections as temperatures or meta entries.
 
 \subsubsection{Routers}
+\label{sec:server_infrastructure_routers}
 
 
 
