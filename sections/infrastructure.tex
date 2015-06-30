@@ -46,17 +46,20 @@ Second, resource collections contain representations of the same type of a resou
 
 \paragraph{Design Decisions}
 
-\begin{itemize}
+\begin{enumerate}
     \itemsep0em
     \item The underlying model hierarchy is represented via nested URLs.
-    \item Within resource representations, collections are referenced per URL. Resources are referenced by including their representation.
-    \item URL fields are identified by the name \emph{url} or the suffix \emph{\_url}. Each resource representation contains its own URL in the field \emph{url}.
+    \label{enum:design_decision_nested_urls}
     \item The resource identifier is the first field in each resource representation.
-\end{itemize}
+    \item Within resource representations, collections are referenced per URL. Resources are referenced by including their representation.
+    \label{enum:design_decision_resource_referencing}
+    \item URL fields are identified by the name \emph{url} or the suffix \emph{\_url}. Each resource representation contains its own URL in the field \emph{url}.
+    \label{enum:design_decision_url_fields_prefix}
+\end{enumerate}
 
 See Listing~\ref{lst:room-json-example} for an example of a resource representation.
 
-\begin{snippet}[language=JavaScript,label={lst:room-json-example},caption={Example representation of a Room resource. The \emph{url} field determines the URL of the represented resource. Within the \emph{residence} field the representation of the associated Residence resource is nested. The included Residence representation has its own \emph{url} field. Collections of the Residence's Rooms and Users are not nested but referenced via URL to limit the response size.}]
+\begin{snippet}[language=JavaScript,label={lst:room-json-example},caption={Example representation of the Room resource at \nolinkurl{http://server/residence/04891BB9232584/room/2/}. The \emph{url} field determines the URL of the represented resource. Within the \emph{residence} field the representation of the associated Residence resource is nested. The included Residence representation has its own \emph{url} field. Collections of the Residence's Rooms and Users are not nested but referenced via URL to limit the response size.}]
 	{
 		"id": 2,
 		"url": "http://server/residence/04891BB9232584/room/2/",
@@ -126,6 +129,7 @@ is identified by the radio frequency identification (RFID) tag number on the dep
 is identified by the smart phone's serial number\footnote{The International Mobile Equipment Identity (IMEI) is a 15-digit serial number associated to each GSM cell phone.} and can be registered to at most one residence.
 
 Room, Thermostat, Temperature, Heating Table Entry, Meta Entry
+\todo[inline]{Finish models}
 
 % temperatures and other data from the local deployment as also the heating schedule from the mobile app.
 
@@ -142,6 +146,11 @@ This custom serializer field generates URLs according to the hierarchical schema
 For example the URL for a room would be \nolinkurl{http://server.com/residence/041FB2B9232580/room/5/}.
 To assemble this URL not only the identifier of the room but also the identifier of its parent are required.
 The adapted field extends the default field and provides all identifiers of the hierarchy required to generate the URL by using the hierarchical base class \emph{smart\_heating.models.Model}.
+
+Nested resources are implemented using nested serializers.
+This way existing serializers can be reused to include their resource representation into another representation.
+% \item Within resource representations, collections are referenced per URL. Resources are referenced by including their representation.
+
 
 \subsubsection{Views}
 \label{sec:server_infrastructure_views}
