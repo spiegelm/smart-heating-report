@@ -99,9 +99,7 @@
 
 % Taken from Lena Herrmann at 
 % http://lenaherrmann.net/2010/05/20/javascript-syntax-highlighting-in-the-latex-listings-package
-%\documentclass{article}
-%\usepackage{listings}
-%\usepackage{color}
+\definecolor{lightlightgray}{rgb}{.95,.95,.95}
 \definecolor{lightgray}{rgb}{.9,.9,.9}
 \definecolor{darkgray}{rgb}{.4,.4,.4}
 \definecolor{purple}{rgb}{0.65, 0.12, 0.82}
@@ -128,8 +126,8 @@
 }
 
 \lstset{
-	language=JavaScript,
-	backgroundcolor=\color{lightgray},
+%	language=JavaScript,
+	backgroundcolor=\color{lightlightgray},
 	extendedchars=true,
 	basicstyle=\footnotesize\ttfamily,
 	showstringspaces=false,
