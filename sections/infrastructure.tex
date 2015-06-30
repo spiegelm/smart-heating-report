@@ -176,22 +176,53 @@ The custom pagination class \emph{pagination.BasePagination} implements the desi
 \subsubsection{Routes}
 \label{sec:server_infrastructure_routers}
 
-URLs are defined explicitly in the file \emph{smart-heating/urls.py}.
+URLs are defined explicitly in the file \texttt{smart-heating/urls.py}.
 For each request the responsible view is determined by matching the requested URL against a list of regular expressions.
 This technique allows flexible configurations as required for the hierarchical URL scheme.
 
 
 \subsection{Automated Testing}
 
-Automated software testing is an important part of this project. Django and also the Django REST Framework facilitate automatic testing by providing several classes and tools helping to write and execute tests. Automatic software testing allows the application of test-driven development practices to ensure high software quality.
+Automated software testing is an important part of this project. Django and also the Django REST Framework facilitate automatic testing by providing base classes and tools helping to create and execute tests.
 
-Furthermore the usage of an Continuous Integration service like Travis CI\footnote{\url{https://travis-ci.org/}} ensures the periodic execution of all tests and logging of the test results.
+The tests are designed to infer the functionality and behavior of the application.
+An executed test run shows at any particular time which functional requirements are fulfilled and which are not.
+Look at Listing~\ref{lst:test_report} for an example.
+These dynamically generated test reports nicely complement traditional documentation and also provide small informational code examples that are shown to work.
+%Die Tests sind so designed, dass sie Rückschlüsse auf die Funktionalität der Applikation geben. Ein ausgeführter Test-Run zeigt welche funktionalen Anforderungen erfüllt sind und welche nicht.
+During application development we intensively used test driven development practices to increase productivity and achieve high software quality.
+Automatic software testing allows to already formulate the requirements of a computer program such that they can be automatically checked before and during application development.
+%Während der Applikationsentwicklung wurde intensiver Gebrauch von Test-getriebenen Entwicklungspraktiken gemacht, um die Produktivität und Softwarequalität zu steigern. Automatisiertes software testing ermöglicht es Anforderungen an ein Computer Programm bereits im vorhinein so zu formulieren, dass sie schon während der Implementierung automatisiert überprüft werden können.
+%Automatic software testing allows the application of test-driven development practices to ensure high software quality.
 
-\subsubsection{Tests as Documentation}
+\begin{snippet}[label={lst:test_report},caption={Excerpt of the test output with verbosity level 2 documenting the application behavior},numbers=none]
+$ python manage.py test -v 2
+	[...]
+	smart_heating.tests.test_api.ViewRootTestCase
+		test_root_contains_residence_url ... ok
+	smart_heating.tests.test_api.HeatingTableTestCase
+		test_create_heating_table_entry ... ok
+		test_heating_table_entries_are_ordered_by_date_and_time ... ok
+		test_heating_table_entry_representation ... ok
+		[...]
+	smart_heating.tests.test_api.ViewUserTestCase
+		test_create_user ... ok
+		test_get_non_existent_imei_is_404 ... ok
+		test_get_user_of_unrelated_residence_is_404 ... ok
+		test_user_collection_contains_user_representations ... ok
+		test_user_representation_contains_imei_and_name ... ok
+		[...]
+-------------------------------------------------------------------
+Ran 58 tests in 0.765s
+OK
+\end{snippet}
 
-Tests as Documentation complement traditional documentation.
 
-\todo[inline]{Listing of test output}
+Furthermore the usage of an Continuous Integration service like Travis CI\footnote{\url{https://travis-ci.org/}} ensures that individual development branches are consistently tested and don't break the main development line upon branch integration.
+Additionally this convenient services ensures the periodic execution of all tests and logging of the test results.
+
+
+
 
 \section{Local Deployment}
 \label{sec:local_infrastructure}
