@@ -173,9 +173,12 @@ Limit determines the page size, i.e. the maximum number of items that are displa
 Offset determines the starting item.\\
 The custom pagination class \emph{pagination.BasePagination} implements the design decision \ref{enum:design_decision_url_fields_prefix} to suffix resource field names representing links.
 
-\subsubsection{Routers}
+\subsubsection{Routes}
 \label{sec:server_infrastructure_routers}
 
+URLs are defined explicitly in the file \emph{smart-heating/urls.py}.
+For each request the responsible view is determined by matching the requested URL against a list of regular expressions.
+This technique allows flexible configurations as required for the hierarchical URL scheme.
 
 
 \subsection{Automated Testing}
