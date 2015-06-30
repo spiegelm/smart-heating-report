@@ -156,8 +156,15 @@ This way existing serializers can be reused to include their resource representa
 \label{sec:server_infrastructure_views}
 
 A view is a class which processes requests and returns a response.
-Django offers generic view classes and mixins providing common functionality and to facilitate code reuse.
+Django defines the view as the place that defines how but also which data is presented.
+This slightly differs from the traditional MVC architectural pattern but will not be explained in detail here\footnote{The interested reader is referred to \url{https://docs.djangoproject.com/en/1.8/faq/general/\#django-appears-to-be-a-mvc-framework-but-you-call-the-controller-the-view-and-the-view-the-template-how-come-you-don-t-use-the-standard-names}}.
+Django includes generic view classes and mixins to provide common functionality and to facilitate code reuse.
 The Django REST Framework further abstracts views by supplying \emph{ViewSets}.
+These \emph{ViewSets} facilitate the unified handling of different HTTP methods within a single class for each public resource.
+
+The used \emph{ModelViewSet} is such a class serving as a base for individual viewsets of a resource.
+In the simplest case only requires the definition of a database query and an appropriate serializer class.
+The \emph{ResidenceViewSet} is a good example of a view class consisting of only 3 lines of code.
 
 Custom pagination for expectedly large collections as temperatures or meta entries.
 
