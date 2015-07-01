@@ -3,28 +3,44 @@
 \section{Local Deployment}
 \label{sec:local_infrastructure}
 
-The local deployments consists of the residential communication gateway and the deployed thermostats with their wireless adapters. The communication gateway collects the data read from the thermostats and sends it to a remote web server. The thermostats are programmable and allow us to modify their behaviour by replacing and adapting the flashed firmware. This project uses the work of previous lab projects as a basis to build upon. The primary focus is to improve the basic functionality of the communication gateway and create an unified but loosely coupled infrastructure by using the RESTful API provided by the server.
+The local deployments consists of the residential communication gateway and the deployed thermostats with their wireless adapters.
+The communication gateway collects the data read from the thermostats and sends it to the remote web server.
+The thermostats are programmable and allow us to modify their behavior by flashing custom firmware.
+This project uses the work of previous lab projects as a basis to build upon.
+The primary focus is to improve the basic functionality of the communication gateway and create an unified but loosely coupled infrastructure by using the RESTful API provided by the server.
 See also Figure~\ref{fig:residence_layout} for an overview of the local deployment.
 
 \begin{figure}[h]
-\begin{center}
-\includegraphics[width=0.8\textwidth]{images/residence_layout_schema.png}
-\end{center}
-\caption{Example of a residence layout depicting a possible deployment. The local communication gateway is installed in the hallway, connected to the internet and has wireless connections to the deployed thermostats represented as antennas. Source of the original image: \url{http://www.haus-topplicht.de/wp-content/uploads/2013/12/planwohnung2.jpg}}
-\label{fig:residence_layout}
+	\begin{center}
+		\includegraphics[width=0.7\textwidth]{images/residence_layout_schema.png}
+	\end{center}
+	\caption{Example of a residence layout depicting a possible deployment. The local communication gateway is installed in the hallway, connected to the internet and has wireless connections to the deployed thermostats represented as antennas. Source of the original image: \url{http://www.haus-topplicht.de/wp-content/uploads/2013/12/planwohnung2.jpg}}
+	\label{fig:residence_layout}
 \end{figure}
 
 \subsection{Existing Infrastructure}
 
-This lab project builds upon work previously done at the Distributed System Group\footnote{\url{https://www.vs.inf.ethz.ch/}}. 
+This project builds upon work previously done by Nico Eigenmann und Christof Baumann as a Lab Project in their master studies.\todo{TODO cite}
 
-\subsubsection*{Hardware}
+\todo{reference the HR-20 picture somewhere}
 
-Thermostats, etc
+Honeywell HR-20, as depicted in Figure~\ref{fig:honeywell_hr20}, Radio Module deRFmega128, USB powered
 
-\subsubsection*{Software}
+\begin{figure}[h]
+%\begin{wrapfigure}{r}{0.45\textwidth}
+	\begin{center}
+		\includegraphics[width=0.4\textwidth]{images/hr20.jpg}
+	\end{center}
+	\caption{Honeywell HR-20 programmable thermostat. Image source: \url{https://piontecsmumble.files.wordpress.com/2013/02/hr20.jpg}}
+	\label{fig:honeywell_hr20}
+\end{figure}
 
-Willis Scripts
+
+Custom firmware based on OpenHR20\footnote{\url{http://www.mikrocontroller.net/articles/Heizungssteuerung_mit_Honeywell_HR20}}
+
+Communicating via 6LoWPAN (layer 1-2) and CoAP ()
+
+Raspberry Pi 2
 
 \subsection{Design Goals}
 
@@ -33,6 +49,17 @@ Simple, Reliable, Failure resistant
 \subsection{Platform and Frameworks}
 
 tunslip6, Python, COAP, aiocoap, requests
+
+\paragraph{Constrained Application Protocol (CoAP)}
+Targets small low power devices and components that are heavily restricted in terms of computing power, memory size and power consumption.
+"CoAP is designed to easily translate to HTTP for simplified integration with the web, while also meeting specialized requirements such as multicast support, very low overhead, and simplicity."
+
+\paragraph{aiocoap} is a package for Python implementing the CoAP protocol.
+
+\paragraph{tunslip6}
+% https://www.iot-lab.info/tutorials/build-tunslip6/
+"Tunslip creates a virtual network interface (tun) on the host side and uses SLIP (serial line internet protocol) to encapsulate and pass IP traffic to and from the other side of the serial line. The network element sitting on the other side of the line does a similar job with it’s network interface."
+
 
 \subsection{Implementation}
 
