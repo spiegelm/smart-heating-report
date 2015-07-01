@@ -50,18 +50,20 @@ Several design goals are determined in order to evaluate the system design and i
 
 This sub section lists and describes the software components used in the local deployment.
 
-tunslip6, Python, COAP, aiocoap, requests
+\paragraph{tunslip6} is a tool to route IPv6 packets between a host and a border router via a serial line.
+It is used to create a tunnel interface an the host system which acts as a regular network interface allowing
 
-\paragraph{Constrained Application Protocol (CoAP)}
-Targets small low power devices and components that are heavily restricted in terms of computing power, memory size and power consumption.
-"CoAP is designed to easily translate to HTTP for simplified integration with the web, while also meeting specialized requirements such as multicast support, very low overhead, and simplicity."
+\paragraph{Python} is a multi-paradigm programming language and is suitable for desktop as well as for embedded systems.
+This allows us to use a single programming language for the implemented software parts in the whole local infrastructure.
+Further Python includes packages to facilitate asynchronous input and output which is required to concurrently query multiple network resources.
 
-\paragraph{aiocoap} is a package for Python implementing the CoAP protocol.
+\paragraph{Constrained Application Protocol (CoAP)} \cite{rfc7252} is a application protocol created for low power devices and sensors that are heavily restricted in terms of computing power, memory size and power consumption.
+Unlike the Hypertext Transfer Protocol (HTTP) commonly used in desktop and mobile systems CoAP is based on minimalistic network protocols to reduce overhead and computational requirements.
 
-\paragraph{tunslip6}
-% https://www.iot-lab.info/tutorials/build-tunslip6/
-"Tunslip creates a virtual network interface (tun) on the host side and uses SLIP (serial line internet protocol) to encapsulate and pass IP traffic to and from the other side of the serial line. The network element sitting on the other side of the line does a similar job with it’s network interface."
+\paragraph{aiocoap} is a third-party package for Python implementing the CoAP protocol.
 
+\paragraph{requests} is a library written in Python providing a simple and well designed interface to send HTTP requests.
+This is used to communicate with the API provided by the Smart Heating Server.
 
 \subsection{Implementation}
 
