@@ -20,33 +20,35 @@ See also Figure~\ref{fig:residence_layout} for an overview of the local deployme
 
 \subsection{Existing Infrastructure}
 
-This project builds upon work previously done by Nico Eigenmann und Christof Baumann as a Lab Project in their master studies.\todo{TODO cite}
-
-\todo{reference the HR-20 picture somewhere}
-
-Honeywell HR-20, as depicted in Figure~\ref{fig:honeywell_hr20}, Radio Module deRFmega128, USB powered
+This project builds upon work previously done by Nico Eigenmann as his master thesis \cite{eigenmann2012opportunisticSensing}.
+Part of his work consisted of extending the hardware and software of the digital thermostat HR-20\footnote{\url{http://www.homexpertbyhoneywell.com/en-DE/Products/rondostat/Pages/HR-20.aspx}}, as depicted in Figure~\ref{fig:honeywell_hr20}, to offer wireless access via 6LoWPAN\footnote{Acronym of IPv6 over Low power Wireless Personal Area Network}.
+Further a border router translates the 6LoWPAN messages into IPv6 packets and vice versa.
+This border router is connected per Universal Serial Bus (USB) port to a computer and communicates via Serial Line Internet Protocol (SLIP).
+The computer redirects the received messages into the connected Local Area Network (LAN) and also routes packets addressed to a sensor in the 6LoWPAN network via the border router.
 
 \begin{figure}[h]
 %\begin{wrapfigure}{r}{0.45\textwidth}
 	\begin{center}
 		\includegraphics[width=0.4\textwidth]{images/hr20.jpg}
 	\end{center}
-	\caption{Honeywell HR-20 programmable thermostat. Image source: \url{https://piontecsmumble.files.wordpress.com/2013/02/hr20.jpg}}
+	\caption{Honeywell Rondostat HR-20 programmable thermostat. Image source: \url{https://piontecsmumble.files.wordpress.com/2013/02/hr20.jpg}}
 	\label{fig:honeywell_hr20}
 \end{figure}
 
-
-Custom firmware based on OpenHR20\footnote{\url{http://www.mikrocontroller.net/articles/Heizungssteuerung_mit_Honeywell_HR20}}
-
-Communicating via 6LoWPAN (layer 1-2) and CoAP ()
-
-Raspberry Pi 2
-
 \subsection{Design Goals}
 
-Simple, Reliable, Failure resistant
+Several design goals are determined in order to evaluate the system design and implementation.
 
-\subsection{Platform and Frameworks}
+\begin{itemize}
+	\item \emph{Performance} for low computational effort and power consumption on embedded systems.
+	\item \emph{Reliability} for a high probability to operate as expected.
+	\item \emph{Robustness} to let the system behave reasonably in presence of failures.
+	\item \emph{Interoperability} to cooperate with other distributed systems.
+\end{itemize}
+
+\subsection{Software Platform and Frameworks}
+
+This sub section lists and describes the software components used in the local deployment.
 
 tunslip6, Python, COAP, aiocoap, requests
 
@@ -63,7 +65,10 @@ Targets small low power devices and components that are heavily restricted in te
 
 \subsection{Implementation}
 
-The communication gateway collects, caches and processes the data read from the thermostats as also the control commands from the server. The local communication gateway works as a proxy server and enables the local deployment to operate independently from the connection to the remote server. This way the last downloaded heating schedule is kept and operated until the server connection is be reestablished. 
+The communication gateway collects, caches and processes the data read from the thermostats as also the control commands from the server. The local communication gateway works as a proxy server and enables the local deployment to operate independently from the connection to the remote server. This way the last downloaded heating schedule is kept and operated until the server connection is be reestablished.
 %Die grundlegende Einheit jedes Deployments ist die Residence. Eine Residence entspricht genau einem installiertem lokalen System, das die gelesenen Daten der Thermostate sowie Steuerbefehle des Servers sammelt, cached and ausführt. Das lokale Gerät arbeitet als ein lokales Gateway und sorgt dafür, dass der lokale Teil unabhängig von der Verbindung mit dem remote Server funktioniert.
 % Temperaturen und andere Meta-Daten von den angebundenen Thermostaten sammelt und cached.
+
+\todo[inline]{Overview picture the used local deployment: thermostat, radio module powerd by USB, Raspbeery with border router}
+Honeywell HR-20, Radio Module deRFmega128, USB powered
 
