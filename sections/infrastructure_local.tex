@@ -114,13 +114,20 @@ Each route corresponds to a CoAP URI. For example the URI \nolinkurl{coap://[fdf
 
 
 \subsubsection{Callable Scripts}
+\label{sec:local_infrastructure_implementation_scripts}
 
 The \highlight{smart-heating-local} repository contains two python scripts in the repository root: \highlight{thermostat\_sync.py} and \highlight{server\_sync.py}.
 Each script corresponds to one of the two tasks described in Section~\ref{sec:local_infrastructure_implementation}.
 The first scripts is responsible for fetching the temperature and other measurements from the thermostats to the local storage and applying the latest heating schedule.
-The latter script sends the measurements that where not yet delivered to the server and retrieves the most actual heating schedule. Both scripts are independent from each other and use only the local storage to share data.
+The latter script sends the measurements that where not yet delivered to the server and retrieves the most actual heating schedule. Both scripts are independent from each other and use only the local storage to share data as explained in Section~\ref{sec:local_infrastructure_implementation_storage} below.
 
-\subsubsection{Storage}
+\paragraph{Scheduling}
+
+The periodic execution of the both scripts described in Section~\ref{sec:local_infrastructure_implementation_scripts} is scheduled by the \emph{cron} service which is provided by the deployed operating system \emph{Raspbian} and also by most Linux operating systems.
+For defining the schedule the \highlight{crontab} program is used.
+
+\subsubsection{Local Storage}
+\label{sec:local_infrastructure_implementation_storage}
 
 We combine SQLite and dbm for the local storage.
 \emph{SQLite} is a lightweight relational database engine implementing most of the SQL standard and is often used on embedded systems.
@@ -129,11 +136,6 @@ The two databases are used for different purposes.
 The SQLite database persists historic measurement entries that should be held at least until they are transferred to the server.
 On the other side there is the dbm database holding configurations retrieved from the server.
 For example the thermostats associated with a local communication gateway and the current heating schedule are stored using dbm as it has no relational schema and is therefore much simpler to use and maintain.
-
-\paragraph{Scheduling}
-
-
-
 
 
 
