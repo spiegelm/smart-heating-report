@@ -136,8 +136,39 @@ The two databases are used for different purposes.
 The SQLite database persists historic measurement entries that should be held at least until they are transferred to the server.
 On the other side there is the dbm database holding configurations retrieved from the server.
 For example the thermostats associated with a local communication gateway and the current heating schedule are stored using dbm as it has no relational schema and is therefore much simpler to use and maintain.
+Both databases are stored in files within the \highlight{data/} directory.
 
+\subsubsection{Application}
 
+All Python files containing application logic are located in the directory \highlight{smart\_heating\_local}.
+%The directory is also a Python namespace.
+The important files within this directory are described in the following paragraphs.
+
+\todo[inline]{Cleanup the server files.}
+
+\paragraph{config.py} contains the \highlight{Config} class responsible for storing and retrieving the heating schedule as also the thermostat MAC addresses linked to this Raspberry Pi computer.
+The configuration is stored using the \highlight{shelve} Python package which itself builds on the npm database engine installed on the system.
+
+\paragraph{server.py} provides an interface to communicate with the Smart Heating Server.
+It contains the URI schema used by the server API.
+
+\paragraph{server\_models.py} contains the models used by the server.
+The models correspond to the resources provided the server API and structure them into classes.
+
+\paragraph{server\_controller.py} provides a layer of abstraction by packaging the most important functionality regarding server communication.
+The provided methods include downloading the latest heating schedule and the thermostat configuration linked to this local communication gateway and storing the data in the local storage using the \highlight{Config} class.
+
+\paragraph{local\_models.py} contains the models handling the measurements which are stored in the local database.
+
+\paragraph{thermostat\_controller.py} is responsible for querying the thermostats determined in the configuration and saving the data into the SQLite database.
+The controller also contains the logic regarding CoAP requests and the resource schema used by the digital thermostats.
+
+\paragraph{tests/} is the directory containing the tests that were created during implementation and assisted the application development.
+The tests can be started using the command \highlight{nosetests -a '!local'} from the repository root.
+These tests are also periodically executed and logged by the Continuous Integration service Travis CI\footnote{\url{https://travis-ci.org/}}.
+
+\paragraph{logging/} contains the central logging configuration used in the whole local project.
+Relevant information is logged to the file \highlight{logs/smart\_heating.log}.
 
 
 
