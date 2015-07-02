@@ -44,13 +44,17 @@ Second, resource collections contain representations of the same type of a resou
     \item The resource identifier is the first field in each resource representation.
     \item Within resource representations, collections are referenced per URL. Resources are referenced by including their representation.
     \label{enum:design_decision_resource_referencing}
-    \item URL fields are identified by the name \emph{url} or the suffix \emph{\_url}. Each resource representation contains its own URL in the field \emph{url}.
+    \item URL fields are identified by the name \highlight{url} or the suffix \highlight{\_url}. Each resource representation contains its own URL in the field \highlight{url}.
     \label{enum:design_decision_url_fields_prefix}
 \end{enumerate}
 
 See Listing~\ref{lst:room-json-example} for an example of a resource representation.
 
-\begin{snippet}[language=JavaScript,label={lst:room-json-example},caption={Example representation of the Room resource at \nolinkurl{http://server/residence/04891BB9232584/room/2/}. The \emph{url} field determines the URL of the represented resource. Within the \emph{residence} field the representation of the associated Residence resource is nested. The included Residence representation has its own \emph{url} field. Collections of the Residence's Rooms and Users are not nested but referenced via URL to limit the response size.}]
+\begin{snippet}[language=JavaScript,label={lst:room-json-example},caption={Example representation of the Room resource at \nolinkurl{http://server/residence/04891BB9232584/room/2/}.
+		The \highlight{url} field determines the URL of the represented resource.
+		Within the \highlight{residence} field the representation of the associated Residence resource is nested.
+		The included Residence representation has its own \highlight{url} field.
+		Collections of the Residence's Rooms and Users are not nested but referenced via URL to limit the response size.}]
 	{
 		"id": 2,
 		"url": "http://server/residence/04891BB9232584/room/2/",
@@ -87,17 +91,16 @@ See Figure~\ref{fig:server_infrastructure_browsable_api} for an example.
 
 The server implementation is built on the Django Framework following a variation
 %\footnote{For the interested reader: \url{https://docs.djangoproject.com/en/1.8/faq/general/\#django-appears-to-be-a-mvc-framework-but-you-call-the-controller-the-view-and-the-view-the-template-how-come-you-don-t-use-the-standard-names}}
-of the Model-View-Controller (MVC) architectural pattern\footnote{\url{https://en.wikipedia.org/wiki/Model-view-controller}}.
-We assume the user to be familiar with the common MVC pattern.
-\todo{Explain Djangos architecture?}
+of the Model-View-Controller (MVC) architectural pattern.
+We assume the user to be familiar with the common MVC pattern\footnote{We refer the interested reader to \url{https://en.wikipedia.org/wiki/Model-view-controller}}.
 
 \subsubsection{Models}
 \label{sec:server_infrastructure_models}
 
 Models structure the underlying data and provide operations for manipulating it.
 In Django models contain the business logic and are also responsible for validating user input and providing appropriate error messages.
-The \emph{smart\_heating.models} namespace contains all project models.
-Each model extends the abstract \emph{Model} class providing a general method used to get an objects representation for debugging purposes as well as the abstract \emph{get\_recursive\_pks} method.
+The \highlight{smart\_heating.models} namespace contains all project models.
+Each model extends the abstract \highlight{Model} class providing a general method used to get an objects representation for debugging purposes as well as the abstract \highlight{get\_recursive\_pks} method.
 The later method is used to generate hierarchical URLs and will be further described in Section~\ref{sec:server_infrastructure_serializers}
 % A high level description of all used models is given in Section~\ref{sec:system_overview_models}. 
 
@@ -132,11 +135,11 @@ This project uses JSON as the transmittable format.
 Each model has an associated serializer which determines which model fields should be included into the resource representation.
 Additional fields can be added to the representation or individual field representations can be overwritten to offer customized output.
 
-A commonly used customization is the replacement of the default \emph{HyperlinkedIdentityField} with \emph{HierarchicalHyperlinkedIdentityField}.
+A commonly used customization is the replacement of the default \highlight{HyperlinkedIdentityField} with \highlight{HierarchicalHyperlinkedIdentityField}.
 This custom serializer field generates URLs according to the hierarchical schema applied in this project.
 For example the URL for a room would be \nolinkurl{http://server.com/residence/041FB2B9232580/room/5/}.
 To assemble this URL not only the identifier of the room but also the identifier of its parent are required.
-The adapted field extends the default field and provides all identifiers of the hierarchy required to generate the URL by using the hierarchical base class \emph{smart\_heating.models.Model}.
+The adapted field extends the default field and provides all identifiers of the hierarchy required to generate the URL by using the hierarchical base class \highlight{smart\_heating.models.Model}.
 
 Nested resources are implemented using nested serializers.
 This way existing serializers can be reused to include their resource representation into another representation.
@@ -150,24 +153,24 @@ A view is a class which processes requests and returns a response.
 Django defines the view as the place that defines how but also which data is presented.
 This slightly differs from the traditional MVC architectural pattern but will not be explained in detail here\footnote{For more details we refer the reader to \url{https://docs.djangoproject.com/en/1.8/faq/general/\#django-appears-to-be-a-mvc-framework-but-you-call-the-controller-the-view-and-the-view-the-template-how-come-you-don-t-use-the-standard-names}}.
 Django includes generic view classes and mixins to provide common functionality and to facilitate code reuse.
-The Django REST Framework further abstracts views by supplying \emph{ViewSets}.
-These \emph{ViewSets} facilitate the unified handling of different HTTP methods within a single class for each public resource.
+The Django REST Framework further abstracts views by supplying \highlight{ViewSets}.
+These \highlight{ViewSets} facilitate the unified handling of different HTTP methods within a single class for each public resource.
 
-The used \emph{ModelViewSet} is such a class serving as a base for individual viewsets of a resource.
+The used \highlight{ModelViewSet} is such a class serving as a base for individual view sets of a resource.
 In the simplest case only requires the definition of a database query and an appropriate serializer class.
-The \emph{ResidenceViewSet} is a good example of a view class consisting of only 3 lines of code.
+The \highlight{ResidenceViewSet} is a good example of a view class consisting of only 3 lines of code.
 
 \paragraph{Pagination} is the practice of partitioning lists into smaller pieces.
 In this project pagination is used for expectedly large resource collections such as temperatures or meta entries.
-The applied pagination style depends on two parameters: \emph{limit} and \emph{offset}.
+The applied pagination style depends on two parameters: \highlight{limit} and \highlight{offset}.
 Limit determines the page size, i.e. the maximum number of items that are displayed simultaneously.
 Offset determines the starting item.\\
-The custom pagination class \emph{pagination.BasePagination} implements the design decision \ref{enum:design_decision_url_fields_prefix} to suffix resource field names representing links.
+The custom pagination class \highlight{pagination.BasePagination} implements the design decision \ref{enum:design_decision_url_fields_prefix} to suffix resource field names representing links.
 
 \subsubsection{Routes}
 \label{sec:server_infrastructure_routers}
 
-URLs are defined explicitly in the file \texttt{smart-heating/urls.py}.
+URLs are defined explicitly in the file \highlight{smart-heating/urls.py}.
 For each request the responsible view is determined by matching the requested URL against a list of regular expressions.
 This technique allows flexible configurations as required for the hierarchical URL scheme.
 
