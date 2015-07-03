@@ -37,13 +37,13 @@ The fundamental unit of each deployment is the residence. Each residence corresp
 Each residence can contain multiple users. A user is associated to exactly one residence and is identified by its smart phone serial number. This design decision simplifies the system design and especially the user authentication, but also prevents a user from using the same identity when accessing the system from multiple smart phones.
 
 \paragraph{Room and Thermostat}
-A residence is divided in rooms where each room can contain several thermostats. A room is a simple organization approach to group multiple thermostats into a single unit.
+A residence is divided into rooms where each room can contain several thermostats. A room is a simple organization approach to group multiple thermostats into a single unit.
 %Eine Residence ist unterteilt in Räume wobei jeder Raum mehrere Thermostat enthalten kann.
 
 \paragraph{Heating Table}
 
-Each thermostat has an associated temperature schedule called heating table. The heating table is responsible for the assignment of each day and time in a week to a target temperature. The heating table is a periodic schedule repeating each week. This design decision was chosen for infrastructure simplicity as well as to reduce usability complexity.
+Each thermostat has an associated temperature schedule called heating table. The heating table is responsible for mapping each day and time in a week to a target temperature. The heating table is a periodic schedule repeating each week. This design decision was chosen for infrastructure simplicity as well as to reduce usability complexity.
 
 \paragraph{Meta Entries}
 
-Persist time depending meta information about thermostats. A meta entry consists of the received signal strength, up-time, battery level and an associated timestamp. This data can be used to identify issues regarding the thermostat devices such as wireless connection problems or drained batteries.
+persist time depending meta information about thermostats. A meta entry consists of the received signal strength, up-time, battery level and an associated timestamp. This data can be used to identify issues regarding the digital thermostat devices such as wireless connection problems or drained batteries.
