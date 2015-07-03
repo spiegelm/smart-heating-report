@@ -7,6 +7,7 @@ The \emph{Smart Heating server} is the central storage and communication center 
 It persists data collected by the local deployment as also organizational information and heating schedules provided by the user via the Mobile App.
 
 \subsection{Design Goals}
+\label{sec:server_infrastructure_design_goals}
 
 \begin{itemize}
 \item \emph{Modularity} for independent, interchangeable components for improved maintainability.
@@ -16,6 +17,7 @@ It persists data collected by the local deployment as also organizational inform
 \end{itemize}
 
 \subsection{Platform and Frameworks}
+\label{sec:server_infrastructure_platform_and_frameworks}
 
 The server is implemented with Python, a general-purpose, multi-paradigm programming language\footnote{\url{https://www.python.org/}}.
 Python was chosen as it is suitable for developing a solid web server as well as the embedded hardware used for the communication gateway in the local deployment. See Section~\ref{sec:local_infrastructure} for more explanation.
@@ -23,6 +25,7 @@ Django is a popular, open-source web application framework\footnote{\url{https:/
 The Django REST Framework\footnote{\url{http://www.django-rest-framework.org/}} extends Django to support the design of RESTful\footnote{Note: REST is a programming paradigm where as RESTful is used to describe a web application implementing such a paradigm.} Web APIs.
 
 \subsection{RESTful API}
+\label{sec:server_infrastructure_restful_api}
 
 The Smart Heating Server provides a RESTful API to access a persistent storage providing the basic CRUD operations: Create, Read, Update and Delete.
 Representational State Transfer (REST) is a programming paradigm used for machine-to-machine communication in distributed systems.
@@ -92,6 +95,7 @@ See Figure~\ref{fig:server_infrastructure_browsable_api} for an example.
 
 
 \subsection{Program Architecture and Implementation}
+\label{sec:server_infrastructure_program_architecture_implementation}
 
 The server implementation is built on Django following a variation
 %\footnote{For the interested reader: \url{https://docs.djangoproject.com/en/1.8/faq/general/\#django-appears-to-be-a-mvc-framework-but-you-call-the-controller-the-view-and-the-view-the-template-how-come-you-don-t-use-the-standard-names}}
