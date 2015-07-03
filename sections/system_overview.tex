@@ -3,7 +3,7 @@
 \chapter{System Overview}
 \label{sec:system_overview}
 
-The system consists of two major parts: The Infrastructure side gathering and controlling temperature and organisational data, and the Mobile App side offering an user interface to view and control his temperature data and residential information. See Figure~\ref{fig:systemoverview} for a graphical overview.
+The system consists of two major parts: The infrastructure gathering and controlling temperature and organisational data, and the mobile applicaiton offering a user interface to view and control the temperature data and residential information. See Figure~\ref{fig:systemoverview} for a graphical overview.
 
 \begin{figure}[h]
 \begin{center}
@@ -13,37 +13,37 @@ The system consists of two major parts: The Infrastructure side gathering and co
 \label{fig:systemoverview}
 \end{figure}
 
-First, the Infrastructure part consists of a local residential part and a server part. Within the residence a small computer system is installed which serves as a communication gateway to the distributed low-power thermostats.
-Whereas the server is the central entity to collect and store the accumulated sensor data and organizational data. Both parts are explained in the following chapters \ref{sec:infrastructure}~\nameref{sec:infrastructure} and \ref{sec:mobile_app}~\nameref{sec:mobile_app}.
+The infrastructure consists of a local residential part and a server part. Within the residence a small computer system is installed which serves as a communication gateway to the distributed low-power thermostats.
+Whereas the server is the central entity to collect and store the accumulated sensor data and organizational data. Both parts are explained in Chapters \ref{sec:infrastructure}~\nameref{sec:infrastructure} and \ref{sec:mobile_app}~\nameref{sec:mobile_app}.
 
-Second, the Mobile App part \dots\todo[inline]{SAMUEL: Mobile App text}
+The mobile application part \dots\todo[inline]{SAMUEL: Mobile App text}
 
 \section{Architecture}
 
-The Smart Heating system is implemented using a server-client pattern. The Smart Heating Server provides an API which is consumed by the local communication gateway and the Mobile App.
+The Smart Heating system is implemented using a server-client pattern. The Smart Heating server provides an API which is used by the local communication gateway and the mobile application.
 
 
 \section{Models}
 \label{sec:system_overview_models}
 
-Throughout the project there is a shared system model describing the underlying entities. The system model depicts the physical objects and places in the deployment that are used for data collection or organizational purposes. The following paragraphs describe the applied models and their associated design decisions.
+Throughout the project there is a shared system model describing the underlying entities. The system model depicts the physical objects and places that are used for data collection or organizational purposes. The following paragraphs describe the applied models and their associated design decisions.
 
 \paragraph{Residence}
 
-The fundamental unit of each deployment is the residence. Each residence corresponds to a installed local communication gateway. Further details are described in Section~\ref{sec:local_infrastructure}
+The fundamental unit of each deployment is the residence. Each residence corresponds to an installed local communication gateway. Further details are described in Section~\ref{sec:local_infrastructure}
 
 \paragraph{User}
 
-Each residence can contain multiple users. A user is associated to exactly one residence and is identified by its smart phone serial number. This design decision simplifies the system design and especially the user authentication, but also prevents a user from using the same identity when accessing the system from multiple smart phones.
+Each residence can contain multiple users. A user is associated to exactly one residence and is identified by his smart phone serial number. This design decision simplifies the system design and especially the user authentication. It also prevents a user from using the same identity when accessing the system from multiple smart phones.
 
 \paragraph{Room and Thermostat}
-A residence is divided in rooms where each room can contain several thermostats. A room is a simple organization approach to group multiple thermostats into a single unit.
+A residence is divided in rooms where each room can contain several thermostats. A room is a simple organizational approach to group multiple thermostats into a single unit.
 %Eine Residence ist unterteilt in Räume wobei jeder Raum mehrere Thermostat enthalten kann.
 
 \paragraph{Heating Table}
 
-Each thermostat has an associated temperature schedule called heating table. The heating table is responsible for the assignment of each day and time in a week to a target temperature. The heating table is a periodic schedule repeating each week. This design decision was chosen for infrastructure simplicity as well as to reduce usability complexity.
+Each thermostat has an associated temperature schedule called heating table. The heating table is responsible for the assignment of each day and time in a week to a target temperature. The heating table is a periodic schedule repeating each week. This design decision was chosen for simplicity as well as to reduce complexity.
 
 \paragraph{Meta Entries}
 
-Persist time depending meta information about thermostats. A meta entry consists of the received signal strength, up-time, battery level and an associated timestamp. This data can be used to identify issues regarding the thermostat devices such as wireless connection problems or drained batteries.
+Meta entries persist time depending meta information about thermostats. A meta entry consists of the received signal strength, up-time, battery level and an associated timestamp. This data can be used to identify issues regarding the thermostat devices such as wireless connection problems or drained batteries.
