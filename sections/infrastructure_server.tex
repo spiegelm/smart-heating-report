@@ -166,7 +166,7 @@ Additional fields can be added to the representation or individual field represe
 A commonly used customization is the replacement of the default \highlight{Hyperlinked\allowbreak IdentityField} with \highlight{Hierarchical\allowbreak Hyperlinked\allowbreak IdentityField}.
 This custom serializer field generates URLs according to the hierarchical schema applied in this project.
 For example the URL for a room would be \nolinkurl{http://server.com/residence/041FB2B9232580/room/5/}.
-To assemble this URL not only the identifier of the room but also the identifier of its parent are required.
+To assemble this URL the identifier of the room and its parent are required.
 The adapted field extends the default field and provides all identifiers of the hierarchy required to generate the URL by using the hierarchical base class \highlight{smart\_heating.models.Model}.
 
 Nested resources are implemented using nested serializers.
@@ -190,7 +190,7 @@ class RoomSerializer(serializers.HyperlinkedModelSerializer):
 \label{sec:server_infrastructure_views}
 
 A view is a class which processes requests and returns a response.
-Django defines the view as the place that defines how but also which data is presented.
+Django defines the view as the place that not only defines how but also which data is presented.
 This slightly differs from the traditional MVC architectural pattern but will not be explained in detail here\footnote{For more details we refer the reader to \url{https://docs.djangoproject.com/en/1.8/faq/general/\#django-appears-to-be-a-mvc-framework-but-you-call-the-controller-the-view-and-the-view-the-template-how-come-you-don-t-use-the-standard-names}}.
 Django includes generic view classes and mixins to provide common functionality and to facilitate code reuse.
 The Django REST Framework further abstracts views by supplying \highlight{ViewSets}.
