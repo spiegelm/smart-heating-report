@@ -17,15 +17,22 @@ The infrastructure consists of the server part and the local part and both are e
 Section~\ref{sec:server_infrastructure_design_goals} lists the design goals defined for this project part.
 Each design goal will be evaluated in a separate paragraph below.
 
-\paragraph{Modularity and Extensibility}
-% Django facilitates 
+\paragraph{Modularity and Extensibility} Django emphasizes reusability of components.
+This solid background allows us to clearly separate different concerns to achieve modularity.
+Further the distinct components simplify application extensions by easily adding new resources, representations, views or URLs.
 
-\paragraph{Usability}
+% TODO add some examples?
+
+\paragraph{Usability} In order for a developer to be able to familiarize himself with a new API it is important to provide clear documentation and a platform to use the API.
+The browsable API as described in Section~\ref{sec:server_infrastructure_restful_api} provides both.
+It allows a developer to interactively explore the resource structure by navigating the hyperlinked URLs.
+The browsable API also provides easy interaction possibilities to create, read, update and delete resources.
+Further the API describes the allowed methods when requesting a particular resource.
+One of these methods named \emph{OPTIONS} additionally shows fields and their requirements.
 
 \paragraph{Testability}
 
 
-- Browsable API. Enables the developer to interactively discover the API structure and behavior
 
 Siehe auch Report Structure.
 
