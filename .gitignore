@@ -1,7 +1,7 @@
 thesis.pdf
 thesis.txss
 Smart_Heating_Report*
-
+*.DS_Store
 
 
 ## Core latex/pdflatex auxiliary files:
