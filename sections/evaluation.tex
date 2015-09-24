@@ -76,19 +76,35 @@ This design decision facilitates the recognition of hyperlinks which also allows
 \subsection{Local Deployment}
 
 
-\subsubsection{Desing Goals}
+\subsubsection{Design Goals}
 
 This section will evaluate each of the design goals defined in Section~\ref{sec:local_infrastructure_design_goals}.
 
+The local infrastructure sections is about the implementation part done on the residential communication gateway.
+Therefore the following paragraphs focus on the evaluation of software running on the Raspberry computer.
 
 \paragraph{Performance}
 % for low computational effort and power consumption on embedded systems.
+
+The system performance depends on two aspects.
+First, the software part.
+The programming language \emph{Python} is chosen at it is suitable for developing on embedded hardware with possibly long-running input/output operations.
+Another important component is the system design of independent scripts triggered by the scheduler \emph{cron}.
+Second, the embedded hardware part.
+The chosen hardware needs to be powerful enough to run the software implementation.
+
+For evaluation of the ratio between required software performance and provided hardware performance the CPU load is monitored.
+We use the \emph{sar} command from the \emph{apt-get} package \emph{sysstat} to analyze the average CPU utilization.
+Over a period of seven days of regular system runtime the average CPU load was 0.28 percent.
+This indicates that the hardware is powerful enough to run the designed software implementation.
+
 
 \paragraph{Reliability}
 % for a high probability that the system operates as expected
 
 Raspi: 27.7 10:30 - 15:45 ausgesteckt
 27.7 21:45 - 05:30 development
+
 
 \paragraph{Robustness}
 % to let the system behave reasonably in presence of failures, escpecially connection problems.
