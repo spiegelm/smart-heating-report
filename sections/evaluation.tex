@@ -99,6 +99,25 @@ Over a period of seven days of regular system runtime the average CPU load was 0
 This indicates that the hardware is powerful enough to run the designed software implementation.
 
 
+\paragraph{Robustness}
+% to let the system behave reasonably in presence of failures, especially connection problems.
+
+We defined robustness to be the ability of the system to behave reasonably in the presence of failures, especially connection problems.
+The local communication gateway is designed as two independent tasks.
+The first task is the retrieval and storage of the temperature data and the application of the defined schedule.
+The second task is the synchronization of the local data storage with the remote web server.
+This design splits the "Aufgabenbereich" of the local communication system into two simpler separated tasks with a clearly defined interface, the local data storage.
+In the presence of a failure only one of the two tasks is affected whereas the other task is still able continue its purpose.
+
+For example in the event of a temporary internet connection disruption the system will keep operating the last downloaded heating schedule and store the temperature history.
+After the disruption the local data storage is synchronized and the system continues to operate on the most actual settings.
+
+Another failure scenario would be the temporary disconnection of a wireless thermostat.
+In such a case the non-affected thermostats are still functional and the heating schedule of all thermostats is kept synchronized.
+As soon as the system reestablishes the connection to the affected thermostat the system continues to work as planned.
+In the meantime neither the properly operating thermostats nor the synchronization of all thermostats' heating schedules is impaired.
+
+
 \paragraph{Reliability}
 % for a high probability that the system operates as expected
 
@@ -109,14 +128,14 @@ Instead we focus on the communication between the wireless thermostats, the loca
 
 The main data sources for our analysis are the generated log files and databases.
 
-On the local communication gateway there are data sources: the log files written by two scripts and second, the local database used to cache the temperature readings and other meta information.
+On the local communication gateway there are data sources: the log files written by two scripts and the local storage used to cache the temperature readings and other meta information.
 Each log entry has a severity level indicating how important a log event is in terms of system functionality and reliability.
 We analyze these severity levels and their according log messages to show the intended system behavior as well as to identify potential problems.
 
 \todo[inline]{Analysis of the local log files}
 
 
-\todo[inline]{Analysis of the local database}
+\todo[inline]{Analysis of the local data storage}
 
 The evaluation of the remote web server is similar to the analysis of the local log files and database.
 
@@ -132,9 +151,6 @@ The evaluation of the remote web server is similar to the analysis of the local 
 %Raspi: 27.7 10:30 - 15:45 ausgesteckt
 %27.7 21:45 - 05:30 development
 
-
-\paragraph{Robustness}
-% to let the system behave reasonably in presence of failures, escpecially connection problems.
 
 
 
