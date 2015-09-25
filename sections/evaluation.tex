@@ -88,7 +88,7 @@ Therefore the following paragraphs focus on the evaluation of software running o
 
 The system performance depends on two aspects.
 First, the software part.
-The programming language \emph{Python} is chosen at it is suitable for developing on embedded hardware with possibly long-running input/output operations.
+The programming language \emph{Python} was chosen at it is suitable for developing on embedded hardware with possibly long-running input/output operations.
 Another important component is the system design of independent scripts triggered by the scheduler \emph{cron}.
 Second, the embedded hardware part.
 The chosen hardware needs to be powerful enough to run the software implementation.
@@ -102,12 +102,41 @@ This indicates that the hardware is powerful enough to run the designed software
 \paragraph{Reliability}
 % for a high probability that the system operates as expected
 
-Raspi: 27.7 10:30 - 15:45 ausgesteckt
-27.7 21:45 - 05:30 development
+In order to check the reliability of the system in a real world scenario the system has been deployed in a residential home.
+Previous work in this area compared the defined room temperatures with the actual room temperatures to conclude on the proper work of a heating system\cite{eigenmann2012opportunisticSensing}.
+Due to the season and the according temperatures this evaluation is not possible for this project.
+Instead we focus on the communication between the wireless thermostats, the local communication gateway and the remote server.
+
+The main data sources for our analysis are the generated log files and databases.
+
+On the local communication gateway there are data sources: the log files written by two scripts and second, the local database used to cache the temperature readings and other meta information.
+Each log entry has a severity level indicating how important a log event is in terms of system functionality and reliability.
+We analyze these severity levels and their according log messages to show the intended system behavior as well as to identify potential problems.
+
+\todo[inline]{Analysis of the local log files}
+
+
+\todo[inline]{Analysis of the local database}
+
+The evaluation of the remote web server is similar to the analysis of the local log files and database.
+
+\todo[inline]{Analysis of the server log files}
+
+
+\todo[inline]{Analysis of the server database}
+
+
+
+
+
+%Raspi: 27.7 10:30 - 15:45 ausgesteckt
+%27.7 21:45 - 05:30 development
 
 
 \paragraph{Robustness}
 % to let the system behave reasonably in presence of failures, escpecially connection problems.
+
+
 
 \paragraph{Interoperability}
 % to cooperate with other distributed systems
