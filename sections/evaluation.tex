@@ -182,6 +182,11 @@ These are the same entries as on the local communication gateway and shows that 
 
 \paragraph{Analysis of the server log files}
 
+The server logs all received requests into a log file.
+Each log entry contains the requested URL, the HTTP method and the HTTP response code.
+We analyze all requests to any temperature resource.
+In the chosen time span here were 2969 POST requests each adding a single temperature measurement.
+This matches the number of temperature entries in the database.
 
 
 
