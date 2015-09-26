@@ -76,14 +76,14 @@ This design decision facilitates the recognition of hyperlinks which also allows
 \subsection{Local Deployment}
 
 
-\subsubsection{Design Goals}
+%\subsubsection{Design Goals}
 
-This section will evaluate each of the design goals defined in Section~\ref{sec:local_infrastructure_design_goals}.
+The following section will evaluate each of the design goals defined in Section~\ref{sec:local_infrastructure_design_goals}.
 
-The local infrastructure sections is about the implementation part done on the residential communication gateway.
+The local infrastructure section is about the implementation part done on the residential communication gateway.
 Therefore the following paragraphs focus on the evaluation of software running on the Raspberry computer.
 
-\paragraph{Performance}
+\subsubsection{Performance}
 % for low computational effort and power consumption on embedded systems.
 
 The system performance depends on two aspects.
@@ -99,7 +99,7 @@ Over a period of seven days of regular system runtime the average CPU load was 0
 This indicates that the hardware is powerful enough to run the designed software implementation.
 
 
-\paragraph{Robustness}
+\subsubsection{Robustness}
 % to let the system behave reasonably in presence of failures, especially connection problems.
 
 We defined robustness to be the ability of the system to behave reasonably in the presence of failures, especially connection problems.
@@ -118,7 +118,7 @@ As soon as the system reestablishes the connection to the affected thermostat th
 In the meantime neither the properly operating thermostats nor the synchronization of all thermostats' heating schedules is impaired.
 
 
-\paragraph{Reliability}
+\subsubsection{Reliability}
 % for a high probability that the system operates as expected
 
 In order to check the reliability of the system in a real world scenario the system has been deployed in a residential home.
@@ -126,11 +126,12 @@ Previous work in this area compared the defined room temperatures with the actua
 Due to the season and the according temperatures this evaluation is not possible for this project.
 Instead we focus on the communication between the wireless thermostats, the local communication gateway and the remote server.
 
-The main data sources for our analysis are the generated log files and databases on the local communication gateway and the server infrastructure.
+The main data sources for our analysis are the generated log files and databases on the local communication gateway.
 
 On the local communication gateway there are data sources: the log files written by two scripts and the local storage used to cache the temperature readings and other meta information.
+If not stated otherwise, the data from the time span of August 2015 is used for the following evaluations.
 
-\todo[inline]{Analysis of the local data storage}
+\paragraph{Analysis of the local data storage}
 
 % 2969 Rows returned from: SELECT * FROM heating_temperature
 % WHERE timestamp BETWEEN '2015-08-01' AND '2015-09-01' (took 12ms)
@@ -138,7 +139,7 @@ On the local communication gateway there are data sources: the log files written
 % SELECT strftime('%d', timestamp), COUNT(*), * FROM heating_temperature
 % WHERE timestamp BETWEEN '2015-08-01' AND '2015-09-01'
 % GROUP BY strftime('%d', timestamp)
-For the analysis of the local data storage we chose the time span of August 2015.
+We start with the analysis of the local data storage.
 The local communication gateway queries the thermostats every 15 minutes, i.e. 96 times a day.
 The maximal number of temperature measurements and meta entries would therefore be 2976 for the whole month of August.
 The local data storage contains 2969 of these recorded temperature measurements in this date range, resulting in a coverage of 99.76 percent.
@@ -158,26 +159,28 @@ See Table~\ref{table:evaluation_local_database_coverage} for the full coverage d
 	\end{center}
 \end{table}
 
-\todo[inline]{Analysis of the local log files}
+\paragraph{Analysis of the local log files}
 
 Each log entry has a severity level indicating how important a log event is in terms of system functionality and reliability.
 We analyze these severity levels and their according log messages to show the intended system behavior as well as to identify potential problems.
 
 
 
-The evaluation of the remote web server is similar to the analysis of the local log files and database.
+\todo[inline]{move the server part out of the local part}
 
-\todo[inline]{Analysis of the server log files}
 
-\todo[inline]{Analysis of the server database}
+The evaluation of the remote web server is similar to the analysis of the local database and log files.
+
+\paragraph{Analysis of the server database}
 
 
 % 2969 Rows returned from: SELECT * FROM smart_heating_temperature WHERE thermostat_id = "04B753B9212580"
 % AND datetime BETWEEN '2015-08-01' AND '2015-09-01' (took 23ms)
 The analysis of the server database is similar to the analysis of the local database.
-In the time span of August 2015 there are 2969 temperature entries out of 2976 possible measurements.
+In the evaluated time span there are 2969 temperature entries out of 2976 possible measurements.
 These are the same entries as on the local communication gateway and shows that all measurements were successfully transmitted to the server.
 
+\paragraph{Analysis of the server log files}
 
 
 
