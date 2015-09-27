@@ -38,7 +38,7 @@ One of these methods named \emph{OPTIONS} additionally shows fields and their re
 The modular program structure and the chosen Django framework support the creation and automatized execution of software tests.
 These automatized tests are continuously executed on a hosted service and show that the tests run regularly and successfully.
 
-\todo[inline]{Siehe auch Report Structure.}
+\todo[inline]{Siehe auch Report Structure. ???}
 
 
 \subsubsection{Design Decisions}
@@ -79,6 +79,7 @@ This design decision facilitates the recognition of hyperlinks which also allows
 %\subsubsection{Design Goals}
 
 The following section will evaluate each of the design goals defined in Section~\ref{sec:local_infrastructure_design_goals}.
+Please note that the reliability will be evaluated in its own Section~\ref{sec:evaluation_reliability}.
 
 The local infrastructure section is about the implementation part done on the residential communication gateway.
 Therefore the following paragraphs focus on the evaluation of software running on the Raspberry computer.
@@ -118,77 +119,6 @@ As soon as the system reestablishes the connection to the affected thermostat th
 In the meantime neither the properly operating thermostats nor the synchronization of all thermostats' heating schedules is impaired.
 
 
-\subsubsection{Reliability}
-% for a high probability that the system operates as expected
-
-In order to check the reliability of the system in a real world scenario the system has been deployed in a residential home.
-Previous work in this area compared the defined room temperatures with the actual room temperatures to conclude on the proper work of a heating system\cite{eigenmann2012opportunisticSensing}.
-Due to the season and the according temperatures this evaluation is not possible for this project.
-Instead we focus on the communication between the wireless thermostats, the local communication gateway and the remote server.
-
-The main data sources for our analysis are the generated log files and databases on the local communication gateway.
-
-On the local communication gateway there are data sources: the log files written by two scripts and the local storage used to cache the temperature readings and other meta information.
-If not stated otherwise, the data from the time span of August 2015 is used for the following evaluations.
-
-\paragraph{Analysis of the local data storage}
-
-% 2969 Rows returned from: SELECT * FROM heating_temperature
-% WHERE timestamp BETWEEN '2015-08-01' AND '2015-09-01' (took 12ms)
-
-% SELECT strftime('%d', timestamp), COUNT(*), * FROM heating_temperature
-% WHERE timestamp BETWEEN '2015-08-01' AND '2015-09-01'
-% GROUP BY strftime('%d', timestamp)
-We start with the analysis of the local data storage.
-The local communication gateway queries the thermostats every 15 minutes, i.e. 96 times a day.
-The maximal number of temperature measurements and meta entries would therefore be 2976 for the whole month of August.
-The local data storage contains 2969 of these recorded temperature measurements in this date range, resulting in a coverage of 99.76 percent.
-See Table~\ref{table:evaluation_local_database_coverage} for the full coverage data.
-
-\begin{table}
-	\begin{center}
-		\begin{tabular}{ l | r r r }
-			Local Database entries & Maximal count & Actual count & Coverage \\
-			\hline
-			Temperature					& 2976 & 2969 & 99.76 \% \\
-%			Server temperature entries	& 2976 & 2969 & 99.76 \%
-			Meta information			& 2976 & 2970 & 99.80 \% \\
-		\end{tabular}
-		\caption{Retrieved temperature measurements and meta entries in a real world deployment in August 2015.}
-		\label{table:evaluation_local_database_coverage}
-	\end{center}
-\end{table}
-
-\paragraph{Analysis of the local log files}
-
-Each log entry has a severity level indicating how important a log event is in terms of system functionality and reliability.
-We analyze these severity levels and their according log messages to show the intended system behavior as well as to identify potential problems.
-
-\todo[inline]{analyze local log files}
-
-
-\todo[inline]{move the server part out of the local part}
-
-
-The evaluation of the remote web server is similar to the analysis of the local database and log files.
-
-\paragraph{Analysis of the server database}
-
-
-% 2969 Rows returned from: SELECT * FROM smart_heating_temperature WHERE thermostat_id = "04B753B9212580"
-% AND datetime BETWEEN '2015-08-01' AND '2015-09-01' (took 23ms)
-The analysis of the server database is similar to the analysis of the local database.
-In the evaluated time span there are 2969 temperature entries out of 2976 possible measurements.
-These are the same entries as on the local communication gateway and shows that all measurements were successfully transmitted to the server.
-
-\paragraph{Analysis of the server log files}
-
-The server logs all received requests into a log file.
-Each log entry contains the requested URL, the HTTP method and the HTTP response code.
-We analyze all requests to any temperature resource.
-In the chosen time span here were 2969 POST requests each adding a single temperature measurement.
-This matches the number of temperature entries in the database.
-
 
 
 
@@ -202,9 +132,76 @@ The whole infrastructure is designed to communicate according to recognized open
 This way the developed infrastructure is able to cooperate with other distributed system via the defined interfaces.
 
 
+\subsection{Field test}
+\label{sec:evaluation_reliability}
+% for a high probability that the system operates as expected
+
+In order to check the reliability of the infrastructure in a real world scenario the system has been deployed in a residential home.
+Previous work in this area compared the defined room temperatures with the actual room temperatures to conclude on the proper work of a heating system\cite{eigenmann2012opportunisticSensing}.
+Due to the summer season and the according temperatures this evaluation is not possible for this project.
+Instead we focus on the communication between the wireless thermostats, the local communication gateway and the remote server to evaluate the reliability.
+The main data sources for our analysis are the generated log files and databases on the local communication gateway and the remote web server.
+
+On the local communication gateway there are data sources: the written log files and the local storage used to cache the temperature readings and other meta data.
+We present our analysis of two different time spans.
+
+\subsubsection{Long-term evaluation}
+
+In the following evaluations we analyzed the data from the time span of August 2015.
+
+\paragraph{Local data storage analysis}
+
+% 2969 Rows returned from: SELECT * FROM heating_temperature
+% WHERE timestamp BETWEEN '2015-08-01' AND '2015-09-01' (took 12ms)
+
+% SELECT strftime('%d', timestamp), COUNT(*), * FROM heating_temperature
+% WHERE timestamp BETWEEN '2015-08-01' AND '2015-09-01'
+% GROUP BY strftime('%d', timestamp)
+We start with the analysis of the local data storage.
+The local communication gateway queries the thermostats every 15 minutes, i.e. 96 times a day.
+The maximal number of temperature measurements and meta entries would therefore be 2976 for the whole month of August.
+The local data storage contains 2969 of these recorded temperature measurements in this date range, resulting in a coverage of 99.76 percent.
+The coverage of the meta data is even slightly higher.
+Please see Table~\ref{table:evaluation_local_database_coverage} for the full coverage data.
+
+\begin{table}
+	\begin{center}
+		\begin{tabular}{ l | r r r }
+			Local Database entries & Maximal count & Actual count & Coverage \\
+			\hline
+			Temperature			& 2976 & 2969 & 99.76 \% \\
+			%			Server temperature entries	& 2976 & 2969 & 99.76 \%
+			Meta data			& 2976 & 2970 & 99.80 \% \\
+		\end{tabular}
+		\caption{Retrieved temperature measurements and meta entries in a real world deployment in August 2015.}
+		\label{table:evaluation_local_database_coverage}
+	\end{center}
+\end{table}
+
+\paragraph{Server database analysis}
 
 
+% 2969 Rows returned from: SELECT * FROM smart_heating_temperature WHERE thermostat_id = "04B753B9212580"
+% AND datetime BETWEEN '2015-08-01' AND '2015-09-01' (took 23ms)
+The analysis of the server database is similar to the analysis of the local database.
+In the evaluated time span there are 2969 temperature entries out of 2976 possible measurements.
+These are the same entries as on the local communication gateway and shows that all measurements were successfully transmitted to the server.
 
+\paragraph{Local log file analysis}
+
+Each log entry has a severity level indicating how important a log event is in terms of system functionality and reliability.
+We analyze these severity levels and their according log messages to show the system behavior as well as to identify potential problems.
+
+\todo[inline]{analyze local log files}
+
+
+\paragraph{Server log file analysis}
+
+The server logs all received requests into a log file.
+Each log entry contains the requested URL, the HTTP method and the HTTP response code.
+We analyze all requests to any temperature resource.
+In the chosen time span here were 2969 POST requests each adding a single temperature measurement.
+This matches the number of temperature entries in the database.
 
 
 
