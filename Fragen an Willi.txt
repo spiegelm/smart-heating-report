@@ -1,4 +1,0 @@
-Fragen an Willi
-
-- Smart Heating Server oder Smart Heating server?
-- consume an API or use an API?
