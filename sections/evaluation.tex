@@ -178,30 +178,64 @@ Please see Table~\ref{table:evaluation_local_database_coverage} for the full cov
 	\end{center}
 \end{table}
 
-\paragraph{Server database analysis}
+\paragraph{Local log file analysis}
+
+Each log entry has a severity level indicating the impact of a logged event on system stability and functionality.
+We evaluated these severity levels and their according log messages to analyze the system behavior as well as to identify potential problems.
+
+There are almost a hundred thousand log entries which reveal a few interesting facts.
+The rate of successful CoAP requests varies highly depending on the queried resource.
+See the Table~\ref{table:evaluation_coap_requests} for the full data.
+The requests to the control mode and target temperature resources failed much more often than queries to other resources.
+Especially the PUT requests fail in more than 72 percent.
+Therefore the correct functioning could not be guaranteed.
+We suspect the low power devices to may be overwhelmed by too many requests per time.
+An increase of time interval between the requests seemed to improved the request success rate and is evaluated in the next section.
+
+\begin{table}
+	\begin{center}
+		\begin{tabular}{ l | r r r r }
+			CoAP request	& Total	& Success	& Timeouts	& Success rate \\
+			\hline
+			GET /debug/heartbeat	& 2975	& 2970	& 5	& 99.8 \% \\
+			GET /sensors/temperature	& 2975	& 2969	& 6	& 99.8 \% \\
+			GET /set/mode	& 2975	& 2970	& 5	& 99.8 \% \\
+			GET /set/target	& 2975	& 1216	& 1758	& 40.9 \% \\
+			PUT /set/mode	& 803	& 181	& 622	& 22.5 \% \\
+			PUT /set/target	& 2698	& 741	& 1957	& 27.5 \% \\
+		\end{tabular}
+		\caption{Analyzed CoAP requests in August 2015.}
+		\label{table:evaluation_coap_requests}
+	\end{center}
+\end{table}
+
+Another interesting fact is the handling of temporary losses of internet connection.
+Due to the replacement of the internet modem the residence was offline for about 18 hours.
+During this time the local gateway kept communicating with the wireless thermostats to operate the schedule and log the measured temperatures.
+After reestablishing the internet access all temperature measurements that have not yet been uploaded were pushed to the web server.
+It took about 56 seconds to upload the missing 192 measurements.
+
+\paragraph{Server analysis}
+
+
+The server logs all received HTTP requests into a log file.
+Each log entry contains the requested URL, the HTTP method and the HTTP response code.
+In the chosen time span there were 2969 successful POST requests each adding a single temperature measurement.
+This matches the number of temperature entries in the storage on the local communication gateway and in the server database and shows that all temperature measurements were successfully transmitted to and stored on the server.
 
 
 % 2969 Rows returned from: SELECT * FROM smart_heating_temperature WHERE thermostat_id = "04B753B9212580"
 % AND datetime BETWEEN '2015-08-01' AND '2015-09-01' (took 23ms)
-The analysis of the server database is similar to the analysis of the local database.
-In the evaluated time span there are 2969 temperature entries out of 2976 possible measurements.
-These are the same entries as on the local communication gateway and shows that all measurements were successfully transmitted to the server.
 
-\paragraph{Local log file analysis}
+%The analysis of the server database is similar to the analysis of the local database.
+%In the evaluated time span there are 2969 temperature entries out of 2976 possible measurements.
+%These are the same entries as on the local communication gateway.
 
-Each log entry has a severity level indicating how important a log event is in terms of system functionality and reliability.
-We analyze these severity levels and their according log messages to show the system behavior as well as to identify potential problems.
+\subsubsection{Short-term evaluation}
 
-\todo[inline]{analyze local log files}
+After the long-term field test a smaller test was set up to evaluate the effects of further improvements.
 
-
-\paragraph{Server log file analysis}
-
-The server logs all received requests into a log file.
-Each log entry contains the requested URL, the HTTP method and the HTTP response code.
-We analyze all requests to any temperature resource.
-In the chosen time span here were 2969 POST requests each adding a single temperature measurement.
-This matches the number of temperature entries in the database.
+\todo[inline]{TODO: weitere evaluation}
 
 
 
