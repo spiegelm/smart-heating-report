@@ -1,23 +1,247 @@
+%!TEX root = ../thesis.tex
+
 \chapter{Evaluation}
 \label{sec:evaluation}
 
-Evaluate your algorithm.
+In this section we will evaluate our set design goals and discuss our implementation in detail.
+Further we will analyze our design decisions.
+Where applicable the functional and non-functional requirements will be validated.
 
-Raspi: 27.7 10:30 - 15:45 ausgesteckt
-27.7 21:45 - 05:30 development
+\section{Infrastructure}
 
-\section{Server}
+This section follows the same structure as used in the previous Chapter~\ref{sec:infrastructure}.
+The infrastructure consists of the server part and the local part.
+Both are evaluated in the following sections.
+In the end the deployed infrastructure is evaluated in a field test.
 
-- Browsable API. Enables the developer to interactively discover the API structure and behavior
+\subsection{Server Infrastructure}
 
-Siehe auch Report Structure.
+\subsubsection{Design Goals}
+
+Section~\ref{sec:server_infrastructure_design_goals} lists the design goals defined for this project part.
+Each design goal will be evaluated in a separate paragraph below.
+
+\paragraph{Modularity and Extensibility} Django emphasizes reusability of components.
+This solid background allows us to clearly separate different concerns to achieve modularity.
+Further the distinct components simplify application extensions by easily adding new resources, representations, views or URLs.
+
+% TODO add some examples?
+
+\paragraph{Usability} In order for a developer to be able to familiarize himself with a new API it is important to provide clear documentation and a platform to use the API.
+The browsable API as described in Section~\ref{sec:server_infrastructure_restful_api} provides both.
+It allows a developer to interactively explore the resource structure by navigating via the displayed URLs.
+The browsable API also provides easy interaction possibilities to create, read, update and delete resources.
+Further the API describes the supported access methods when requesting a particular resource.
+One of these HTTP methods named \emph{OPTIONS} shows the accessible fields, their types and other useful meta information for interacting with the API.
 
 
-\paragraph{Design Decisions}
 
-Django is designed for flat URLs but is still flexible enough to support the design decision of nested resources represented within the URL.
+\paragraph{Testability}
 
-\section{Local}
+The modular program structure and the chosen Django framework support the creation and automatized execution of software tests.
+These automatized tests are continuously executed on a hosted service and show that the tests run regularly and successfully.
+
+
+\subsubsection{Design Decisions}
+
+During the system implementation a few design decisions were chosen and will be evaluated in the following paragraphs.
+
+\paragraph{Nested URL schema}
+
+The model hierarchy is represented using a nested URL schema.
+This schema suits the model structure in tree form and induces good readable URLs.
+Django is designed for flat URLs but is still flexible enough to support the design decision of implementing a nested URL schema for resources access.
+
+\paragraph{Resource identifier as the first field}
+
+Within the resource representation the resource identifier is always the first field.
+This allows to easily recognize the identifier within resource representations and especially within nested resource representation.
+
+\paragraph{Resource referencing}
+
+Resources are referenced by including their representation.
+This design decision improves the usability of the API, as related resources are shown in their full representation and also allows to reduce the number of required requests.
+In contrast collections are referenced via their URL.
+This is necessary to limit the representation size and avoid infinite recursions.
+For example in a parent-child relationship the child representation contains the representation of its parent.
+The parent representation itself contains the collection representation of its children.
+Therefore the collection representation cannot contain the full representations of its resources.
+
+\paragraph{Identification of URL fields}
+
+Fields representing a URL are identified by the name \highlight{url} or the suffix \highlight{\_url}.
+This design decision facilitates the recognition of hyperlinks which also allows an automatized navigation through the API.
+
+
+
+\subsection{Local Deployment}
+
+
+%\subsubsection{Design Goals}
+
+The following section will evaluate each of the design goals defined in Section~\ref{sec:local_infrastructure_design_goals}.
+Please note that the reliability is evaluated separately in a field test described in Section~\ref{sec:evaluation_field_test}.
+
+The local infrastructure section is about the implementation part done on the residential communication gateway.
+Therefore the following paragraphs focus on the evaluation of software running on the Raspberry computer.
+
+\subsubsection{Performance}
+% for low computational effort and power consumption on embedded systems.
+
+The system performance depends on two aspects.
+First, the software part.
+The programming language \emph{Python} was chosen at it is suitable for developing on embedded hardware with possibly long-running input/output operations.
+Another important component is the system design of independent scripts triggered by a scheduler. % \emph{cron}.
+Second, the embedded hardware part.
+The chosen hardware needs to be powerful enough to run the developed software implementation.
+
+For evaluation of the ratio between required software performance and provided hardware performance the CPU load is monitored.
+We use the \emph{sar} command from the \emph{apt-get} package \emph{sysstat} to analyze the average CPU utilization.
+Over a period of seven days of regular system runtime the average CPU load was 0.28 percent.
+This indicates that the hardware is powerful enough to run the designed software implementation.
+
+
+\subsubsection{Robustness}
+% to let the system behave reasonably in presence of failures, especially connection problems.
+
+We defined robustness to be the ability of the system to behave reasonably in the presence of failures, especially connection problems.
+The local communication gateway is designed as two independent tasks.
+The first task is the retrieval and storage of the temperature data and the application of the defined schedule.
+The second task is the synchronization of the local data storage with the remote web server.
+This design splits the responsibility of the local communication system into two simpler separated tasks with a clearly defined interface, the local data storage.
+In the presence of a failure only one of the two tasks is affected whereas the other task is still able fulfill its purpose.
+
+For example in the event of a temporary internet connection disruption the system will keep operating the last downloaded heating schedule and store the temperature history.
+After the disruption the local data storage is synchronized and the system continues to operate on the most actual settings.
+
+Another failure scenario would be the temporary disconnection of a wireless thermostat.
+In such a case the non-affected thermostats are still functional and the heating schedule of all thermostats is kept in sync with the web server.
+As soon as the system reestablishes the connection to the affected thermostat the system continues to work as planned.
+In the meantime neither the properly operating thermostats nor the synchronization of all thermostats' heating schedules is impaired.
+
+
+
+
+
+
+
+\subsubsection{Interoperability}
+% to cooperate with other distributed systems
+
+We define interoperability as the system's ability to cooperate with other distributed systems.
+The whole infrastructure is designed to communicate according to recognized open standards and architectural styles such as \emph{Constrained Application Protocol (CoAP)}, \emph{Hypertext Transfer Protocol (HTTP)}, \emph{Internet Protocol (IP)}, \emph{JavaScript Object Notation (JSON)} and \emph{Representational State Transfer (REST)}.
+This way the developed infrastructure is able to cooperate with other distributed system via the defined interfaces.
+
+
+\subsection{Field test}
+\label{sec:evaluation_field_test}
+% for a high probability that the system operates as expected
+
+In order to check the reliability of the infrastructure in a real world scenario the system has been deployed in a residential home.
+Previous work in this area compared the defined room temperatures with the actual room temperatures to conclude on the proper work of a heating system\cite{eigenmann2012opportunisticSensing}.
+Due to the summer season and the according temperatures this evaluation is not possible for this project.
+Instead we focus on the communication between the wireless thermostats, the local communication gateway and the remote server to evaluate the reliability.
+The main data sources for our analysis are the data storages on the local communication gateway, the database on the remote web server and the generated log files on both parts of the infrastructure.
+We present our analysis of two different time spans.
+
+\subsubsection{Long-term evaluation}
+
+In the following evaluations we analyzed the data from the time span of August 2015.
+
+\paragraph{Local data storage analysis}
+
+% 2969 Rows returned from: SELECT * FROM heating_temperature
+% WHERE timestamp BETWEEN '2015-08-01' AND '2015-09-01' (took 12ms)
+
+% SELECT strftime('%d', timestamp), COUNT(*), * FROM heating_temperature
+% WHERE timestamp BETWEEN '2015-08-01' AND '2015-09-01'
+% GROUP BY strftime('%d', timestamp)
+We start with the analysis of the local data storage.
+It is used to cache the temperature readings and other meta data read from the thermostats before it is send to the remote server.
+The local communication gateway queries the thermostats every 15 minutes, i.e. 96 times a day.
+The maximal number of temperature measurements and meta entries would therefore be 2976 for the whole month of August.
+The local data storage contains 2969 of these recorded temperature measurements in this date range, resulting in a coverage of 99.76 percent.
+The coverage of the meta data is even slightly higher.
+Please see Table~\ref{table:evaluation_local_database_coverage} for the full coverage data.
+
+\begin{table}
+	\begin{center}
+		\begin{tabular}{ l | r r r }
+			Local Database entries & Maximal count & Actual count & Coverage \\
+			\hline
+			Temperature			& 2976 & 2969 & 99.76 \% \\
+			%			Server temperature entries	& 2976 & 2969 & 99.76 \%
+			Meta data			& 2976 & 2970 & 99.80 \% \\
+		\end{tabular}
+		\caption{Retrieved temperature measurements and meta entries in a real world deployment in August 2015.}
+		\label{table:evaluation_local_database_coverage}
+	\end{center}
+\end{table}
+
+\paragraph{Local log file analysis}
+
+Each log entry has a severity level indicating the impact of a logged event on system stability and functionality.
+We evaluated these severity levels and their according log messages to analyze the system behavior as well as to identify potential problems.
+
+There are almost a hundred thousand log entries which reveal a few interesting facts.
+The rate of successful CoAP requests varies highly depending on the queried resource.
+See the Table~\ref{table:evaluation_coap_requests} for the full data.
+The requests to the operation mode and target temperature resources failed much more often than queries to other resources.
+Especially the PUT requests fail in more than 72 percent.
+Therefore the correct functioning could not be guaranteed in this time range.
+We suspect the low power devices to may be overwhelmed by too many closely following requests.
+An increase of time interval between the requests seemed to improved the request success rate and is evaluated in the next section.
+
+\begin{table}
+	\begin{center}
+		\begin{tabular}{ l | r r r r }
+			CoAP request	& Total	& Success	& Timeouts	& Success rate \\
+			\hline
+			GET /debug/heartbeat	& 2975	& 2970	& 5	& 99.8 \% \\
+			GET /sensors/temperature	& 2975	& 2969	& 6	& 99.8 \% \\
+			GET /set/mode	& 2975	& 2970	& 5	& 99.8 \% \\
+			GET /set/target	& 2975	& 1216	& 1758	& 40.9 \% \\
+			PUT /set/mode	& 803	& 181	& 622	& 22.5 \% \\
+			PUT /set/target	& 2698	& 741	& 1957	& 27.5 \% \\
+		\end{tabular}
+		\caption{Analyzed CoAP requests in August 2015.}
+		\label{table:evaluation_coap_requests}
+	\end{center}
+\end{table}
+
+Another interesting fact is the handling of temporary losses of internet connection.
+Due to a internet modem failure and the necessary replacement actions the residence local network was offline for about 48 hours.
+During this time the local gateway kept communicating with the wireless thermostats to operate the schedule and log the measured temperatures.
+After reestablishing the internet access all temperature measurements that have not yet been uploaded were pushed to the web server.
+It took about 56 seconds to upload the missing 192 measurements.
+During and after the whole external incident the system reacted and worked as planned.
+
+\paragraph{Server analysis}
+
+
+The server logs all received HTTP requests into a log file.
+Each log entry contains the requested URL, the HTTP method and the HTTP response code.
+In the chosen time span there were 2969 successful POST requests each adding a single temperature measurement.
+This matches the number of temperature entries in the storage on the local communication gateway and in the server database and shows that all temperature measurements were successfully transmitted and persisted on the server.
+
+
+% 2969 Rows returned from: SELECT * FROM smart_heating_temperature WHERE thermostat_id = "04B753B9212580"
+% AND datetime BETWEEN '2015-08-01' AND '2015-09-01' (took 23ms)
+
+%The analysis of the server database is similar to the analysis of the local database.
+%In the evaluated time span there are 2969 temperature entries out of 2976 possible measurements.
+%These are the same entries as on the local communication gateway.
+
+\subsubsection{Short-term evaluation}
+
+After the long-term field test a smaller test was set up to evaluate the effects of further improvements.
+
+\todo[inline]{TODO: weitere evaluation}
+
+
+
 
 
 \section{Mobile App}
+
+\todo[inline]{SAMUEL: Mobile App evaluation}
