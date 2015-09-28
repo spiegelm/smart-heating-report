@@ -3,12 +3,12 @@
 \section{Local Deployment}
 \label{sec:local_infrastructure}
 
-The local deployments consists of the residential communication gateway and the deployed digital thermostats with their wireless adapters.
+The local deployment consists of the residential communication gateway and the deployed digital thermostats with their wireless adapters.
 The communication gateway collects the data read from the thermostats and sends it to the remote web server.
 The digital thermostats are programmable and allow us to modify their behavior by flashing custom firmware.
 This project uses the work of a previous master thesis as a basis to build upon\cite{eigenmann2012opportunisticSensing}.
 The primary focus is to improve the basic functionality of the communication gateway and create an unified but loosely coupled infrastructure by using the RESTful API provided by the server.
-See also Figure~\ref{fig:residence_layout} for an overview of the local deployment.
+See also Figure~\ref{fig:residence_layout} for an example of a local deployment.
 
 \begin{figure}[h]
 	\begin{center}
@@ -103,7 +103,8 @@ Server IPv6 addresses:
  fe80::212:7400:115e:a9e5
 \end{lstlisting}
 
-The address with the prefix \highlight{fdfd:} is the one we want. Requesting the determined URI \nolinkurl{http://[fdfd::212:7400:115e:a9e5]} returns an HTML table containing all discovered devices:
+The address with the prefix \highlight{fdfd:} is the relevant one accessible from the Raspberry Pi.
+Requesting the determined URI \nolinkurl{http://[fdfd::212:7400:115e:a9e5]} returns an HTML table containing all discovered devices:
 %, as shown in Listing~\ref{lst:border_router_devices}.
 
 %\begin{lstlisting}[label={lst:border_router_devices}, caption={Example of routing table provided by the border routers web service}]
@@ -119,7 +120,8 @@ Routes<pre>fdfd::221:2eff:ff00:228b/128 (via fe80::221:2eff:ff00:228b) 16710893s
 
 Each route corresponds to a CoAP URI. For example the URI \nolinkurl{coap://[fdfd::221:2eff:ff00:228b/128]/sensors/temperature} could be queried by a CoAP client to determine the currently measured temperature.
 
-Please note: The discovered devices are not necessarily thermostats registered to the local communication gateway.
+Note: The discovered devices are not necessarily thermostats registered to the this local communication gateway.
+A discovered device can also be registered to another gateway or not be registered to any gateway, or it could also be any other unrelated device.
 The linked thermostats are therefore retrieved from the smart heating server to avoid unnecessary querying of unrelated devices.
 
 
@@ -128,7 +130,7 @@ The linked thermostats are therefore retrieved from the smart heating server to 
 
 The \highlight{smart-heating-local} repository contains two python scripts in the repository root: \highlight{thermostat\_sync.py} and \highlight{server\_sync.py}.
 Each script corresponds to one of the two tasks described in Section~\ref{sec:local_infrastructure_implementation}.
-The first scripts is responsible for fetching the temperature and other measurements from the thermostats to the local storage and applying the latest heating schedule.
+The first script is responsible for fetching the temperature and other measurements from the thermostats to the local storage and applying the latest heating schedule.
 The latter script sends the measurements that where not yet delivered to the server and retrieves the most actual heating schedule. Both scripts are independent from each other and use only the local storage to share data as explained in Section~\ref{sec:local_infrastructure_implementation_storage} below.
 
 \paragraph{Scheduling}
@@ -140,7 +142,8 @@ The \highlight{crontab} program is used for defining the schedule.
 \label{sec:local_infrastructure_implementation_storage}
 
 We combine SQLite and dbm for the local storage.
-\emph{SQLite} is a lightweight relational database engine implementing most of the SQL standard and is often used on embedded systems.
+\emph{SQLite} is a lightweight relational database engine often used on embedded systems.
+It implements most of the common SQL-92 standard but omits some features like access permissions\footnote{https://sqlite.org/lang.html}.
 \emph{dbm} is a family of simple database engines allowing to store pairs of a unique key and a value.
 The two databases are used for different purposes.
 The SQLite database persists historic measurement entries that should be held at least until they are transferred to the server.

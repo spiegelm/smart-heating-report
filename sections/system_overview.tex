@@ -35,13 +35,15 @@ The smart heating system is implemented using a server-client pattern. The smart
 
 Throughout the project there is a shared system model describing the underlying entities. The system model depicts the physical objects and places that are used for data collection or organizational purposes. The following paragraphs describe the applied models and their associated design decisions.
 
+\todo[inline]{The relationship between the entities could also be represented in a diagram. Think of visualising the use cases. These terms should match the ones in the use-case section.}
+
 \paragraph{Residence}
 
 The fundamental unit of each deployment is the residence. Each residence corresponds to an installed local communication gateway. Further details are described in Section~\ref{sec:local_infrastructure}
 
 \paragraph{User}
 
-Each residence can contain multiple users. A user is associated to exactly one residence and is identified by his smart phone serial number. This design decision simplifies the system design and especially the user authentication. It also prevents a user from using the same identity when accessing the system from multiple smart phones.
+Each residence can contain multiple users. A user is associated to exactly one residence and is identified by his smart phone IMEI. This design decision simplifies the system design and especially the user authentication. It also prevents a user from using the same identity when accessing the system from multiple smart phones.
 
 \paragraph{Room and Thermostat}
 A residence is divided in rooms where each room can contain several thermostats. A room is a simple organizational approach to group multiple thermostats into a single unit.

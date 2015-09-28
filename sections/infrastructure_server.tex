@@ -31,12 +31,15 @@ The smart heating server provides a RESTful API to access a persistent storage p
 Representational State Transfer (REST) is a programming paradigm used for machine-to-machine communication in distributed systems.
 RESTful web services use HTTP as their preferred communication protocol.
 
-REST is about resources.
-Each resource is identified by a uniform resource identifier (URI) and is accessible via the request methods defined in HTTP.
+REST is based on resources.
+Each resource is identified by a Uniform Resource Identifier (URI) and is accessible via the request methods defined in HTTP.
 We differentiate two major types of URIs: Resource collections and resource representations.
 A resource representation is a view of its resource's state and is encoded in a transferable format.
 This project uses the simple JavaScript Object Notation (JSON) format to represent resources.
 Resource collections contain lists of representations of the same type of a resource.
+
+A Uniform Resource Locator (URL) is a subtype of a URI that identifies resources via their location\cite{rfc3986}.
+This API uses URLs as they are most common in the area of web services.
 
 \paragraph{Design Decisions}
 
@@ -48,7 +51,7 @@ Resource collections contain lists of representations of the same type of a reso
     \item The resource identifier is the first field in each resource representation.
     \label{enum:design_decision_identifier_first_field}
     
-    \item Within resource representations, collections are referenced via URL. Resources are referenced by including their representation.
+    \item Within resource representations, collections are referenced via URL\footnote{Uniform Resource Locator (URL) is a subtype of URI. The details will not be explained here but the interested reader is referred to \url{https://en.wikipedia.org/wiki/Uniform_Resource_Locator}}. Resources are referenced by including their representation.
     \label{enum:design_decision_resource_referencing}
     
     \item URL fields are identified by the name \highlight{url} or the suffix \highlight{\_url}. Each resource representation contains its own URL in the field \highlight{url}.
@@ -82,14 +85,14 @@ See Listing~\ref{lst:room-json-example} for an example of a resource representat
 The Django REST Framework offers the ability to dynamically generate a browsable interface accessible via web browser.
 It includes a formatted output of the JSON response, offers forms to add new resources and edit or delete existing resources, and displays URLs as clickable hyperlinks.
 This interface is an additional HTML output format enabling developers to easily interact with the API without the need of external tools.
-The Browsable Web API is designed for readability whereas the API renders its data as compressed JSON to reduce transmission bandwidth. \todo[inline]{MICHAEL: "bandwith" - Can't think of the correct word..}
+The Browsable Web API is designed for readability whereas the API renders its data as compressed JSON to reduce transmission overhead.
 See Figure~\ref{fig:server_infrastructure_browsable_api} for an example.
 
 \begin{figure}[h]
 	\begin{center}
 		\includegraphics[width=0.8\textwidth]{images/server_browable_api_user_instance.png}
 	\end{center}
-	\caption{Screenshot of the Browsable Web API showing an instance of a user resource. The interface allows the developer to easily edit or delete the user. Navigating the residence or the associated room or user collections can be done by clicking on the URLs of the respective resources.}
+	\caption{Screenshot of the Browsable Web API showing an instance of a user resource. The interface allows the developer to edit or delete the user. Navigating the residence or the associated room or user collections can be done by clicking on the URLs of the respective resources.}
 	\label{fig:server_infrastructure_browsable_api}
 \end{figure}
 
@@ -107,8 +110,8 @@ We highly encourage the reader to visit the project on GitHub.
 The main page of the repository provides a short explanation and also contains a hyperlinked image indicating the status of the latest build run on the continuous integration service as explained later in Section~\ref{sec:server_infrastructure_testing}.
 The repository is designed to contain all code and dependency information necessary to automatically install and run the application on a server.
 
-The following sections describe the relevant application components in detail.
-% TODO explaint the directory structure, project consisting of several apps, namespaces, etc?
+The following sections describe the application components in detail.
+% TODO explain the directory structure, project consisting of several apps, namespaces, etc?
 %The code repository contains three directories. The first one, \highlight{project}
 
 \subsubsection{Models}
@@ -124,9 +127,10 @@ This method is used to generate hierarchical URLs and will be further described 
 Thermostats are organized within rooms and belong to a residence.
 RaspberryDevice and ThermostatDevice represent the deployed physical devices.
 Both are used as a global configuration of all devices that are planned to be eventually installed in a residence.
-This configuration associates a device's MAC address to the number of the radio-frequency identification (RFID) tag attached on the device.
-This is required to relate these two identifiers, as the hardware cannot read the RFID tag number from the device casing and the mobile application cannot access the internal MAC address used by the devices.
-Storing this mapping on the server benefits the deployment of the local devices as every device can use the same code and no configuration of the devices is required.
+This configuration associates a device's MAC address to the identifier of the radio-frequency identification (RFID) tag attached on the device.
+The mapping between RFID tag and MAC address is stored in the database, thereby making it easy for users to configure their system.
+%This is required to relate these two entities, as the hardware cannot read the RFID tag number from the device casing and the mobile application cannot access the internal MAC address used by the devices.
+%Storing this mapping in the server database benefits the deployment of the local devices as every device can use the same code and no configuration of the devices is required.
 See Figure~\ref{fig:class_diagram} for a graphical representation of the used models.
 The most important models will be described in the following paragraphs.
 
@@ -269,4 +273,4 @@ OK
 
 
 Furthermore the usage of an Continuous Integration service like Travis CI\footnote{\url{https://travis-ci.org/}} ensures that individual development branches are consistently tested and don't break the main development line upon branch integration.
-Additionally this convenient services ensures the periodic execution of all tests and logging of the test results.
+Additionally this convenient service ensures the periodic execution of all tests and logging of the test results.
