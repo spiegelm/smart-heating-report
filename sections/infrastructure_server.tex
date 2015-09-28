@@ -3,7 +3,7 @@
 \section{Server Infrastructure}
 \label{sec:server_infrastructure}
 
-The \emph{Smart Heating server} is the central storage and communication center of this project.
+The smart heating server is the central storage and communication center of this project.
 It persists data collected by the local deployment as also organizational information and heating schedules provided by the user via the Mobile App.
 
 \subsection{Design Goals}
@@ -27,7 +27,7 @@ The Django REST Framework\footnote{\url{http://www.django-rest-framework.org/}} 
 \subsection{RESTful API}
 \label{sec:server_infrastructure_restful_api}
 
-The Smart Heating Server provides a RESTful API to access a persistent storage providing the basic CRUD operations: Create, Read, Update and Delete.
+The smart heating server provides a RESTful API to access a persistent storage providing the basic CRUD operations: Create, Read, Update and Delete.
 Representational State Transfer (REST) is a programming paradigm used for machine-to-machine communication in distributed systems.
 RESTful web services use HTTP as their preferred communication protocol.
 
@@ -102,7 +102,7 @@ The server implementation is built on Django following a variation
 of the Model-View-Controller (MVC) architectural pattern.
 We assume the reader to be familiar with the common MVC pattern\footnote{We refer the interested reader to \url{https://en.wikipedia.org/wiki/Model-view-controller}}.
 
-All the code required to setup the Smart Heating server is provided in the GitHub repository located at \url{https://github.com/spiegelm/smart-heating-server}.
+All the code required to setup the smart heating server is provided in the GitHub repository located at \url{https://github.com/spiegelm/smart-heating-server}.
 We highly encourage the reader to visit the project on GitHub.
 The main page of the repository provides a short explanation and also contains a hyperlinked image indicating the status of the latest build run on the continuous integration service as explained later in Section~\ref{sec:server_infrastructure_testing}.
 The repository is designed to contain all code and dependency information necessary to automatically install and run the application on a server.

@@ -64,7 +64,7 @@ Unlike the Hypertext Transfer Protocol (HTTP) commonly used in desktop and mobil
 \paragraph{aiocoap} is a third-party package for Python implementing the CoAP protocol.
 
 \paragraph{requests} is a library written in Python providing a simple and well designed interface to send HTTP requests.
-This is used to communicate with the API provided by the Smart Heating Server.
+It is used to communicate with the API provided by the smart heating server.
 
 \subsection{Implementation}
 \label{sec:local_infrastructure_implementation}
@@ -74,7 +74,7 @@ We use the Raspberry Pi 2 Model B\footnote{\url{https://www.raspberrypi.org/prod
 
 First, it needs to periodically query the temperatures and other meta data from the digital thermostats and store the data locally.
 Additionally the heating scheduling algorithm determines the current target temperature and applies the value to the thermostats.
-Second, the local computer consistently synchronizes the local data storage with the remote Smart Heating Server.
+Second, the local computer consistently synchronizes the local data storage with the remote smart heating server.
 The new data gathered from the thermostats is therefore sent to the server and the latest configuration such as the heating schedule is downloaded.
 
 The local computer works as a proxy server and enables the local deployment to operate independently from the connection to the remote server.
@@ -120,7 +120,7 @@ Routes<pre>fdfd::221:2eff:ff00:228b/128 (via fe80::221:2eff:ff00:228b) 16710893s
 Each route corresponds to a CoAP URI. For example the URI \nolinkurl{coap://[fdfd::221:2eff:ff00:228b/128]/sensors/temperature} could be queried by a CoAP client to determine the currently measured temperature.
 
 Please note: The discovered devices are not necessarily thermostats registered to the local communication gateway.
-The linked thermostats are therefore retrieved from the Smart Heating Server to avoid unnecessary querying of unrelated devices.
+The linked thermostats are therefore retrieved from the smart heating server to avoid unnecessary querying of unrelated devices.
 
 
 \subsubsection{Executable Scripts}
@@ -160,7 +160,7 @@ The following paragraphs list the files within this directory and describe their
 \paragraph{config.py} contains the \highlight{Config} class responsible for storing and retrieving the heating schedule as also the thermostat MAC addresses linked to this Raspberry Pi computer.
 The configuration is stored using the \highlight{shelve} Python package which itself builds on the npm database engine installed on the system.
 
-\paragraph{server.py} provides an interface to communicate with the Smart Heating Server.
+\paragraph{server.py} provides an interface to communicate with the smart heating server.
 It also determines the URI schema used by the server API.
 
 \paragraph{server\_models.py} contains the models used by the server.

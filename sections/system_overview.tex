@@ -3,7 +3,10 @@
 \chapter{System Overview}
 \label{sec:system_overview}
 
-The system consists of two major parts: The infrastructure gathering and controlling temperature and organisational data, and the mobile applicaiton offering a user interface to view and control the temperature data and residential information. See Figure~\ref{fig:systemoverview} for a graphical overview.
+The system consists of two major parts.
+First, the infrastructure gathering and controlling temperature and organisational data.
+Second, the mobile application offering a user interface to view and control the temperature data and residential information.
+See Figure~\ref{fig:systemoverview} for a graphical overview.
 
 \begin{figure}[h]
 \begin{center}
@@ -13,14 +16,18 @@ The system consists of two major parts: The infrastructure gathering and control
 \label{fig:systemoverview}
 \end{figure}
 
-The infrastructure consists of a local residential part and a server part. Within the residence a small computer system is installed which serves as a communication gateway to the distributed low-power thermostats.
-Whereas the server is the central entity to collect and store the accumulated sensor data and organizational data. Both parts are explained in Chapters \ref{sec:infrastructure}~\nameref{sec:infrastructure} and \ref{sec:mobile_app}~\nameref{sec:mobile_app}.
+The infrastructure consists of a local residential part and a server part.
+Within the residence a small computer system is installed which serves as a communication gateway to the distributed low-power thermostats.
+The other part is the server acting as the central entity to collect and store the accumulated sensor data and organizational data.
+Both parts are explained in Chapter~\ref{sec:infrastructure}.
+%~\nameref{sec:infrastructure}.
 
-The mobile application part \dots\todo[inline]{SAMUEL: Mobile App text}
+The mobile application part \dots
+\todo[inline]{SAMUEL: Mobile App text}
 
 \section{Architecture}
 
-The Smart Heating system is implemented using a server-client pattern. The Smart Heating server provides an API which is used by the local communication gateway and the mobile application.
+The smart heating system is implemented using a server-client pattern. The smart heating server provides an API which is used by the local communication gateway and the mobile application.
 
 
 \section{Models}
