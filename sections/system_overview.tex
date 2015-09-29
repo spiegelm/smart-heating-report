@@ -4,30 +4,52 @@
 \label{sec:system_overview}
 
 The system consists of two major parts.
-First, the infrastructure gathering and controlling temperature and organisational data.
-Second, the mobile application offering a user interface to view and control the temperature data and residential information.
-See Figure~\ref{fig:systemoverview} for a graphical overview.
+First, the infrastructure monitoring and controlling temperatures and persisting this data on an accessible web server.
+Second, the mobile application offering a user friendly interface to configure and interact with the system.
+See Figure~\ref{fig:system_overview} for a graphical overview.
 
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=0.8\textwidth]{images/SystemOverview.png}
 \end{center}
-\caption{System Overview}
-\label{fig:systemoverview}
+\caption{System overview showing the infrastructure part and the mobile application part.}
+\label{fig:system_overview}
 \end{figure}
 
-The infrastructure consists of a local residential part and a server part.
+The infrastructure part consists of the local residential deployment and the server.
 Within the residence a small computer system is installed which serves as a communication gateway to the distributed low-power thermostats.
-The other part is the server acting as the central entity to collect and store the accumulated sensor data and organizational data.
-Both parts are explained in Chapter~\ref{sec:infrastructure}.
-%~\nameref{sec:infrastructure}.
+On the remote side is the server acting as the central entity to collect and store the accumulated sensor data and organizational data.
+Both is explained in Chapter~\ref{sec:infrastructure}.
 
 The mobile application part \dots
 \todo[inline]{SAMUEL: Mobile App text}
 
+\todo[inline]{Local infrastructure is required for each residence; server used globally; multiple apps per residence possible}
+
 \section{Architecture}
 
-The smart heating system is implemented using a server-client pattern. The smart heating server provides an API which is used by the local communication gateway and the mobile application.
+The smart heating system is implemented using a server-client model.
+% Willi: What does that mean? Describe briefly (in one or two sentences) which functionality is implemented where
+The smart heating server hosts a web service acting as an API to provide access to the shared resources.
+The local communication gateway uses this API to query the residence configuration and persist the collected measurements.
+%The server handles requests from its clients to retrieve or store data.
+%A local communication gateway uses this API in two ways.
+%First, it queries residence information such as the associated thermostats and the heating schedule.
+%Second, it persists the measured temperature data on the server to make it available to other clients.
+On the other hand, there is the mobile application also acting as a client.
+It provides an user interface to initially configure the system and maintain the heating schedule.
+%This data is shared to the web server and required sensor data is queried conversely.
+%The web server and the local infrastructures form the back end of the whole system whereas the mobile applications running on smart phones represent the front end.
+%See Figure~\ref{fig:systemoverview_architecture} for a visual representation.
+
+
+%\begin{figure}[h]
+%	\begin{center}
+%		\includegraphics[width=0.95\textwidth]{images/SystemArchitecture.png}
+%	\end{center}
+%	\caption{Back end and front end depicting the communication between the server and its clients.}
+%	\label{fig:systemoverview_architecture}
+%\end{figure}
 
 
 \section{Models}
