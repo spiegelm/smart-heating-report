@@ -1,0 +1,75 @@
+########################
+1. Setup: August-September 2015
+########################
+
+
+- Der Heating Schedule einen Eintrag mit 2°, das erlaubt das Thermostat aber gar nicht. 235 PUT Requests sind mit diesem Wert fehlgeschlagen, 2 Mal hat es anscheinend aber auch funktioniert. Ich habe den ungültigen Wert jetzt gelöscht.
+
+Fehler beispiel:
+
+2015-08-03 01:16:36,165 [INFO] root: PUT coap://[fdfd::221:2eff:ff00:228b]/set/target "2.0"
+2015-08-03 01:16:36,226 [INFO] coap: Response not recognized - sending RST.
+2015-08-03 01:18:09,272 [INFO] asyncio: poll 92.950 took 93.043 seconds
+2015-08-03 01:18:09,274 [INFO] coap.requester: Request timed out
+2015-08-03 01:18:09,276 [ERROR] root: Request timed out: PUT coap://[fdfd::221:2eff:ff00:228b]/set/target "2.0"
+
+erfolg beispiel:
+2015-08-03 15:15:02,922 [INFO] root: PUT coap://[fdfd::221:2eff:ff00:228b]/set/target "2.0"
+2015-08-03 15:15:02,981 [ERROR] root: Could not upload. No connection to the server.
+2015-08-03 15:15:03,015 [ERROR] root: Could not upload. No connection to the server.
+2015-08-03 15:15:05,116 [INFO] asyncio: poll 2.108 took 2.111 seconds
+2015-08-03 15:15:05,118 [INFO] coap: Retransmission, Message ID: 21646.
+2015-08-03 15:15:05,185 [INFO] coap: Response not recognized - sending RST.
+2015-08-03 15:15:17,216 [INFO] asyncio: poll 90.745 took 12.029 seconds
+2015-08-03 15:15:17,222 [INFO] root: PUT coap://[fdfd::221:2eff:ff00:228b]/set/target "2.0": 2.04 Changed, ''
+
+
+- 3400 mal kam die Meldung "Response not recognized - sending RST.", fast immer für GET/PUT /set/target. Danach kommt immer ein Timeout.
+
+- Es gab insgesamt 4353 Timeouts, fast alle für PUT /set/mode und GET/PUT /set/target. GET /set/mode funktionierte immer.
+
+- Der mode "manual target" ist scheinbar nicht richtig, der gelesene Mode nach dem setzen der Zieltemp. ist fast immer "radio target". Ich habe das angepasst.
+
+
+########################
+2. Setup: 'radio mode'
+########################
+
+- Keine PUT /set/mode mehr nötig
+
+
+########################
+3. Setup: sleeps and retry PUT timeouts
+########################
+
+'radio mode'
+3s pause zwischen den requests
+wiederhole timed out PUT /set/target requests bis sie funktionieren
+
+- wiederholte PUTs schlagen in der regel auch fehl
+
+
+########################
+4. Setup: sleeps and retry PUT timeouts
+########################
+
+'radio mode'
+3s pause zwischen den requests
+wiederhole timed out GET /set/target max 3 mal
+
+
+########################
+5. Setup: fix invalid temps
+########################
+
+'radio mode'
+3s pause zwischen den requests
+wiederhole timed out GET /set/target max 3 mal
+fixed schedule
+
+- Die Ergebnisse sind deutlich besser. Ein unique Request (ohne Retries) GET /set/target hat sich von 40% auf 95% verbessert. Ein Retry ist im Schnitt nur bei jedem 3. Request nötig.
+
+- Der PUT request ist nicht wirklich besser geworden. Es sind aber viel weniger nötig, weil der GET jetzt besser funktioniert. Wenn der richtige Wert schon steht, brauchts keinen PUT mehr.
+
+- Ein fehlgeschlagener PUT /set/target ist aber nicht mehr so tragisch, weil der Wert dann beim nächsten Durchlauf (15 min) gesetzt wird. Retries könnten das evtl auch verbessern.
+
