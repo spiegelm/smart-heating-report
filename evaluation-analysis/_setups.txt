@@ -73,3 +73,28 @@ fixed schedule
 
 - Ein fehlgeschlagener PUT /set/target ist aber nicht mehr so tragisch, weil der Wert dann beim nächsten Durchlauf (15 min) gesetzt wird. Retries könnten das evtl auch verbessern.
 
+
+Nachricht von Matthias Kovatsch:
+
+"Die Knoten (d.h. die angesteckten Funkmodule) sind für den Job verhältnismässig leistungsstark. Das grösste Problem liegt in der Kommunikation zwischen Knoten und Thermostat, welche über UART läuft. Die Sachen, die gut funktionieren sind auf dem Knoten gecachet (das Target eigentlich auch, aber maximal nur 5 Sekunden). Für den Rest muss mit der Firmware auf dem Thermostat kommuniziert werden. Hier habe ich selber schon beobachtet, dass oft keine Antwort vom Thermostat zurückkommt.
+ 
+Die Ursache dafür liegt bei Thermostat – die Knoten habe ich viel über UART debugt und nie Probleme gehabt. Es kann jetzt sein, dass die Firmware einfach schlecht implementiert ist oder dass der Microcontroller zu schwach ist, den UART zu bedienen (dieThermostate unterstützen so schon nur eine Baudrate von 2400 Sym/s; der Knoten läuft smooth bei 56k). Die Firmware stammt auch vom OpenHR20-Projekt, welches die UART-Kommunikation hinzugefügt hat (sprich nicht von Honeywell)."
+
+Log Auszug zeigt, dass das keine Antwort auf set/target kommt, der Wert aber (irgendwann) übernommen wurde:
+
+2015-09-28 04:30:12,161 [INFO] root: PUT coap://[fdfd::221:2eff:ff00:228b]/set/target "15.0"
+2015-09-28 04:31:45,271 [ERROR] root: Request timed out: PUT coap://[fdfd::221:2eff:ff00:228b]/set/target "15.0"
+[...]
+2015-09-28 04:45:08,737 [INFO] root: GET coap://[fdfd::221:2eff:ff00:228b]/set/target: 2.05 Content, '15.00'
+
+
+2015-09-28 23:04:59,995 [INFO] root: PUT coap://[fdfd::221:2eff:ff00:228b]/set/target "20.0"
+2015-09-28 23:06:33,052 [ERROR] root: Request timed out: PUT coap://[fdfd::221:2eff:ff00:228b]/set/target "20.0"
+[...] # Alle GETs/PUTS auf /set/target fehlgeschlagen
+
+2015-09-28 23:49:59,741 [INFO] root: PUT coap://[fdfd::221:2eff:ff00:228b]/set/target "20.0"
+2015-09-28 23:51:32,802 [ERROR] root: Request timed out: PUT coap://[fdfd::221:2eff:ff00:228b]/set/target "20.0"
+2015-09-29 00:00:08,832 [INFO] root: GET coap://[fdfd::221:2eff:ff00:228b]/set/target
+2015-09-29 00:01:41,938 [ERROR] root: Request timed out: GET coap://[fdfd::221:2eff:ff00:228b]/set/target
+2015-09-29 00:01:45,188 [INFO] root: GET coap://[fdfd::221:2eff:ff00:228b]/set/target: 2.05 Content, '20.00'
+
