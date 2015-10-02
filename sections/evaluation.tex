@@ -146,7 +146,7 @@ We present our analysis of two different time spans.
 
 \subsubsection{First evaluation}
 
-In the following evaluations we analyzed the data from the time span of August 2015.
+In the following we analyze the data from the time span of August 2015.
 
 \paragraph{Local data storage analysis}
 
@@ -215,14 +215,14 @@ We discovered the following potential issues:
 \begin{itemize}
 	\item The applied target mode ``manual target'' often got overridden by ``radio target''.
 	\item There are many CoAP requests sent closely following each other. This may overwhelm the low power devices.
-	\item We discovered a invalid temperature value in the heating schedule which is rejected by the thermostat. 1244 out of 1957 time outs are related to this invalid value.
+	\item There is an invalid temperature value in the heating schedule which is rejected by the thermostat. 1244 out of 1957 time outs are related to this invalid value.
 \end{itemize}
 
 We address these potential issues in the next section and describe appropriate improvements.
 
 Another interesting fact is the handling of temporary losses of internet connection.
-Due to a internet modem failure and the necessary replacement actions the residence local network was offline for about 48 hours.
-During this time the local gateway kept communicating with the wireless thermostats to operate the schedule and log the measured temperatures.
+Due to a internet modem failure and the necessary replacement actions, the residence local network was offline for about 48 hours.
+During this time the local gateway kept communicating with the wireless thermostat to operate the schedule and log the measured temperatures.
 After reestablishing the internet access all temperature measurements that have not yet been uploaded were pushed to the web server.
 It took about 56 seconds to upload the missing 192 measurements.
 During and after the whole external incident the system reacted and worked as planned.
@@ -258,44 +258,47 @@ Additionally we repeat certain unanswered requests up to three times until a res
 Furthermore the heating schedule is cleaned from the invalid value and the updated server does no longer accept temperatures that are not supported by the deployed thermostat.
 
 The revised implementation is deployed to the local communication gateway and monitored.
-Due to time constraints we could not collect the same amount of data as for the first evaluation.
+Due to time constraints we could not collect the same amount of data as in the first evaluation.
 The following analyzed data is based on a time span of 92 hours.
+See Table~\ref{table:evaluation_coap_requests2} for the complete data.
+
+\begin{threeparttable}[htbp]
+	\centering
+	\begin{tabular}{ l | r r r r r }
+		\toprule
+		CoAP request	& Total	& Unique\tnote{\textdagger}	& Success	& Timeouts	& Success rate \\
+		\midrule
+		GET /debug/heartbeat	& 370	& 370	& 369	& 0	& 99.7 \% \\
+		GET /sensors/temperature	& 370	& 370	& 370	& 0	& 100.0 \% \\
+		GET /set/mode	& 370	& 370	& 370	& 0	& 100.0 \% \\
+		PUT /set/mode	& 1	& 1	& 0	& 0	& - \\
+		GET /set/target	& 497	& 370	& 365	& 132	& 98.6 \% \\
+		PUT /set/target	\tnote{\textasteriskcentered} & 15	& 15	& 4	& 10	& 26.7 \% \\
+		\bottomrule
+	\end{tabular}
+	\begin{tablenotes}
+		\footnotesize{
+			\item[\textdagger] Number of requests not considering repetitions.
+			\item[\textasteriskcentered] Also see the paragraph \emph{Hardware issues} for details.
+		}
+	\end{tablenotes}
+	\caption{Analyzed CoAP requests of the second evaluation.}
+	\label{table:evaluation_coap_requests2}
+\end{threeparttable}
 
 The curbed request rate and the repetition of timed out \highlight{GET /set/target} requests enhanced their success rate radically.
-The success rate of 40.9 percent increased to 98.6 percent.
+The success rate increased from 40.9 percent to 98.6 percent.
 Interestingly the repetition of failed \highlight{PUT /set/target} requests did not improve its success rate.
 This adjustment was separately tested but then discarded.
 However the total number of PUT requests fell intensively due to the improved results of GET requests and the way of implementation, as PUT requests are only submitted if the desired values is not already set.
 The data shows the resource \highlight{/set/mode} only required a single write.
 Further analysis suggests that the mode is also set when writing the target and does not need to be set separately.
 The remaining GET requests seem not to be affected by the taken improvements.
-See Table~\ref{table:evaluation_coap_requests2} for the complete data.
 
-\begin{threeparttable}[ht]
-	\centering
-		\begin{tabular}{ l | r r r r r }
-			\toprule
-CoAP request	& Total	& Unique\tnote{\textdagger}	& Success	& Timeouts	& Success rate \\
-\midrule
-GET /debug/heartbeat	& 370	& 370	& 369	& 0	& 99.7 \% \\
-GET /sensors/temperature	& 370	& 370	& 370	& 0	& 100.0 \% \\
-GET /set/mode	& 370	& 370	& 370	& 0	& 100.0 \% \\
-PUT /set/mode	& 1	& 1	& 0	& 0	& - \\
-GET /set/target	& 497	& 370	& 365	& 132	& 98.6 \% \\
-PUT /set/target	& 15	& 15	& 4	& 10	& 26.7 \% \\
-			\bottomrule
-		\end{tabular}
-		\begin{tablenotes}
-			\footnotesize{
-				\item[\textdagger]Number of requests not considering repetitions. \\
-			}
-		\end{tablenotes}
-		\caption{Analyzed CoAP requests of the second evaluation.}
-		\label{table:evaluation_coap_requests2}
-\end{threeparttable}
+\paragraph{Hardware issues}
 
-A closer look at the data indicates that the timed out \highlight{PUT /set/target} requests did still do their work.
-Although when the gateway did not receive a response, the requested target temperature is often returned by the subsequent GET query.
+A closer look at the data indicates that the timed out \highlight{PUT /set/target} requests did still make a impact.
+Although when the gateway did not receive a response, the requested target temperature is returned by the subsequent GET query.
 Further inspection indicate that there is a general problem with the deployed Honeywell thermostat probably caused by weak hardware communication interfaces (UART) or the upgraded open source firmware OpenHR20.
 
 
