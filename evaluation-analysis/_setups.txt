@@ -50,7 +50,7 @@ wiederhole timed out PUT /set/target requests bis sie funktionieren
 
 
 ########################
-4. Setup: sleeps and retry PUT timeouts
+4. Setup: sleeps and retry GET timeouts
 ########################
 
 'radio mode'
@@ -65,7 +65,7 @@ wiederhole timed out GET /set/target max 3 mal
 'radio mode'
 3s pause zwischen den requests
 wiederhole timed out GET /set/target max 3 mal
-fixed schedule
+delete invalid temperature in schedule
 
 - Die Ergebnisse sind deutlich besser. Ein unique Request (ohne Retries) GET /set/target hat sich von 40% auf 95% verbessert. Ein Retry ist im Schnitt nur bei jedem 3. Request nötig.
 
@@ -98,3 +98,13 @@ Log Auszug zeigt, dass das keine Antwort auf set/target kommt, der Wert aber (ir
 2015-09-29 00:01:41,938 [ERROR] root: Request timed out: GET coap://[fdfd::221:2eff:ff00:228b]/set/target
 2015-09-29 00:01:45,188 [INFO] root: GET coap://[fdfd::221:2eff:ff00:228b]/set/target: 2.05 Content, '20.00'
 
+
+########################
+6. Setup: remove PUT /set/mode
+########################
+ab 01.10 ~21:30
+
+3s pause zwischen den requests
+wiederhole timed out GET /set/target max 3 mal
+delete invalid temperature in schedule
+don't PUT mode, just GET
