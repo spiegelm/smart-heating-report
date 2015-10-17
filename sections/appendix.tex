@@ -3,10 +3,202 @@
 \chapter{First Appendix}
 \label{sec:first_appendix}
 
-Use appendix for more anything that does not fit into the main document (e.g., implementation details).
+\section{GitHub repositories}
 
-\todo[inline]{Include links to all GitHub repos}
+All code developed in this project is published on GitHub and can be found at the following links.
 
-\todo[inline]{Setup instructions for the local infrastructure}
+\begin{itemize}
+	\item{Code and documentation related to the Raspberry Pi 2:\\ \url{https://github.com/spiegelm/smart-heating-local}}
+	
+	\item{Code and documentation related to the server:\\ \url{https://github.com/spiegelm/smart-heating-server}}
+	
+	\item{Code and documentation related to the mobile application:\\ \url{https://github.com/Octoshape/smart-heating-app}}
+\end{itemize}
 
-\todo[inline]{insert protocol}
+\section{Setup instructions for the local infrastructure}
+
+\subsection{Setup raspbian}\label{setup-raspbian}
+
+Flash raspbian to a SD card and boot the Raspberry. Find the IP address
+using \highlight{nmap -sP [ip-adress]/[bitmask]}, e.g.
+\highlight{nmap -sP 192.168.0.0/24}.
+
+Open a SSH client and connect to the determined IP. The default username
+and password are \highlight{pi} and \highlight{raspberry}. Type
+\highlight{sudo raspi-config} to expand the filesystem, change the
+password and set the local time zone.
+
+Enable IPv6: Add \highlight{ipv6} on a line by itself at the end of
+/etc/modules.
+
+\subsection{Install dependencies}\label{install-dependencies}
+
+Install \highlight{at}. Needed to remain tunslip6 started because UDEV
+rules kill the spawning process.
+
+\begin{verbatim}
+sudo apt-get install at
+\end{verbatim}
+
+\subsubsection{Install Python 3.4.1 and	aiocoap}\label{install-python-3.4.1-and-aiocoap}
+
+Credits to Marc Hüppin for the initial version.
+
+openssl and libssl-dev are required for SSL support in python and is
+required by pip.
+
+\begin{quote}
+	sudo apt-get install sqlite3 libsqlite3-dev openssl libssl-dev
+	
+	install the sqlite3 packages
+	
+	\begin{verbatim}
+	mkdir ~/src
+	cd ~/src
+	wget https://www.python.org/ftp/python/3.4.1/Python-3.4.1.tgz
+	\end{verbatim}
+	
+	unpack cd into dir
+	
+	\begin{verbatim}
+	./configure
+	make
+	sudo make install
+	\end{verbatim}
+	
+	get the aiocoap library from github: https://github.com/chrysn/aiocoap
+	
+	get setuptools from: https://pypi.python.org/pypi/setuptools
+	
+	install aiocoap using
+	
+	\begin{verbatim}
+	python3.4 setup.py install
+	\end{verbatim}
+\end{quote}
+
+\subsection{Setup smart-heating-local}\label{setup-smart-heating-local}
+
+\subsubsection{Setup the border router connection}\label{setup-the-border-router-connection}
+
+Clone this repository into your home folder:
+
+\highlight{git clone https://github.com/spiegelm/smart-heating-local.git}.
+
+Create symbolic links
+
+\begin{itemize}
+	\item{udev rules: \highlight{sudo ln -s /home/pi/smart-heating-local/rules.d/90-local.rules /etc/udev/rules.d/}}
+	\item{tunslip executable:\\
+		\highlight{sudo ln -s /home/pi/smart-heating-local/bin/tunslip6 /bin/}}
+\end{itemize}
+
+Add this line to \highlight{/etc/rc.local} to make sure the udev rule is also executed on startup
+
+\noindent
+\begin{minipage}{\linewidth}
+	\begin{lstlisting}[numbers=none]
+udevadm trigger --verbose --action=add --subsystem-match=usb --attr-match=idVendor=0403 --attr-match=idProduct=6001
+	\end{lstlisting}
+\end{minipage}
+
+Reboot: \highlight{sudo reboot}
+
+Attach the sky tmote usb dongle to the raspberry. The tun0 interface should be shown by \highlight{ifconfig}.
+In case of problems run \highlight{sudo \textasciitilde/smart-heating-local/bin/\allowbreak start\_tunslip.sh}
+manually.
+Determine the ipv6 address of the web service:
+\highlight{less /var/log/tunslip6}:
+
+\noindent
+\begin{minipage}{\linewidth}
+	\begin{lstlisting}[numbers=none]
+Server IPv6 addresses:
+fdfd::212:7400:115e:a9e5
+fe80::212:7400:115e:a9e5
+	\end{lstlisting}
+\end{minipage}
+
+Retrieve the registered routes on the border router:
+
+\highlight{wget http://[fdfd::212:7400:115e:a9e5]}:
+
+\noindent
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[numbers=none]
+<html><head><title>ContikiRPL</title></head><body>
+Neighbors<pre>fe80::221:2eff:ff00:22d3
+</pre>Routes<pre>fdfd::221:2eff:ff00:22d3/128 (via fe80::221:2eff:ff00:22d3) 16711422s
+</pre></body></html>
+\end{lstlisting}
+\end{minipage}
+
+Test route to the thermostat by requesting the current temperature via
+coap-client (libcoap):
+\highlight{\textasciitilde/smart-heating-local/bin/coap-client -m get\\
+coap://[fdfd::221:2eff:ff00:22d3]/sensors/temperature}
+
+Congratulations, your raspberry is connected to a thermostat!
+
+\subsubsection{Install the required python packages}\label{install-the-required-python-packages}
+
+Install pip: \url{https://pip.pypa.io/en/latest/installing.html}
+
+\noindent
+Install the project requirements:
+
+\noindent
+\begin{minipage}{\linewidth}
+	\begin{lstlisting}[numbers=none]
+cd ~/smart-heating-local/
+pip install -r requirements.txt
+	\end{lstlisting}
+\end{minipage}
+
+\subsubsection{Configure cron tasks}
+
+Setup crontab to run the log and upload scripts periodically.
+
+\noindent
+\begin{minipage}{\linewidth}
+\begin{lstlisting}
+crontab -e
+# Insert these lines at the end of the file:
+*/15 * * * * /usr/local/bin/python3.4 /home/pi/smart-heating-local/thermostat_sync.py
+*/5 * * * * /usr/local/bin/python3.4 /home/pi/smart-heating-local/server_sync.py
+\end{lstlisting}
+\end{minipage}
+
+These commands ensure that the temperature is polled from the registered
+thermostats each 15 minutes and checked for uploading to the server each
+5 minutes. The scripts log interesting events to
+\highlight{\textasciitilde/smart-heating-local/logs/smart-heating.log}.
+
+
+\section{Setup instructions for the server infrastructure}
+
+Setup a virtual or dedicated server based on Ubuntu Linux 14.04 LTS and enter the following the commands in a terminal:
+
+\noindent
+\begin{minipage}{\linewidth}
+	\begin{lstlisting}
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install python-virtualenv
+sudo apt-get install git
+cd ~
+git clone https://github.com/spiegelm/smart-heating
+cd smart-heating/
+git checkout server
+cd ~
+virtualenv -p python3 env
+sudo apt-get install python3-pip
+source env/bin/activate
+python --version
+cd smart-heating/server/
+pip install -r requirements.txt
+python manage.py migrate
+python ./manage.py runserver 0.0.0.0:8000 # run server on port 8000
+	\end{lstlisting}
+\end{minipage}
+
