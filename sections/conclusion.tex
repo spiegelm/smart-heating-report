@@ -3,4 +3,22 @@
 \chapter{Conclusion}
 \label{sec:conclusion}
 
-Give a summary on what you did and what the major results are.
+%Give a summary on what you did and what the major results are.
+
+The goal of this project was to develop a reliable heating control system for residential users.
+
+This project consists of two major parts.
+On the one hand there is the back end consisting of the local infrastructure monitoring and controlling temperatures and persisting this data on an accessible web server.
+On the other hand there is the front end mobile application offering a user friendly interface to configure and interact with the system.
+
+During the development of this project a few issues occurred.
+One of the main obstacles at the beginning of the project was the lack of detail in the thermostat documentation.
+This resulted in a lot of time spent with debugging of the hardware and software components related to the chosen thermostats and their firmware.
+A further complication was the limited hardware performance which resulted in inconsistent request handling.
+For example, for certain requests the thermostat does execute but not acknowledge the request.
+We introduced a system that takes care of these anomalies.
+Our evaluation concludes that the adopted measures lead to a reliable heating control system.
+
+\todo[inline]{TODO Samuel}
+
+Our proposed system of interacting but independent distributed systems provides a solid base for further developments in the area of residential smart heating systems.
