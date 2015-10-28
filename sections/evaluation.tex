@@ -259,7 +259,7 @@ Furthermore the heating schedule is cleaned from the invalid value and the updat
 
 The revised implementation is deployed to the local communication gateway and monitored.
 Due to time constraints we could not collect the same amount of data as in the first evaluation.
-The following analyzed data is based on a time span of 92 hours.
+The following analyzed data is based on a time span of 13.5 days.
 See Table~\ref{table:evaluation_coap_requests2} for the complete data.
 
 \begin{threeparttable}[htbp]
@@ -268,12 +268,12 @@ See Table~\ref{table:evaluation_coap_requests2} for the complete data.
 		\toprule
 		CoAP request	& Total	& Unique\tnote{\textdagger}	& Success	& Timeouts	& Success rate \\
 		\midrule
-		GET /debug/heartbeat	& 370	& 370	& 369	& 0	& 99.7 \% \\
-		GET /sensors/temperature	& 370	& 370	& 370	& 0	& 100.0 \% \\
-		GET /set/mode	& 370	& 370	& 370	& 0	& 100.0 \% \\
+		GET /debug/heartbeat	& 1300	& 1300	& 1277	& 23	& 98.2 \% \\
+		GET /sensors/temperature	& 1300	& 1300	& 1280	& 0	& 98.5 \% \\
+		GET /set/mode	& 1300	& 1300	& 1286	& 14	& 98.9 \% \\
 		PUT /set/mode	& 1	& 1	& 0	& 0	& - \\
-		GET /set/target	& 497	& 370	& 365	& 132	& 98.6 \% \\
-		PUT /set/target	\tnote{\textasteriskcentered} & 15	& 15	& 4	& 10	& 26.7 \% \\
+		GET /set/target	& 1779	& 1300	& 1272	& 507	& 97.8 \% \\
+		PUT /set/target	\tnote{\textasteriskcentered} & 49	& 49	& 6	& 40	& 12.2 \% \\
 		\bottomrule
 	\end{tabular}
 	\begin{tablenotes}
@@ -287,7 +287,7 @@ See Table~\ref{table:evaluation_coap_requests2} for the complete data.
 \end{threeparttable}
 
 The curbed request rate and the repetition of timed out \highlight{GET /set/target} requests enhanced their success rate radically.
-The success rate increased from 40.9 percent to 98.6 percent.
+The success rate increased from 40.9 percent to 97.8 percent.
 Interestingly the repetition of failed \highlight{PUT /set/target} requests did not improve its success rate.
 This adjustment was separately tested but then discarded.
 However the total number of PUT requests fell intensively due to the improved results of GET requests and the way of implementation, as PUT requests are only submitted if the desired values is not already set.
