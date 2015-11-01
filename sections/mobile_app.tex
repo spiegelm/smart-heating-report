@@ -6,11 +6,15 @@
 \chapter{Mobile App}
 \label{sec:mobile_app}
 
-Smart heating systems are on the rise. More and more companies are trying to secure a spot in the market offering a variety of features in their control applications, which are mostly mobile or tablet based or even come with their own device. In this section we discuss the Android application we designed and implemented for users to control our heating system. We focused on keeping things simple because as we were researching some of the already existing systems we realized very quickly that the main issue is usability. In almost all cases the user is presented with an abundance of features and extras. Even though most of them would be very useful and effective, the average user will most likely be overwhelmed. Many user interfaces put functionality first. This often results in cluttered designs. Figure \ref{fig:smart_heating_apps} for example shows some of the user interfaces for controlling smart heating systems. For this reason we decided to create a mobile application that focuses on ease-of-use and 
+Smart heating systems are on the rise. More and more companies are trying to secure a spot in the market offering a variety of features in their control applications, which are mostly mobile or tablet based or even come with their own device. In this section we discuss the Android application we designed and implemented for users to control our heating system. We focused on keeping things simple because as we were researching some of the already existing systems we realized very quickly that the main issue is usability. In almost all cases the user is presented with an abundance of features and extras. Even though most of them would be very useful and effective, the average user will most likely be overwhelmed. Many user interfaces put functionality first. This often results in cluttered designs. Figure \ref{fig:smart_heating_apps} shows some of the user interfaces for controlling smart heating systems. 
 
-We first look at some use cases for such a control system and talk about how a general application would handle them. Afterwards we show our own design of the application for control the smart heating system we are presenting. Finally, we evaluate our design decision, reflecting on the use cases to see which ones were covered by our application and which ones were not.
+In Section \ref{sec:use_cases} we look at some use cases for such control systems and talk about how a general control application would handle them. Afterwards we show our own design of the application for control the smart heating system we are presenting.
 
-\begin{figure}[h]
+Because of the lack of easy to use controlling in already existing systems we chose to focus our design decisions on these aspects. The user is confronted only with a small number of screens which are all visually designed in a way so the user will always immediately know what he is looking at. The different screens are discussed in further detail in Sections \ref{sec:first_view} through \ref{sec:last_view}.
+
+Finally we evaluate our design decisions, reflecting on the use cases to see which ones were covered by our application and which ones were not. Naturally during development we came up with a lot of new ideas for new features and extras for our own application but we decided to stick with the initial design choices to keep it as simple as possible. We will talk more about these ideas in Section \ref{sec:futurework}, where possible future work on this project is listed.
+
+\begin{figure}
 	\begin{center}
 		\includegraphics[width=0.8\textwidth]{images/smart_heating_apps.png}
 	\end{center}
@@ -20,37 +24,38 @@ We first look at some use cases for such a control system and talk about how a g
 
 
 \section{Use Cases}
+\label{sec:use_cases}
 
-We started by analyzing different use cases that an average user might run into while using a smart heating system. This way we were able to ensure that our design decision would lead to a simple yet effective application which helps the user control the system in a simple manner without overcomplicating things. There is a tradeoff that certain functionality might be lost because of these decisions but our main focus was to create an application which is easy to use. 
+We analyze different use cases that an average user might run into while using a smart heating system. This way we are able to ensure that our design decision leads to a simple yet effective application which helps the user control the system in an easy way without overcomplicating things. There is a tradeoff that certain functionality is lost because of these decisions but our main focus was to create an application which is easy to use. 
 
 \begin{enumerate}
 \item \textbf{Use Case: User wants to install the system}
 
-The user is presented with a welcome screen explaining how he can setup his smart heating system. Via a simple scan of the NFC tag on the raspberry pi, the user is registered on the server and is ready to add new rooms to his system.
-\item \textbf{Use Case: User wants to add a room to the system}
+Anna has just purchased the smart heating system in the store. After she comes home, she unwraps the components and wants to install the system. The manual tells her to install the mobile app to set up the system. The app guides her through the installation process and allows her to connect the thermostats she manually installed on the radiators to the system.
+\item \textbf{Use Case: User feels cold}
 
-After installation the user will start in the home screen (see Section X) upon opening the application. Through the menu located in the top bar the user can then select "Add a new room". After successful addition of a room the application will switch to the detailed view of the new room (see Section Y).
-\item \textbf{Use Case: User wants to add a thermostat to a room}
+Bob is sitting in the living room feeling cold. He starts the mobile app to access the temperature settings for the living room. He sees that the current temperature is at 18 C and that the target temperature is 21 C. He realizes that he has already changed the temperature and notices the app tells him how much longer he has to wait for the room to heat up.
+\item \textbf{Use Case: User wants to save money}
 
-From the home screen the user can select any room from the system to get to the detailed view of the room. Through the menu located in the top bar the user can then select "Add a new thermostat".
-\item \textbf{Use Case: User wants to setup the heating schedule for a room}
+Jack is short on money. He wants to save as much as he can to get through the month, so he start the mobile app for his smart heating system. The application tells him that he can save up to 10 dollars this month by reducing the target temperature for his bathroom by five degrees. He does like it warm in the bathroom but another pair of socks will do just fine, he thinks.
+\item \textbf{Use Case: User wants to add a room to an existing system}
 
-From the home screen the user can select any room from the system to get to the detailed view of the room. Through the menu located in the top bar the user can then select "View schedule". This will open the schedule view (see Section Z) in which the user can easily change the existing heating schedule by simply selecting the desired day and time in the view. He can also choose the option to replace all entries with an existing heating schedule from a different room via the menu from the top bar.
-\item \textbf{Use Case: User wants to change the current temperature in a room}
+Claire finally got her husband to agree to install the new heating system in his office as well. He does not like to deal with that tech-stuff, so Claire will take care of this. Using the already installed mobile application on her phone she can easily add another room to the system and copy the existing heating schedules.
+\item \textbf{Use Case: User wants to add a thermostat to a room in the system}
 
-From the home screen the user can select any room from the system to get to the detailed view of the room. The detailed view shows the current temperature as well as the current desired temperature according to the room's heating schedule. Using the slider on the right side the user can easily change the desired temperature for this room.
+When John bought his heating system he wanted to first try it out with only one of his radiators. Seeing how well the system is behaving he decides to buy new thermostats for all the radiators in his room. Gladly, adding new thermostats to an already existing system is easy using the mobile application. Soon he will save even more money on gas bills.
+\item \textbf{Use Case: User feels hot}
 
-\item \textbf{Use Case: User wants to }
-
-From the home screen the user can select any room from the system to get to the detailed view of the room. The detailed view shows the current temperature as well as the current desired temperature according to the room's heating schedule. Using the slider on the right side the user can easily change the desired temperature for this room.
+Joe and Mary have finally gotten used to the new heating system. Mary usually feels cold very quickly, so she tends to turn the living room's target temperature up a bit too high in Joe's opinion. But this week, she is out of town and Joe can already feel the sweat running down his back, so he opens the mobile application for the heating system and sets a new target temperature for the living room. He can already hear the heater shutting down and is looking forward to a smaller bill and a more comfortable temperature.
 \end{enumerate}
 
-\subsection{Evaluation}
+\section{Implementation}
 
-Uses cases 5 and 8 are neglected because of reasons.... Evaluate the use cases, explain what was solved and what wasn't and why it wasn't.
+\subsection{Application Flow}
 
-\section{Application flow}
-\begin{figure}[h]
+As seen in Figure \ref{fig:app_flow} there are four different views in the application. These different views are explained in more detail in the following sections. The Welcome View is special, because that one is only shown when the user opens the app for the first time and has not yet registered his raspberry pi with the server. After registration, the application will always start in the Home View and go from there.
+
+\begin{figure}[!htb]
 \begin{tikzpicture}
     % Place nodes
     \node [block] (welcome) {Welcome View};
@@ -68,3 +73,116 @@ Uses cases 5 and 8 are neglected because of reasons.... Evaluate the use cases, 
 \caption{The application flow of the mobile app.}
 	\label{fig:app_flow}
 \end{figure}
+
+\subsection{Welcome View}
+\label{sec:first_view}
+In the Welcome View, before being able to use the system the user is prompted to scan his raspberry pi in order to register it with the server. Once the registration is complete the internal database is set up according to the model seen in Figure \ref{fig:db_model}. The database is a simple model that keeps track of the rooms and thermostats which the user has added to the system so far, as well as the user's desired heating schedule for each room. To prevent any data inconsistencies, every entry in the table $Room$ has a field $server\_id$. This field corresponds to the $id$ of the room objects on the server.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{images/mobile_database.jpeg}
+	\end{center}
+	\caption{The database model used in the mobile application.}
+	\label{fig:db_model}
+\end{figure}
+
+After the initial setup of the database, the user is confronted with four questions about his daily routine. The questions are:
+
+\begin{itemize}
+\item{When do you usually wake up in the morning?}
+\item{When do you usually leave for work in the morning?}
+\item{When do you usually get home from work in the evening?}
+\item{When do you usually go to bed in the evening?}
+\end{itemize}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{images/default_heating_schedule.png}
+	\end{center}
+	\caption{A sample default heating schedule after the initial setup of the system.}
+	\label{fig:default_schedulel}
+\end{figure}
+
+With the help of these four questions the application is able to set up a default heating schedule which is initially used for all the rooms that are added in the future. It simply takes the answers to the four questions and sets up the heating schedule in the following way: 
+
+\begin{itemize}
+\item{If the user is at home, the temperature is set to the default value for when somebody is at home.}
+\item{If the user is at work, the heating is turned off completely.}
+\item{If the user is sleeping, the temperature is set to the default value for the night.}
+\item{On weekends, the temperature stays on the default value for being home throughout the whole day.}
+\end{itemize}
+
+These default values are initially set to 16 and 22 degrees celsius for being home and sleeping respectively. These values can be changed in the settings menu from the home view (Section \ref{sec:home_view}).
+
+If desired, the user can also change every heating schedule separately to his own needs. More details about heating schedules can be found in Section \ref{sec:schedule_view}.
+
+\subsection{The Home View}
+\label{sec:home_view}
+The home view is where the application usually starts after successful registration of the raspberry pi with the server. In the home view the user can see all the rooms he added to the system with the corresponding current temperatures in each room. The colour of the tiles with the room names are also an indicator to how hot the room is in its current state, ranging from blue (cold) to green (normal) to red (hot). Clicking one of the tiles will lead the user to the room detail view described in Section \ref{sec:detail_view}. Next to the current temperature of each room there is an optional flame icon indicating that the room is being heated up at the moment. See Figure \ref{fig:home_view} for an example.
+
+Via the menu in the upper righthand corner, the user can choose to add new rooms or delete existing ones. Adding a new room simply requires a new name for the room to be entered. After the creation of a new room the user is immediately transferred to the room detail view so that he can add new thermostats to the room. For more details about the room detail view see Section \ref{sec:detail_view}.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{images/home_view.png}
+	\end{center}
+	\caption{A sample home view with some random rooms.}
+	\label{fig:home_view}
+\end{figure}
+
+\subsection{The Room Detail View}
+\label{sec:detail_view}
+After clicking one of the tiles in the home view the user is presented with more details about the room. He can see a list with all the thermostats, the current temperature in the room indicated with a large thermometer and also a slider next to it for adjusting the desired temperature of the room.
+
+The desired temperature comes from the heating schedule currently active for the room. If the user wants to change the desired temperature he can simply drag the slider to a new position. The heating schedule for the room will be adjusted automatically as well.
+
+If the user wants to change the heating schedule manually he can do so by selecting "View/Edit schedule" from the menu located in the upper righthand corner. This will lead him to the schedule view described further in Section \ref{sec:schedule_view}. 
+\todo{picture detail view}
+
+\subsection{The Schedule View}
+\label{sec:schedule_view}
+\label{sec:last_view}
+The schedule view shows the heating schedule of the room the user has selected previously in the home view. The application is forced into landscape mode to be able to display all the days of the week. The current day of the week is highlighted for easier usability. The user can scroll up and down to see all the different times of the day. 
+
+Adding a new entry is simple: with a single tap anywhere on the schedule the user can add a new entry in the corresponding time slot. He can also adjust the exact times of the new entry after tapping. After providing the desired target temperature for the new entry the user can confirm the data and the new schedule entry is sent to the local database as well as the online server right away. 
+
+Removing a heating schedule entry is not possible and should not be necessary. If the user wants to turn off the heating for a certain period he can simply add a new entry and check the "No heating" checkbox. See Figure \ref{fig:new_schedule_entry} for an example.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{images/new_schedule_entry.png}
+	\end{center}
+	\caption{The popup for adding a new heating schedule entry.}
+	\label{fig:new_schedule_entry}
+\end{figure}
+
+\section{Evaluation}
+
+\subsection {Use cases coverage}
+Our mobile control application covers most of the use cases introduced in Section \ref{sec:use_cases} adequately. As shown later in some cases we decided to either leave the feature out for simplicity's sake or because it was out of scope for this lab project.
+
+\begin{enumerate}
+\item \textbf{Use Case: User wants to install the system}
+
+Covered by the welcome view: The user can easily setup the system using the NFC tags distributed on the raspberry pi and the thermostats with the help of the information displayed on the application.
+\item \textbf{Use Case: User feels cold}
+
+Covered by the detail view: The user can adjust the temperature of the room he is currently in using the slider in the detail view.
+\item \textbf{Use Case: User wants to save money}
+
+Indirectly covered: The user can choose to set the default temperatures to values lower than usual in order to save money.
+\item \textbf{Use Case: User wants to add a room to an existing system}
+
+Covered by the home view: The user can simply add a room using the menu in the upper righthand corner.
+\item \textbf{Use Case: User wants to add a thermostat to a room in the system}
+
+Covered by the detail view: The user can add a new thermostat to the currently selected room by simply scanning its NFC tag.
+\item \textbf{Use Case: User feels hot}
+
+Covered by the detail view: The user can adjust the temperature of the room he is currently in using the slider in the detail view.
+\end{enumerate}
+
+\subsection{User study}
+We have conducted a user study with some of our fellow students. Here are some of their comments about the usability and the application's design.
+
+\todo{Actually do it...}
