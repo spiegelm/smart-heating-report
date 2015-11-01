@@ -1,0 +1,9 @@
+future work:
+
+add new room -> select which room to copy the schedule from.
+editing/adding schedule events -> find a better way to put it on the server, not a query for each thermostat for each entry.
+add user to room -> have his personalized heating schedule in his own room and a mix of all users' schedules in a living room for example.
+rearranging of rooms, grouping of rooms
+add expert mode with extended functionalities for more control for advanced users
+schedule view: add title to say which room the schedule is of.
+multiple users in the same house. (upon scanning the pi, if already registered, add user to residence and download residence to new user's phone)

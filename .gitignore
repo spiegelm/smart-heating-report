@@ -3,7 +3,9 @@ thesis - Kopie.pdf
 thesis.txss
 Smart_Heating_Report*
 evaluation-analysis/*.zip
-
+thesis.txss
+Smart_Heating_Report*
+*.DS_Store
 
 
 ## Core latex/pdflatex auxiliary files:
@@ -21,7 +23,7 @@ evaluation-analysis/*.zip
 # these rules might exclude image files for figures etc.
 # *.ps
 # *.eps
-# *.pdf
+*.pdf
 
 ## Bibliography auxiliary files (bibtex/biblatex/biber):
 *.bbl

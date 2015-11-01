@@ -1,5 +1,7 @@
 \documentclass[a4paper, toc=index, 12pt, DIV14, twoside, BCOR2cm, headsepline, numbers=noenddot, bibliography=totoc]{scrbook}
 
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[american,ngerman]{babel}	% Choose languages here. This affects the section naming as well, like "Abstract" in EN and "Zusammenfassung" in DE.
@@ -19,7 +21,7 @@
 % END CUSTOM
 
 
-\usepackage{ifthen}
+\usepackage{ifthen} 
 \newboolean{bachelorThesis}
 \newboolean{labProject}
 \newboolean{masterThesis}
@@ -59,6 +61,7 @@
 \newcommand{\thesisETHID}{10-915-312 (\thesisAuthorI)\\[1mm] & 10-919-991 (\thesisAuthorII)}
 \newcommand{\thesisEmail}{spiegelm@student.ethz.ch\\[1mm] & schmisam@student.ethz.ch}
 }{}
+
 
 \newcommand{\thesisSemester}{Spring 2015}
 \newcommand{\thesisSubmission}{January 5, 2012}
