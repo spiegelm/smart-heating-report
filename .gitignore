@@ -19,7 +19,7 @@ Smart_Heating_Report*
 # these rules might exclude image files for figures etc.
 # *.ps
 # *.eps
-#*.pdf
+*.pdf
 
 ## Bibliography auxiliary files (bibtex/biblatex/biber):
 *.bbl
