@@ -3,38 +3,177 @@
 \chapter{Requirements Elicitation}
 \label{sec:requirements}
 
-\todo[inline]{SAMUEL}
-
 \section{Functional Requirements}
 
-Functional requirements are stated using use cases in the style of Martin Fowler:
-\todo[inline]{Add 2 sentences describing this style and put the links in footnotes or references.}
-\url{http://en.wikipedia.org/wiki/Use_case#Martin_Fowler}\\
-\url{http://ontolog.cim3.net/cgi-bin/wiki.pl?UseCasesMartinFowlerSimpleTextExample}
+Functional requirements are stated using use cases in the style of Martin Fowler\footnote{\url{http://en.wikipedia.org/wiki/Use_case\#Fowler_style}}\footnote{\url{http://ontolog.cim3.net/cgi-bin/wiki.pl?UseCasesMartinFowlerSimpleTextExample}}. Each use case is described by stating the main goal of the use case in its title, followed by the main success scenario as a list of steps. After that we list a series of extensions which describe a condition that leads to a different interaction depending on user input or the system's state.
+
 
 \subsection{Register a Residence}
-\todo[inline]{Add one to two sentences explaining what the user wants to achieve (i.e. user has just bought the system and wants to enable smart heating in her residence.}
+User has bought the smart heating system and would like to register his residence.
 \begin{enumerate}
-    \itemsep0em
     \item User opens the app and opens the registration screen
-    \item User scans RFID tag
+    \item User scans the RFID tag\footnote{Every element of the system is equipped with an RFID tag (Radio-frequency identification). More about this can be found in Section \ref{sec:server_infrastructure_models}.}
     \item System checks if RFID is not yet registered
     \item System registers residence with scanned RFID
-    \item System shows empty home screen with no rooms
+    \item App shows empty home screen with no rooms
 \end{enumerate}
 
-\paragraph{Alternative} RFID already registered
+\paragraph{Alternative} RFID already registered or invalid
 \begin{itemize}
-    \itemsep0em
     \item At step 3, system fails to verify that RFID is not yet registered
     \item{If RFID is associated to a residence
         \begin{itemize}
-        \item System shows the home screen of the registered residence
+        \item App shows the home screen of the registered residence
         \end{itemize}
         }
-    \item{If RFID is associated to a thermostat
+    \item {If RFID is associated to a thermostat
         \begin{itemize}
-        \item System shows ???
+        \item App shows error message telling the user that he needs to scan the Raspberry Pi instead of a thermostat
+        \item Return to primary scenario at step 2
+        \end{itemize}
+    }
+    \item {If RFID is invalid
+        \begin{itemize}
+        \item App shows error message telling the user that he needs to scan a valid RFID
+        \item Return to primary scenario at step 2
         \end{itemize}
     }
 \end{itemize}
+    
+\paragraph{Alternative} NFC Adapter\footnote{A Near Field Communication adapter is necessary to allow the user's phone to scan the RFID tags on the elements of the system.} not available
+\begin{itemize}
+    \item 1a. App shows a manual scan button
+    \item 1b. User taps the manual scan button and enters the RFID on the tag by hand
+    \item Return to primary scenario at step 3
+\end{itemize}
+
+\subsection{Add a Room to a Residence}
+User has already registered his residence and would like to add rooms to the home screen.
+\begin{enumerate}
+    \item User opens the app and opens the home screen
+    \item User taps the Add Room button
+    \item User is prompted for a name for the new room
+    \item System registers a new room with the given name 
+    \item App shows home screen with the newly added room
+\end{enumerate}
+
+\paragraph{Alternative} Invalid name entered
+\begin{itemize}
+    \item At step 3, the user has entered an empty name
+    \item App notifies user that the name must be entered and allows him to retry
+    \item Return to primary scenario at step 3
+\end{itemize}
+
+\subsection{Add a Thermostat to a Room}
+User is still setting up his system and has just added a room. He would like to register the thermostats in the current room.
+\begin{enumerate}
+    \item User opens the app and opens the home screen
+    \item User taps on the room he would like to add a thermostat to
+    \item User scans the RFID tag
+    \item System checks if RFID is not yet registered
+    \item App shows the room's detail view with the newly added thermostat
+\end{enumerate}
+
+\paragraph{Alternative} RFID already registered or invalid
+\begin{itemize}
+    \item At step 3, system fails to verify that RFID is not yet registered
+    \item{If RFID is associated to a residence
+        \begin{itemize}
+        \item App shows error message telling the user that he needs to scan the  thermostat instead of the Raspberry Pi
+        \item Return to primary scenario at step 3
+        \end{itemize}
+        }
+    \item {If RFID is associated to an already registered thermostat
+        \begin{itemize}
+        \item App shows error message telling the user that each thermostat can only be registered to a single room and tells him what room the scanned thermostat belongs to
+        \item Return to primary scenario at step 3
+        \end{itemize}
+    }
+    \item {If RFID is invalid
+        \begin{itemize}
+        \item App shows error message telling the user that he needs to scan a valid RFID
+        \item Return to primary scenario at step 3
+        \end{itemize}
+    }
+\end{itemize}
+
+\paragraph{Alternative} NFC Adapter not available
+\begin{itemize}
+    \item 2a. App shows a manual scan button
+    \item 2b. User taps the manual scan button and enters the RFID on the tag by hand
+    \item Return to primary scenario at step 4
+\end{itemize}
+
+\subsection{Heat up a Room}
+User is sitting in his living room and feels cold. He would like to use his new smart heating system to heat up the room.
+\begin{enumerate}
+    \item User opens the app and opens the home screen
+    \item User taps the room icon for the living room
+    \item User checks the currently set temperature for the room
+    \item User changes the target temperature of the room to a higher value
+    \item System checks if the entered temperature is in a valid range
+    \item System changes the target temperature for the thermostats associated for the room
+    \item Thermostats start heating the room
+\end{enumerate}
+
+\paragraph{Alternative} Invalid temperature entered
+\begin{itemize}
+    \item At step 4, the user has entered an invalid temperature value
+    \item App notifies user that the temperature must be in a certain range and allows him to retry
+    \item Return to primary scenario at step 4
+\end{itemize}
+
+
+\subsection{Cool down a Room}
+User is sitting in his office and feels hot. He would like to use his new smart heating system to turn off the heating.
+\begin{enumerate}
+    \item User opens the app and opens the home screen
+    \item User taps the room icon for the living room
+    \item User checks the currently set temperature for the room
+    \item User changes the target temperature of the room to a lower value
+    \item System checks if the entered temperature is in a valid range
+    \item System changes the target temperature for the thermostats associated for the room
+    \item Thermostats stop heating the room
+\end{enumerate}
+
+\paragraph{Alternative} Invalid temperature entered
+\begin{itemize}
+    \item At step 4, the user has entered an invalid temperature value
+    \item App notifies user that the temperature must be in a certain range and allows him to retry
+    \item Return to primary scenario at step 4
+\end{itemize}
+
+\subsection{Remove a Room from the Residence}
+User has already set up the system for all the rooms in his home but has made changes to his house. To accomodate for these changes he needs to remove some rooms from the system.
+\begin{enumerate}
+    \item User opens the app and opens the home screen
+    \item User taps the room icon for the room to be deleted
+    \item User taps the delete room button
+    \item App prompts the user for confirmation
+    \item System removes room and all its associated thermostats
+    \item App shows home screen with the deleted room removed
+\end{enumerate}
+
+\subsection{Remove a Thermostat from a Room}
+One of the thermostats in the user's home has broken down. He buys a new one from the store and wants to replace the old one in the system. After adding the newly bought thermostat he would like to remove the old one from the system.
+\begin{enumerate}
+    \item User opens the app and opens the home screen
+    \item User taps the room icon for the room to be changed
+    \item User taps the delete button on the thermostat in question
+    \item App prompts the user for confirmation
+    \item System removes the thermostat from the room
+    \item App shows the room's detail screen with the remaining thermostats (if any)
+\end{enumerate}
+
+\subsection{Change a Room's Heating Schedule}
+User has noticed that the living room is often still heating up while he is out for work. He would like to change the heating schedule to stop heating when he leaves the house.
+\begin{enumerate}
+    \item User opens the app and opens the home screen
+    \item User taps the room icon for the living room
+    \item User taps the change schedule button
+    \item App shows the heating schedule for the living room
+    \item User changes the schedule, setting the desired heating times
+    \item System changes the schedules and sends the update to the Raspberry Pi
+\end{enumerate}
+
+
