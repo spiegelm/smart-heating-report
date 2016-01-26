@@ -8,16 +8,18 @@
 All code developed in this project is published on GitHub and can be found at the following links.
 
 \begin{itemize}
-	\item{Code and documentation related to the Raspberry Pi 2:\\ \url{https://github.com/spiegelm/smart-heating-local}}
+	\item{Code and documentation related to the local communication gateway running on a Raspberry Pi 2:\\ \url{https://github.com/spiegelm/smart-heating-local}}
 	
 	\item{Code and documentation related to the server:\\ \url{https://github.com/spiegelm/smart-heating-server}}
 	
 	\item{Code and documentation related to the mobile application:\\ \url{https://github.com/Octoshape/smart-heating-app}}
 \end{itemize}
 
-\section{Setup instructions for the local infrastructure}
+\section{Setup instructions for the local communication gateway}
 
-\todo[inline]{Fix Format issues.}
+This appendix explains the setup routine of the local communication gateways implemented on a Raspberry Pi 2.
+See also the repository documentation:\\
+\url{https://github.com/spiegelm/smart-heating-local}
 
 \subsection{Setup raspbian}\label{setup-raspbian}
 
@@ -46,11 +48,10 @@ sudo apt-get install at
 
 Credits to Marc Hüppin for the initial version.
 
-openssl and libssl-dev are required for SSL support in python and is
-required by pip.
+openssl and libssl-dev are required for SSL support in python and is also required by pip.
 
 \begin{quote}
-	sudo apt-get install sqlite3 libsqlite3-dev openssl libssl-dev
+	\highlight{sudo apt-get install sqlite3 libsqlite3-dev openssl libssl-dev}
 	
 	install the sqlite3 packages
 	
@@ -137,6 +138,7 @@ Neighbors<pre>fe80::221:2eff:ff00:22d3
 
 Test route to the thermostat by requesting the current temperature via
 coap-client (libcoap):
+
 \highlight{\textasciitilde/smart-heating-local/bin/coap-client -m get\\
 coap://[fdfd::221:2eff:ff00:22d3]/sensors/temperature}
 
@@ -150,22 +152,21 @@ Install pip: \url{https://pip.pypa.io/en/latest/installing.html}
 Install the project requirements:
 
 \noindent
-\begin{minipage}{\linewidth}
-	\begin{lstlisting}[numbers=none]
-cd ~/smart-heating-local/
-pip install -r requirements.txt
-	\end{lstlisting}
-\end{minipage}
+\highlight{cd ~/smart-heating-local/}\\
+\highlight{pip install -r requirements.txt}
 
 \subsubsection{Configure cron tasks}
 
-Setup crontab to run the log and upload scripts periodically.
+Setup crontab to run the log and upload scripts periodically:
+
+%\noindent
+\highlight{crontab -e}
+
+Insert these lines at the end of the file:
 
 \noindent
 \begin{minipage}{\linewidth}
 \begin{lstlisting}
-crontab -e
-# Insert these lines at the end of the file:
 */15 * * * * /usr/local/bin/python3.4 /home/pi/smart-heating-local/thermostat_sync.py
 */5 * * * * /usr/local/bin/python3.4 /home/pi/smart-heating-local/server_sync.py
 \end{lstlisting}
@@ -184,25 +185,44 @@ Setup a virtual or dedicated server based on Ubuntu Linux 14.04 LTS and enter th
 \noindent
 \begin{minipage}{\linewidth}
 	\begin{lstlisting}
+# Install dependencies
 sudo apt-get update
 sudo apt-get upgrade
-sudo apt-get install python-virtualenv
-sudo apt-get install git
+sudo apt-get install git python-virtualenv python3-pip
+# Install code into home directory
 cd ~
-git clone https://github.com/spiegelm/smart-heating
-cd smart-heating/
-git checkout server
-cd ~
+git clone https://github.com/spiegelm/smart-heating-server
+# Setup virtualenv
 virtualenv -p python3 env
-sudo apt-get install python3-pip
-source env/bin/activate
+. ~/env/bin/activate
+# Check for python version >=3.4.0
 python --version
-cd smart-heating/server/
+# Install requirements, setup database and start server
+cd ~/smart-heating-server/
 pip install -r requirements.txt
-python manage.py migrate
-python ./manage.py runserver 0.0.0.0:8000 # run server on port 8000
+./manage.py migrate
+# Run server on port 8000
+./manage.py runserver 0.0.0.0:8000
+# Test that server is accessible via browser
+# Kill server: CTRL-C
+# Start server in the background using nohup
+./scripts/restart_server.sh
+# Kill background server
+./scripts/kill_server.sh
 	\end{lstlisting}
 \end{minipage}
+
+In case of software updates run the following commands to fetch the newest code form the repository and restart the server:
+
+\noindent
+\begin{minipage}{\linewidth}
+	\begin{lstlisting}
+cd ~/smart-heating-server
+git pull
+./scripts/restart_server.sh
+	\end{lstlisting}
+\end{minipage}
+
 
 
 \section{Setup instructions for the mobile application}
