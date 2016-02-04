@@ -111,7 +111,7 @@ The second task is the synchronization of the local data storage with the remote
 This design splits the responsibility of the local communication system into two simpler separated tasks with a clearly defined interface, the local data storage.
 In the presence of a failure only one of the two tasks is affected whereas the other task is still able fulfill its purpose.
 
-For example in the event of a temporary internet connection disruption the system will keep operating the last downloaded heating schedule and store the temperature history.
+For example in the event of a temporary Internet connection disruption the system will keep operating the last downloaded heating schedule and store the temperature history.
 After the disruption the local data storage is synchronized and the system continues to operate on the most actual settings.
 
 Another failure scenario would be the temporary disconnection of a wireless thermostat.
@@ -220,10 +220,10 @@ We discovered the following potential issues:
 
 We address these potential issues in the next section and describe appropriate improvements.
 
-Another interesting fact is the handling of temporary losses of internet connection.
-Due to a internet modem failure and the necessary replacement actions, the residence local network was offline for about 48 hours.
+Another interesting fact is the handling of temporary losses of Internet connection.
+Due to a Internet modem failure and the necessary replacement actions, the residence local network was offline for about 48 hours.
 During this time the local gateway kept communicating with the wireless thermostat to operate the schedule and log the measured temperatures.
-After reestablishing the internet access all temperature measurements that have not yet been uploaded were pushed to the Web server.
+After reestablishing the Internet access all temperature measurements that have not yet been uploaded were pushed to the Web server.
 It took about 56 seconds to upload the missing 192 measurements.
 During and after the whole external incident the system reacted and worked as planned.
 

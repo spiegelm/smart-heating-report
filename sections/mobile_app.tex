@@ -160,13 +160,15 @@ Removing a heating schedule entry is not possible and should not be necessary. I
 
 \subsection{Internet Connection}
 
-Having a working internet connection is one of the prerequisites of the application. Without it, the application is unable to propagate any changes performed on the local database to the database on the server, as well as get any updates from the server's database. That is why we implemented a connectivity check that runs in the background of the application. Every few seconds the application checks if there is a working internet connection. If there is not, the action bar of the application turns red and shows the text "No internet connection". In this state the local database is essentially frozen. The user is unable to make any changes to it before he regains a working internet connection. Whenever the user is trying to change something in the system while the action bar is red he will see a popup explaining the situation. The popup can also be seen when tapping the action bar itself or the small info icon next to it. Figure \ref{fig:no_internet} shows an example of such a popup. In this state the application is unable to update its current temperatures, but the user should be well aware of that fact with the red action bar on top and the text explaining everything. The popup also tells the user when the last update was performed so he knows how old the data being shown to him is. 
+Having a working Internet connection is one of the prerequisites of the application. Without it, the application is unable to propagate any changes performed on the local database to the database on the server, as well as get any updates from the server's database. That is why we implemented a connectivity check that runs in the background of the application. Every few seconds the application checks if there is a working Internet connection.
+If there is not, the action bar of the application turns red and shows the text "No internet connection". In this state the local database is essentially frozen. The user is unable to make any changes to it before he regains a working Internet connection. Whenever the user is trying to change something in the system while the action bar is red he will see a popup explaining the situation.
+The popup can also be seen when tapping the action bar itself or the small info icon next to it. Figure \ref{fig:no_internet} shows an example of such a popup. In this state the application is unable to update its current temperatures, but the user should be well aware of that fact with the red action bar on top and the text explaining everything. The popup also tells the user when the last update was performed so he knows how old the data being shown to him is. 
 
 \begin{figure}
 	\begin{center}
 		\includegraphics[width=0.8\textwidth]{images/no_internet.png}
 	\end{center}
-	\caption{The popup when trying to add entities to the system while no internet connection is available.}
+	\caption{The popup when trying to add entities to the system while no Internet connection is available.}
 	\label{fig:no_internet}
 \end{figure}
 
