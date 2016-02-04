@@ -107,7 +107,7 @@ This indicates that the hardware is powerful enough to run the designed software
 We defined robustness to be the ability of the system to behave reasonably in the presence of failures, especially connection problems.
 The local communication gateway is designed as two independent tasks.
 The first task is the retrieval and storage of the temperature data and the application of the defined schedule.
-The second task is the synchronization of the local data storage with the remote web server.
+The second task is the synchronization of the local data storage with the remote Web server.
 This design splits the responsibility of the local communication system into two simpler separated tasks with a clearly defined interface, the local data storage.
 In the presence of a failure only one of the two tasks is affected whereas the other task is still able fulfill its purpose.
 
@@ -115,7 +115,7 @@ For example in the event of a temporary internet connection disruption the syste
 After the disruption the local data storage is synchronized and the system continues to operate on the most actual settings.
 
 Another failure scenario would be the temporary disconnection of a wireless thermostat.
-In such a case the non-affected thermostats are still functional and the heating schedule of all thermostats is kept in sync with the web server.
+In such a case the non-affected thermostats are still functional and the heating schedule of all thermostats is kept in sync with the Web server.
 As soon as the system reestablishes the connection to the affected thermostat the system continues to work as planned.
 In the meantime neither the properly operating thermostats nor the synchronization of all thermostats' heating schedules is impaired.
 
@@ -141,7 +141,7 @@ In order to check the reliability of the infrastructure in a real world scenario
 Previous work in this area compared the defined room temperatures with the actual room temperatures to conclude on the proper work of a heating system\cite{eigenmann2012opportunisticSensing}.
 Due to the summer season and the according temperatures this evaluation is not possible for this project.
 Instead we focus on the communication between the wireless thermostats, the local communication gateway and the remote server to evaluate the reliability.
-The main data sources for our analysis are the data storages on the local communication gateway, the database on the remote web server and the generated log files on both parts of the infrastructure.
+The main data sources for our analysis are the data storages on the local communication gateway, the database on the remote Web server and the generated log files on both parts of the infrastructure.
 We present our analysis of two different time spans.
 
 \subsubsection{First evaluation}
@@ -223,7 +223,7 @@ We address these potential issues in the next section and describe appropriate i
 Another interesting fact is the handling of temporary losses of internet connection.
 Due to a internet modem failure and the necessary replacement actions, the residence local network was offline for about 48 hours.
 During this time the local gateway kept communicating with the wireless thermostat to operate the schedule and log the measured temperatures.
-After reestablishing the internet access all temperature measurements that have not yet been uploaded were pushed to the web server.
+After reestablishing the internet access all temperature measurements that have not yet been uploaded were pushed to the Web server.
 It took about 56 seconds to upload the missing 192 measurements.
 During and after the whole external incident the system reacted and worked as planned.
 

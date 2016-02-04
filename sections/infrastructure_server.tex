@@ -20,16 +20,16 @@ It persists data collected by the local deployment as also organizational inform
 \label{sec:server_infrastructure_platform_and_frameworks}
 
 The server is implemented with Python, a general-purpose, multi-paradigm programming language\footnote{\url{https://www.python.org/}}.
-Python was chosen as it is suitable for developing a solid web server as well as the embedded hardware used for the communication gateway in the local deployment. See Section~\ref{sec:local_infrastructure} for more explanation.
-Django is a popular, open-source web application framework\footnote{\url{https://www.djangoproject.com/}} based on a model-view-controller (MVC) pattern facilitating the development of complex, database-driven web applications.
-The Django REST Framework\footnote{\url{http://www.django-rest-framework.org/}} extends Django to support the design of RESTful\footnote{Note: REST is a programming paradigm where as RESTful is used to describe a web application implementing such a paradigm.} Web APIs.
+Python was chosen as it is suitable for developing a solid Web server as well as the embedded hardware used for the communication gateway in the local deployment. See Section~\ref{sec:local_infrastructure} for more explanation.
+Django is a popular, open-source Web application framework\footnote{\url{https://www.djangoproject.com/}} based on a model-view-controller (MVC) pattern facilitating the development of complex, database-driven Web applications.
+The Django REST Framework\footnote{\url{http://www.django-rest-framework.org/}} extends Django to support the design of RESTful\footnote{Note: REST is a programming paradigm where as RESTful is used to describe a Web application implementing such a paradigm.} Web APIs.
 
 \subsection{RESTful API}
 \label{sec:server_infrastructure_restful_api}
 
 The smart heating server provides a RESTful API to access a persistent storage providing the basic CRUD operations: Create, Read, Update and Delete.
 Representational State Transfer (REST) is a programming paradigm used for machine-to-machine communication in distributed systems.
-RESTful web services use HTTP as their preferred communication protocol.
+RESTful Web services use HTTP as their preferred communication protocol.
 
 REST is based on resources.
 Each resource is identified by a Uniform Resource Identifier (URI) and is accessible via the request methods defined in HTTP.
@@ -39,7 +39,7 @@ This project uses the simple JavaScript Object Notation (JSON) format to represe
 Resource collections contain lists of representations of the same type of a resource.
 
 A Uniform Resource Locator (URL) is a subtype of a URI that identifies resources via their location\cite{rfc3986}.
-This API uses URLs as they are most common in the area of web services.
+This API uses URLs as they are most common in the area of Web services.
 
 \paragraph{Design Decisions}
 
@@ -82,7 +82,7 @@ See Listing~\ref{lst:room-json-example} for an example of a resource representat
 
 \paragraph{Browsable API}
 
-The Django REST Framework offers the ability to dynamically generate a browsable interface accessible via web browser.
+The Django REST Framework offers the ability to dynamically generate a browsable interface accessible via Web browser.
 It includes a formatted output of the JSON response, offers forms to add new resources and edit or delete existing resources, and displays URLs as clickable hyperlinks.
 This interface is an additional HTML output format enabling developers to easily interact with the API without the need of external tools.
 The Browsable Web API is designed for readability whereas the API renders its data as compressed JSON to reduce transmission overhead.
