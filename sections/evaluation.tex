@@ -293,11 +293,11 @@ This adjustment was separately tested but then discarded.
 However the total number of PUT requests fell intensively due to the improved results of GET requests and the way of implementation, as PUT requests are only submitted if the desired values is not already set.
 The data shows the resource \highlight{/set/mode} only required a single write.
 Further analysis suggests that the mode is also set when writing the target and does not need to be set separately.
-The remaining GET requests seem not to be affected by the taken improvements.
+The remaining GET requests seem not to be affected by the improvements.
 
 \paragraph{Hardware issues}
 
-A closer look at the data indicates that the timed out \highlight{PUT /set/target} requests did still make a impact.
+A closer look at the data indicates that the timed out \highlight{PUT /set/target} requests did still make an impact.
 Although when the gateway did not receive a response, the requested target temperature is returned by the subsequent GET query.
 Further inspection indicate that there is a general problem with the deployed Honeywell thermostat probably caused by weak hardware communication interfaces (UART) or the upgraded open source firmware OpenHR20.
 
@@ -306,4 +306,4 @@ Further inspection indicate that there is a general problem with the deployed Ho
 
 \section{Mobile App}
 
-\todo[inline]{SAMUEL: Mobile App evaluation}
+

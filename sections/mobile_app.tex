@@ -4,7 +4,7 @@
 \tikzstyle{block} = [rectangle, draw, fill=blue!20, 
     text width=5em, text centered, rounded corners, minimum height=4em, node distance=4cm]
 \tikzstyle{line} = [draw, -latex']
-
+I
 \chapter{Mobile App}
 \label{sec:mobile_app}
 
@@ -36,7 +36,7 @@ We analyze different use cases that an average user might run into while using a
 Anna has just purchased the smart heating system in the store. After she comes home, she unwraps the components and wants to install the system. The manual tells her to install the mobile app to set up the system. The app guides her through the installation process and allows her to connect the thermostats she manually installed on the radiators to the system.
 \item \textbf{Use Case: User feels cold}
 
-Bob is sitting in the living room feeling cold. He starts the mobile app to access the temperature settings for the living room. He sees that the current temperature is at 18 C and that the target temperature is 21 C. He realizes that he has already changed the temperature and notices the app tells him how much longer he has to wait for the room to heat up.
+Bob is sitting in the living room feeling cold. He starts the mobile app to access the temperature of for the living room. He sees that the current temperature is at 18 C and that the target temperature is 21 C. He realizes that he has already changed the temperature and notices the app tells him how much longer he has to wait for the room to heat up.
 \item \textbf{Use Case: User wants to save money}
 
 Jack is short on money. He wants to save as much as he can to get through the month, so he start the mobile app for his smart heating system. The application tells him that he can save up to 10 dollars this month by reducing the target temperature for his bathroom by five degrees. He does like it warm in the bathroom but another pair of socks will do just fine, he thinks.
@@ -114,7 +114,7 @@ With the help of these four questions the application is able to set up a defaul
 \item{On weekends, the temperature stays on the default value for being home throughout the whole day.}
 \end{itemize}
 
-These default values are initially set to 16 and 22 degrees celsius for being home and sleeping respectively. These values can be changed in the settings menu from the home view (Section \ref{sec:home_view}).
+These default values are initially set to 16 and 22 degrees celsius for being home and sleeping respectively.
 
 If desired, the user can also change every heating schedule separately to his own needs. More details about heating schedules can be found in Section \ref{sec:schedule_view}.
 
@@ -158,6 +158,18 @@ Removing a heating schedule entry is not possible and should not be necessary. I
 	\label{fig:new_schedule_entry}
 \end{figure}
 
+\subsection{Internet Connection}
+
+Having a working internet connection is one of the prerequisites of the application. Without it, the application is unable to propagate any changes performed on the local database to the database on the server, as well as get any updates from the server's database. That is why we implemented a connectivity check that runs in the background of the application. Every few seconds the application checks if there is a working internet connection. If there is not, the action bar of the application turns red and shows the text "No internet connection". In this state the local database is essentially frozen. The user is unable to make any changes to it before he regains a working internet connection. Whenever the user is trying to change something in the system while the action bar is red he will see a popup explaining the situation. The popup can also be seen when tapping the action bar itself or the small info icon next to it. Figure \ref{fig:no_internet} shows an example of such a popup. In this state the application is unable to update its current temperatures, but the user should be well aware of that fact with the red action bar on top and the text explaining everything. The popup also tells the user when the last update was performed so he knows how old the data being shown to him is. 
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{images/no_internet.png}
+	\end{center}
+	\caption{The popup when trying to add entities to the system while no internet connection is available.}
+	\label{fig:no_internet}
+\end{figure}
+
 \section{Evaluation}
 
 \subsection {Use cases coverage}
@@ -172,10 +184,10 @@ Covered by the welcome view: The user can easily setup the system using the NFC 
 Covered by the detail view: The user can adjust the temperature of the room he is currently in using the slider in the detail view.
 \item \textbf{Use Case: User wants to save money}
 
-Indirectly covered: The user can choose to set the default temperatures to values lower than usual in order to save money.
+Indirectly covered: The user can choose to set the temperatures lower than usual in order to save money.
 \item \textbf{Use Case: User wants to add a room to an existing system}
 
-Covered by the home view: The user can simply add a room using the menu in the upper righthand corner.
+Covered by the home view: The user can simply add a room using the menu in the upper righthand corner or the button at the bottom of the screen.
 \item \textbf{Use Case: User wants to add a thermostat to a room in the system}
 
 Covered by the detail view: The user can add a new thermostat to the currently selected room by simply scanning its NFC tag.
@@ -187,7 +199,7 @@ Covered by the detail view: The user can adjust the temperature of the room he i
 \subsection{User study}
 We have conducted a user study with 10 of our fellow students. After giving a brief introduction about the purpose and goal of the application to the participants, we first asked them to try to navigate through the different views of the app. Afterwards they were given a short list of tasks like creating a new room or deleting a thermostat. Each participant was motivated to take note of things that seemed uncomfortable or not intuitive.
 
-For this user study the application was set up in such a way that it was possible to register a dummy residence with a fake RFID. Once registered, the application would automatically add 10 new rooms with randomly chosen but more or less sensible names and add two to four thermostats to each of them. Each thermostat was given an initial dummy value as its current temperature. This was done to be able to collect data for the user study in the case of users which have already set up the system. Some of the tasks also required rooms or thermostats to be already in the system. Of course for the tasks which involved adding new thermostats to the system, actual thermostats were provided with the NFC tags attached to them.
+For this user study the application was set up in such a way that it is possible to register a dummy residence with a fake RFID. Once registered, the application would automatically add 10 new rooms with randomly chosen but more or less sensible names and add two to four thermostats to each of them. Each thermostat was given an initial dummy value as its current temperature. This was done to be able to collect data for the user study in the case of users which have already set up the system. Some of the tasks also required rooms or thermostats to be already in the system. Of course for the tasks which involved adding new thermostats to the system, actual thermostats were provided with the NFC tags attached to them.
 
 Half of the participants used smart phones not equipped with an NFC adapter for scanning the tags, so they were forced to use the manual entry of RFIDs for the study.
 
@@ -251,23 +263,4 @@ Here the answers were not given in the usual scale but rather as statements.
 
 Most of the participants considered it not worth the price of exchanging all their thermostats at home and buying a raspberry pi just to maybe save a little bit of money in heating cost. These statements are of course from students which is probably not the best group for such a question, but conducting a bigger user study or even reaching out to users of existing smart heating systems for a questionnaire lies beyond the scope of this project.
 \end{itemize}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
