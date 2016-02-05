@@ -4,7 +4,7 @@
 \label{sec:systemoverview}
 
 The system consists of two major parts.
-First, the back end consisting of the local infrastructure monitoring and controlling temperatures and persisting this data on an accessible web server.
+First, the back end consisting of the local infrastructure monitoring and controlling temperatures and persisting this data on an accessible Web server.
 Second, the mobile application offering a user friendly interface to configure and interact with the system.
 See Figure~\ref{fig:system_overview} for a graphical overview.
 
@@ -31,7 +31,7 @@ The mobile application part consists of a control application used to communicat
 
 The smart heating system is implemented using a server-client model.
 % Willi: What does that mean? Describe briefly (in one or two sentences) which functionality is implemented where
-The smart heating server hosts a web service acting as an API to provide access to the shared resources.
+The smart heating server hosts a Web service acting as an API to provide access to the shared resources.
 The local communication gateway uses this API to query the residence configuration and persist the collected measurements.
 %The server handles requests from its clients to retrieve or store data.
 %A local communication gateway uses this API in two ways.
@@ -39,8 +39,8 @@ The local communication gateway uses this API to query the residence configurati
 %Second, it persists the measured temperature data on the server to make it available to other clients.
 Complementary, there is the mobile application also acting as a client.
 It provides and updates the residence configuration and retrieves sensor data.
-%This data is shared to the web server and required sensor data is queried conversely.
-%The web server and the local infrastructures form the back end of the whole system whereas the mobile applications running on smart phones represent the front end.
+%This data is shared to the Web server and required sensor data is queried conversely.
+%The Web server and the local infrastructures form the back end of the whole system whereas the mobile applications running on smart phones represent the front end.
 %See Figure~\ref{fig:systemoverview_architecture} for a visual representation.
 
 
