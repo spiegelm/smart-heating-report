@@ -80,10 +80,6 @@ The new data gathered from the thermostats is therefore sent to the server and t
 The local computer works as a proxy server and enables the local deployment to operate independently from the connection to the remote server.
 This way the last downloaded heating schedule is kept and operated until the server connection is reestablished.
 
-% TODO?
-%\todo[inline]{Overview picture of the used local deployment: thermostat, radio module powerd by USB, Raspbeery with border router\\
-%	Honeywell HR-20, Radio Module deRFmega128, USB powered}
-
 All the code, binaries and instructions required to setup the Raspberry Pi 2 are provided in the Git repository located at \url{https://github.com/spiegelm/smart-heating-local}.
 We highly encourage the reader to visit the project on GitHub.
 The repository is designed to be self contained.
@@ -107,7 +103,6 @@ The address with the prefix \highlight{fdfd:} is the relevant one accessible fro
 Requesting the determined URI \nolinkurl{http://[fdfd::212:7400:115e:a9e5]} returns an HTML table containing all discovered devices:
 %, as shown in Listing~\ref{lst:border_router_devices}.
 
-%\begin{lstlisting}[label={lst:border_router_devices}, caption={Example of routing table provided by the border routers web service}]
 \noindent
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[numbers=none]
