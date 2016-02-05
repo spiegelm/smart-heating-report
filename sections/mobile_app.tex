@@ -8,11 +8,11 @@ I
 \chapter{Mobile App}
 \label{sec:mobile_app}
 
-Smart heating systems are on the rise. More and more companies are trying to secure a spot in the market offering a variety of features in their control applications, which are mostly mobile or tablet based or even come with their own device. In this section we discuss the Android application we designed and implemented for users to control our heating system. We focused on keeping things simple because as we were researching some of the already existing systems we realised very quickly that the main issue is usability. In almost all cases the user is presented with an abundance of features and extras. Even though most of them would be very useful and effective, the average user will most likely be overwhelmed. Many user interfaces put functionality first. This often results in cluttered designs. Figure \ref{fig:smart_heating_apps} shows some of the user interfaces for controlling smart heating systems.
+Smart heating systems are on the rise. More and more companies are trying to secure a spot in the market offering a variety of features in their control applications, which are mostly mobile or tablet based or even come with their own device. In this section we discuss the Android application we designed and implemented for users to control our heating system. As we were researching some of the already existing systems we realised very quickly that the main issue is usability. In almost all cases the user is presented with an abundance of features and extras. Even though most of them would be very useful and effective, the average user will most likely be overwhelmed. Many user interfaces put functionality first which often results in cluttered designs. Figure \ref{fig:smart_heating_apps} shows some of the user interfaces for controlling existing smart heating systems.
 
-In Section \ref{sec:use_cases} we look at some use cases for such control systems and talk about how a general control application would handle them. Afterwards we show our own design of the application for control the smart heating system we are presenting.
+In Section \ref{sec:use_cases} we look at some use cases for such control systems and talk about how a general control application would handle them. Afterwards we show our own design of the application for controlling the heating system we are presenting.
 
-Because of the lack of easy to use controlling in already existing systems we chose to focus our design decisions on these aspects. The user is confronted only with a small number of screens which are all visually designed in a way so the user will always immediately know what he is looking at. The different screens are discussed in further detail in Sections \ref{sec:first_view} through \ref{sec:last_view}.
+We chose to focus our design decisions on showing the user only what he needs and maybe in the future add a so-called expert mode for the more tech-savvy users with additional featuers. The user is confronted only with a small number of screens which are all visually designed in a way such that the user will always immediately know what he is looking at. The different screens are discussed in further detail in Sections \ref{sec:first_view} through \ref{sec:last_view}.
 
 Finally we evaluate our design decisions, reflecting on the use cases to see which ones were covered by our application and which ones were not. Naturally during development we came up with a lot of new ideas for new features and extras for our own application but we decided to stick with the initial design choices to keep it as simple as possible. We will talk more about these ideas in Section \ref{sec:futurework}, where possible future work on this project is listed.
 
@@ -20,7 +20,7 @@ Finally we evaluate our design decisions, reflecting on the use cases to see whi
 	\begin{center}
 		\includegraphics[width=0.8\textwidth]{images/smart_heating_apps.png}
 	\end{center}
-	\caption{Some examples of mobile applications for controlling smart heatings systems. Source: \url{https://cdn.recombu.com/media/digital/news/legacy/M13058/1397569835_w670_h576.png}}
+	\caption{Some examples of mobile applications for controlling smart heatings systems (clockwise from top left): Hive, Cosy, Heat Genius, Nest, Evohome, OWL Intuition, Salus, Tado. Source: \url{https://cdn.recombu.com/media/digital/news/legacy/M13058/1397569835_w670_h576.png}}
 	\label{fig:smart_heating_apps}
 \end{figure}
 
@@ -126,20 +126,19 @@ Via the menu in the upper righthand corner, the user can choose to add new rooms
 
 \begin{figure}
 	\begin{center}
-		\includegraphics[width=0.8\textwidth]{images/home_view.png}
+		\includegraphics[width=0.6\textwidth]{images/home_view.png}
 	\end{center}
-	\caption{A sample home view with some random rooms.}
+	\caption{Examples of a home view with some random rooms and a room detail view.}
 	\label{fig:home_view}
 \end{figure}
 
 \subsection{The Room Detail View}
 \label{sec:detail_view}
-After clicking one of the tiles in the home view the user is presented with more details about the room. He can see a list with all the thermostats, the current temperature in the room indicated with a large thermometer and also a slider next to it for adjusting the desired temperature of the room.
+After clicking one of the tiles in the home view the user is presented with more details about the room. He can see a list with all the thermostats, the current temperature in the room indicated with a large thermometer and also a slider next to it for adjusting the desired temperature of the room. See Figure \ref{fig:home_view} for an example.
 
 The desired temperature comes from the heating schedule currently active for the room. If the user wants to change the desired temperature he can simply drag the slider to a new position. The heating schedule for the room will be adjusted automatically as well.
 
 If the user wants to change the heating schedule manually he can do so by selecting "View/Edit schedule" from the menu located in the upper righthand corner. This will lead him to the schedule view described further in Section \ref{sec:schedule_view}. 
-\todo{picture detail view}
 
 \subsection{The Schedule View}
 \label{sec:schedule_view}
@@ -171,98 +170,4 @@ The popup can also be seen when tapping the action bar itself or the small info 
 	\caption{The popup when trying to add entities to the system while no Internet connection is available.}
 	\label{fig:no_internet}
 \end{figure}
-
-\section{Evaluation}
-
-\subsection {Use cases coverage}
-Our mobile control application covers most of the use cases introduced in Section \ref{sec:use_cases} adequately. As shown later in some cases we decided to either leave the feature out for simplicity's sake or because it was out of scope for this lab project.
-
-\begin{enumerate}
-\item \textbf{Use Case: User wants to install the system}
-
-Covered by the welcome view: The user can easily setup the system using the NFC tags distributed on the raspberry pi and the thermostats with the help of the information displayed on the application.
-\item \textbf{Use Case: User feels cold}
-
-Covered by the detail view: The user can adjust the temperature of the room he is currently in using the slider in the detail view.
-\item \textbf{Use Case: User wants to save money}
-
-Indirectly covered: The user can choose to set the temperatures lower than usual in order to save money.
-\item \textbf{Use Case: User wants to add a room to an existing system}
-
-Covered by the home view: The user can simply add a room using the menu in the upper righthand corner or the button at the bottom of the screen.
-\item \textbf{Use Case: User wants to add a thermostat to a room in the system}
-
-Covered by the detail view: The user can add a new thermostat to the currently selected room by simply scanning its NFC tag.
-\item \textbf{Use Case: User feels hot}
-
-Covered by the detail view: The user can adjust the temperature of the room he is currently in using the slider in the detail view.
-\end{enumerate}
-
-\subsection{User study}
-We have conducted a user study with 10 of our fellow students. After giving a brief introduction about the purpose and goal of the application to the participants, we first asked them to try to navigate through the different views of the app. Afterwards they were given a short list of tasks like creating a new room or deleting a thermostat. Each participant was motivated to take note of things that seemed uncomfortable or not intuitive.
-
-For this user study the application was set up in such a way that it is possible to register a dummy residence with a fake RFID. Once registered, the application would automatically add 10 new rooms with randomly chosen but more or less sensible names and add two to four thermostats to each of them. Each thermostat was given an initial dummy value as its current temperature. This was done to be able to collect data for the user study in the case of users which have already set up the system. Some of the tasks also required rooms or thermostats to be already in the system. Of course for the tasks which involved adding new thermostats to the system, actual thermostats were provided with the NFC tags attached to them.
-
-Half of the participants used smart phones not equipped with an NFC adapter for scanning the tags, so they were forced to use the manual entry of RFIDs for the study.
-
-\subsection{Rating}
-\label{sec:rating}
-After the participants have successfully completed all their tasks, they were asked a series of questions to be answered on a scale of one through five with the following meaning:
-\begin{itemize}
-\item{1 - Very Bad}
-\item{2 - Bad}
-\item{3 - Average}
-\item{4 - Good}
-\item{5 - Very Good}
-\end{itemize}
-
-\subsection{Results}
-The questions were all phrased in such a way that the scale of Section \ref{sec:rating} was applicable to the question. So most of the questions started with "How well were you able to" and continued from there as follows:
-\begin{itemize}
-\item{...navigate through the different views of the application?}
-
-8 participants answered with "Very Good", the other two replied with "Good".
-\item{...tell the difference between the different views?}
-
-This question focused on designing the views visually in such a way that the user will not get lost while trying to find the feature he is looking for.
-
-All 10 participants answered with "Very Good". 
-\item{...quickly see the temperature of any given room and whether it's being heated up or not?}
-
-All 10 participants answered with "Very Good".
-\item{...change tomorrow's schedule for a given room?}
-
-6 participants answered with "Very Good", three with "Good" and one "Average".
-
-The biggest problem was figuring out that the schedule of a room could only be changed by going to the settings menu in the room's detail view. Having reached the schedule view for the room most participants were able to complete the task very easily.
-
-\item{...delete a thermostat from a given room?}
-
-All 10 participants answered with "Very Good".
-\item{...delete a room from the system?}
-
-All 10 participants answered with "Very Good".
-\item{...add a thermostat to a given room?}
-
-5 participants answered with "Very Good", two with "Good" and three with "Average".
-
-All of the participants using a smart phone with a NFC adapter replied with "Very Good" since scanning the tag is very convenient for the user. The manual method still works, but it is rather cumbersome to be able to read the RFID written on the tags.
-\item{...add a room to the system?}
-
-All 10 participants answered with "Very Good".
-
-\item{How would you rate the overall impression of the application visually?}
-
-Two participants answered with "Very Good", 4 with "Good" and 4 with "Average".
-
-\item{How would you rate the overall usability of the application?}
-
-8 participants answered with "Very Good", two replied with "Good".
-
-\item{Would you consider using such a heating system in your own home?}
-
-Here the answers were not given in the usual scale but rather as statements. 
-
-Most of the participants considered it not worth the price of exchanging all their thermostats at home and buying a raspberry pi just to maybe save a little bit of money in heating cost. These statements are of course from students which is probably not the best group for such a question, but conducting a bigger user study or even reaching out to users of existing smart heating systems for a questionnaire lies beyond the scope of this project.
-\end{itemize}
 
