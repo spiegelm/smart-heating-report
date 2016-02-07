@@ -14,7 +14,7 @@ In Section \ref{sec:use_cases} we look at some use cases for such control system
 
 We chose to focus our design decisions on showing the user only what he needs and maybe in the future add a so-called expert mode for the more tech-savvy users with additional featuers. The user is confronted only with a small number of screens which are all visually designed in a way such that the user will always immediately know what he is looking at. The different screens are discussed in further detail in Sections \ref{sec:first_view} through \ref{sec:last_view}.
 
-Finally we evaluate our design decisions, reflecting on the use cases to see which ones were covered by our application and which ones were not. Naturally during development we came up with a lot of new ideas for new features and extras for our own application but we decided to stick with the initial design choices to keep it as simple as possible. We will talk more about these ideas in Section \ref{sec:futurework}, where possible future work on this project is listed.
+Finally we evaluate our design decisions in Section \ref{sec:eval_mobile_app}, reflecting on the use cases to see which ones were covered by our application and which ones were not. Naturally during development we came up with a lot of new ideas for new features and extras for our own application but we decided to stick with the initial design choices to keep it as simple as possible. We will talk more about these ideas in Section \ref{sec:futurework}, where possible future work on this project is listed.
 
 \begin{figure}
 	\begin{center}
@@ -157,11 +157,14 @@ Removing a heating schedule entry is not possible and should not be necessary. I
 	\label{fig:new_schedule_entry}
 \end{figure}
 
-\subsection{Internet Connection}
+\subsection{Internet connection and updates}
+\label{sec:updates}
 
 Having a working Internet connection is one of the prerequisites of the application. Without it, the application is unable to propagate any changes performed on the local database to the database on the server, as well as get any updates from the server's database. That is why we implemented a connectivity check that runs in the background of the application. Every few seconds the application checks if there is a working Internet connection.
 If there is not, the action bar of the application turns red and shows the text "No internet connection". In this state the local database is essentially frozen. The user is unable to make any changes to it before he regains a working Internet connection. Whenever the user is trying to change something in the system while the action bar is red he will see a popup explaining the situation.
 The popup can also be seen when tapping the action bar itself or the small info icon next to it. Figure \ref{fig:no_internet} shows an example of such a popup. In this state the application is unable to update its current temperatures, but the user should be well aware of that fact with the red action bar on top and the text explaining everything. The popup also tells the user when the last update was performed so he knows how old the data being shown to him is. 
+
+Every 15 minutes a background task is scheduled to update all the rooms, thermostats and heating tables in the system to accommodate any changes either made by the system or by another user in the meantime. The user has the choice of refreshing his data manually using the settings menu in the upper right hand corner of the home view. If there is no internet connection available when such a scheduled update is started, it will simply be skipped.
 
 \begin{figure}
 	\begin{center}
@@ -170,4 +173,3 @@ The popup can also be seen when tapping the action bar itself or the small info 
 	\caption{The popup when trying to add entities to the system while no Internet connection is available.}
 	\label{fig:no_internet}
 \end{figure}
-

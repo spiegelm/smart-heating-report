@@ -8,17 +8,22 @@
 The goal of this project was to develop a reliable heating control system for residential users.
 
 This project consists of two major parts.
-On the one hand there is the back end consisting of the local infrastructure monitoring and controlling temperatures and persisting this data on an accessible Web server.
-On the other hand there is the front end mobile application offering a user friendly interface to configure and interact with the system.
+First, there is the back end consisting of the local infrastructure monitoring and controlling temperatures and persisting this data on an accessible Web server.
+Second, there is the front end mobile application offering a user friendly interface to configure and interact with the system.
 
 During the development of this project a few issues occurred.
 One of the main obstacles at the beginning of the project was the lack of detail in the thermostat documentation.
-This resulted in a lot of time spent with debugging of the hardware and software components related to the chosen thermostats and their firmware.
+This resulted in a lot of time spent with debugging the hardware and software components related to the chosen thermostats and their firmware.
+
 A further complication was the limited hardware performance which resulted in inconsistent request handling.
 For example, for certain requests the thermostat does execute but not acknowledge the request.
 We introduced a system that takes care of these anomalies.
 Our evaluation concludes that the adopted measures lead to a reliable heating control system.
 
-\todo[inline]{TODO Samuel}
+The first hurdle to overcome in the development of the mobile application is that both of us have never used the IDE Android Studio. Having both only programming experience with Android using the Eclipse environment, we first had to get familiar with all the features of Android Studio. It also became apparent very quickly, that Android Studio is a rather new IDE which comes with some interesting bugs and complications. All in all we were able to make good use of the Android Studio and all its features, like the DDMS tool which allowed us to measure the application's data usage shown in Section \ref{sec:data_usage}.
 
-Our proposed system of interacting but independent distributed systems provides a solid base for further developments in the area of residential smart heating systems.
+Said data usage analysis showed that adding thermostats is about 20 times more expensive in terms of data sent and received than all the other basic operations to the system. This is because on the server, every thermostat has its own heating schedule, and we need to send the schedule of the room the new thermostat belongs to in its entirety. At this point of the development of this system this might seem unnecessary, because all the thermostats in a room follow the exact same schedule which is already available on the server, but most probably in a later stage these schedules will differ depending on various factors of the room or the position of the thermostats.
+
+During development of the mobile application we often found ourselves wondering what is the best way to visually design a certain feature. Our main issue was that there is no correct solution and something that might seem very intuitive to a programmer who has already worked several hours on the same feature, could very well be difficult to understand to an end-user. We concluded that in order to really develop a user friendly control application for such a system there would have to be user studies or field tests in a much larger scale than what we were capable of doing in the scope of this lab project. Nevertheless, we hope to have come close to creating a sensible control application for this heating system.
+
+Our proposed system of interacting but independent distributed systems provides a base for further developments in the area of residential smart heating systems.

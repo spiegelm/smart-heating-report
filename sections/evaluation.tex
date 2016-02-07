@@ -25,15 +25,12 @@ Each design goal will be evaluated in a separate paragraph below.
 This solid background allows us to clearly separate different concerns to achieve modularity.
 Further the distinct components simplify application extensions by easily adding new resources, representations, views or URLs.
 
-% TODO add some examples?
-
 \paragraph{Usability} In order for a developer to be able to familiarize himself with a new API it is important to provide clear documentation and a platform to use the API.
 The browsable API as described in Section~\ref{sec:server_infrastructure_restful_api} provides both.
 It allows a developer to interactively explore the resource structure by navigating via the displayed URLs.
 The browsable API also provides easy interaction possibilities to create, read, update and delete resources.
 Further the API describes the supported access methods when requesting a particular resource.
 One of these HTTP methods named \emph{OPTIONS} shows the accessible fields, their types and other useful meta information for interacting with the API.
-
 
 
 \paragraph{Testability}
@@ -302,9 +299,8 @@ Although when the gateway did not receive a response, the requested target tempe
 Further inspection indicate that there is a general problem with the deployed Honeywell thermostat probably caused by weak hardware communication interfaces (UART) or the upgraded open source firmware OpenHR20.
 
 
-
-
 \section{Mobile App}
+\label{sec:eval_mobile_app}
 
 \subsection {Use cases coverage}
 Our mobile control application covers most of the use cases introduced in Section \ref{sec:use_cases} adequately. As shown later in some cases we decided to either leave the feature out for simplicity's sake or because it was out of scope for this lab project.
@@ -329,6 +325,50 @@ Covered by the detail view: The user can add a new thermostat to the currently s
 
 Covered by the detail view: The user can adjust the temperature of the room he is currently in using the slider in the detail view.
 \end{enumerate}
+
+\begin{figure} [h]
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{images/ddms.png}
+	\end{center}
+	\caption{The DDMS tool from the Android Studio IDE used in the data usage analysis}
+	\label{fig:ddms}
+\end{figure} 
+
+\subsection{Data usage}
+\label{sec:data_usage}
+We analyze the amount of data sent and received by the mobile control application during different tasks. Using the DDMS \footnote{Dalvik Debug Monitor Server} tool from Android Studio we were able to measure sent and received bytes by our application. The results for the different tasks are shown in the table below. \\
+
+\begin{threeparttable}[htbp]
+	\centering
+	\begin{tabular}{ l | r r }
+		\toprule
+		Task	& Bytes received	& Bytes sent \\
+		\midrule
+		1) Add a new room to the residence				& 897		& 544 \\
+		2) Add a new thermostat to a room				& 25'597		& 18'911 \\
+		3) Add a new heating schedule entry				& 1'548		& 1'678 \\
+		4) Delete a room							& 435		& 423 \\
+		5) Delete a thermostat						& 435		& 444 \\
+		6) Regular update\tnote{\textdagger}								& 136'952		& 26'315 \\
+		7) Create the whole residence\tnote{\textdagger}					& 405'454  	& 299'133\\
+		\bottomrule
+	\end{tabular}
+	\begin{tablenotes}
+		\footnotesize{
+			\item[\textdagger] The analysis was done using a residence consisting of ten rooms, each equipped with three thermostats.
+		}
+	\end{tablenotes}
+	\caption{Results of data usage analysis.}
+	\label{table:data_usage}
+\end{threeparttable}
+
+Tasks only adding or removing one element to or from the system require only between 0.5 and 1.5 kilobytes of data sent/received. The only exception to this is adding a new thermostat, but this is because on the server infrastructure, every thermostat has a heating schedule, hence when creating a new thermostat, we also need to add the whole heating schedule of the associated room to it. That's why task 2 goes up to 25 kilobytes of data received and about 19 kilobytes sent. 
+
+The more interesting task is the regular update mentioned in Section \ref{sec:updates}, since this task runs every 15 minutes. As we can see with a very large residence of ten rooms each having three thermostats, updating the whole database still only requires about 136 kilobytes of data to be received and much less to be sent.
+
+As a reference, we added task 7 to the table which is the creation of all the rooms and thermostats at once, since this was just a dummy residence with fake elements in it. Here the data sent and received is increased by a lot because of all the thermostats that needed to be added.
+
+Evaluating the data above we can conclude that adding a thermostat requires the most data in both receiving and sending because of the heating table being set up.
 
 \subsection{User study}
 We have conducted a user study with 10 of our fellow students. After giving a brief introduction about the purpose and goal of the application to the participants, we first asked them to try to navigate through the different views of the app. Afterwards they were given a short list of tasks like creating a new room or deleting a thermostat. Each participant was motivated to take note of things that seemed uncomfortable or not intuitive.
