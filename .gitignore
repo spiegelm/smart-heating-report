@@ -2,6 +2,8 @@ evaluation-analysis/*.zip
 thesis.txss
 Smart_Heating_Report*
 *.DS_Store
+.dropbox
+desktop.ini
 
 
 ## Core latex/pdflatex auxiliary files:
